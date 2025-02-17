@@ -1,0 +1,36 @@
+
+<div class="carousel-container" [ngClass]="{ 'show': showCarousel() }">
+<div
+  class="item"
+  [style.backgroundImage]="
+    'url(' + this.imagens()[activeImageIndex()] + ')'
+  "
+></div>
+
+<!-- Botões de controle -->
+<div class="botoes-controle">
+  @for (imagem of imagens();track  $index; let index =  $index) {
+    <button
+      [class.ativo]="index === activeImageIndex()"
+      (click)="ativarImagem(index)"></button>
+  }
+</div>
+
+<!--
+  Cria imagens que ficam "escondidas"
+  para forçar o navegador a baixar as
+  imagens assim que o HTML é interpretado.
+
+  Isto evitar o delay de carregamento
+  das imagens do carrossel na primeira
+  vez que cada imagem é mostrada na tela.
+-->
+@for (imagem of imagens(); track $index) {
+<img
+  [src]="imagem"
+  width="1"
+  height="1"
+  style="opacity: 0; position: fixed"
+/>
+}
+</div>

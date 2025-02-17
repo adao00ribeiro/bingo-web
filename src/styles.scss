@@ -1,1 +1,71 @@
-/* You can add global styles to this file, and also import other style files */
+@use "theme.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* Ajuste a altura conforme necessário */
+  width: 100vw; /* Ajuste a largura conforme necessário */
+}
+
+* {
+  font-family: "Montserrat", sans-serif;
+  box-sizing: border-box;
+}
+
+.sucess-snackbar {
+  --mdc-snackbar-container-color: rgb(0, 190, 0);
+  --mdc-snackbar-supporting-text-color: white;
+
+  border-radius: 1rem;
+  --mdc-snackbar-supporting-text-font: Cambria, Cochin,Georgia,Times;
+  --mdc-snackbar-supporting-text-line-height: 2rem
+  --mdc-snackbar-supporting-text-size: 2rem !important;
+  --mdc-snackbar-supporting-text-weight: bold;
+
+
+  button{
+    background-color: rgb(5, 143, 5);
+  }
+}
+.warning-snackbar {
+  --mdc-snackbar-container-color: rgb(251, 255, 0);
+  --mdc-snackbar-supporting-text-color: rgb(2, 2, 2);
+
+  border-radius: 1rem;
+  --mdc-snackbar-supporting-text-font: Cambria, Cochin,Georgia,Times;
+  --mdc-snackbar-supporting-text-line-height: 2rem
+  --mdc-snackbar-supporting-text-size: 2rem !important;
+  --mdc-snackbar-supporting-text-weight: bold;
+  button{
+    background-color: blue;
+  }
+}
+.error-snackbar {
+  --mdc-snackbar-container-color: rgb(243, 7, 7);
+  --mdc-snackbar-supporting-text-color: white;
+
+  border-radius: 1rem;
+  --mdc-snackbar-supporting-text-font: Cambria, Cochin,Georgia,Times;
+  --mdc-snackbar-supporting-text-line-height: 2rem
+  --mdc-snackbar-supporting-text-size: 2rem !important;
+  --mdc-snackbar-supporting-text-weight: bold;
+
+font
+  button{
+    background-color: blue;
+  }
+}
+.mat-mdc-menu-panel {
+  background-color: var(--background-color-second) !important;
+  .mat-mdc-menu-item-text{
+    color: var(--text-color) !important ; // Texto do menu
+  }
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,51 @@
+.carousel-container {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out,
+    visibility 0.5s ease-in-out;
+
+  .image {
+    object-fit: fill;
+  }
+}
+.carousel-container.show {
+  max-height: 500px; /* Ajuste conforme o tamanho do carrossel */
+  opacity: 1;
+  visibility: visible;
+}
+.item {
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 300px;
+  transition: all 0.5s ease-in-out;
+}
+
+.botoes-controle {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.botoes-controle button {
+  background: #ccc;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 12px;
+  width: 12px;
+}
+
+.botoes-controle button.ativo {
+  background: #ff0000;
+  cursor: default;
+}
+.fade-in {
+  opacity: 1 !important;
+}
+
+.fade-out {
+  opacity: 0 !important;
+}

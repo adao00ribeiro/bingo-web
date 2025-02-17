@@ -1,0 +1,14 @@
+<div class="containerRecharge">
+  <div class="containerBalance">
+    <h1>Saldo Atual</h1>
+    <p>R{{ 2 }}</p>
+  </div>
+  <form >
+    <div class="formgroup">
+      <label for="money">Digite o valor da Recarga:</label>
+      <input formControlName="money" id="money" mask="separator.2" prefix="R$ " /> <!-- Usando ngx-mask -->
+      <p>Não pode ser menor que R$ 2,00</p>
+    </div>
+    <button type="submit">Pronto</button>
+  </form>
+</div>

@@ -1,0 +1,76 @@
+
+
+.rounds-real-time {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+}
+
+.left {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  gap: 0.5rem;
+
+
+  .container-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .info-round{
+      display: flex;
+      gap: 1rem;
+      span{
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.3rem;
+        border-radius: 5rem;
+        background-color: rgb(76, 0, 78);
+        border: 2px solid rgb(228, 157, 3);
+      }
+    }
+
+    .configuration{
+      button{
+        border-radius:50%;
+        color: white;
+        background-color: rgba(11, 73, 207, 0.603);
+      }
+    }
+  }
+
+  .container-prizes {
+    background-color: blue;
+  }
+  .container-info-ball {
+    background-color: rgb(14, 179, 30);
+  }
+  .container-balls {
+    flex: 1;
+    background-color: rgb(179, 179, 14);
+  }
+
+
+}
+.example-viewport {
+  flex: 2;
+
+  overflow-y: auto;
+  scrollbar-width: none;
+
+}
+.example-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+
+}
+
+.right {
+  flex: 1;
+}

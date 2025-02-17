@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 80vh;
+  overflow: auto;
+  padding: 0.5rem;
+  ::ng-deep .mat-mdc-table {
+    font-size: 0.9em;
+    font-family: sans-serif;
+    background-color: var(--background-color-second);
+    tbody tr:nth-of-type(even) {
+      background-color: #f3f3f3 !important;
+      background-color: var(--background-color-second) !important;
+    }
+    tbody tr:last-of-type {
+      border-bottom: 2px solid #009879;
+    }
+    tbody tr.active-row {
+      font-weight: bold;
+      color: #009879;
+    }
+
+    .mat-mdc-header-row {
+
+      background-color: var(--background-color-second) !important;
+      color: #ffffff !important;
+      text-align: left;
+    }
+
+    .mat-mdc-row{
+      background-color: var(--background-color-primary) !important;
+      border-bottom: 1px dashed #e0e0e050;
+      color: #ffffff !important;
+
+      cursor: pointer;
+    }
+    .mat-mdc-row:hover .mat-mdc-cell {
+      background: rgba(73, 1, 133, 0.253) !important;
+    }
+  }
+
+
+}
+::ng-deep .mat-mdc-paginator {
+
+  color: #ffffff !important;
+  background-color: var(--background-color-second) !important;
+}
+::ng-deep .input-filter {
+
+ // --mdc-filled-text-field-container-color: var(--background-color-second); /* Cor do fundo */
+}
+

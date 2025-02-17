@@ -1,0 +1,13 @@
+<section class="container">
+  <div class="title">
+    <span>{{ card().id | guid }}</span>
+    <span>{{card().numbers.length}}</span>
+  </div>
+  <div class="grid" [ngStyle]="gridStyles()">
+    @for (ball of card().numbers; track $index) {
+      <div [class]="defineclass(ball)">
+        {{ ball }}
+      </div>
+    }
+  </div>
+</section>

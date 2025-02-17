@@ -1,0 +1,46 @@
+
+  <div class="container bg-primary">
+    <h1>B1NGO PIX ON-LINE</h1>
+    <span>Registre-se agora mesmo e concorra a milhares de prêmios.</span>
+    <form [formGroup]="registerForm" (ngSubmit)="submitRegistrar()">
+      <div class="formgroup">
+        <mat-form-field class="example-full-width">
+          <mat-label>Nome</mat-label>
+          <input matInput type="text"  formControlName="name" />
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email"  formControlName="email" />
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Telefone</mat-label>
+          <input matInput type="tel" formControlName="phone" placeholder="44 9 9900-9900"/>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Cpf</mat-label>
+          <input matInput formControlName="cpf" />
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" >
+          <mat-label>Data de Nascimento</mat-label>
+          <input matInput type="date" formControlName="dateBirth" />
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" formControlName="password" />
+        </mat-form-field>
+         <mat-form-field class="example-full-width">
+          <mat-label>Repetir Senha</mat-label>
+          <input matInput type="password" formControlName="passwordConfirmed" />
+        </mat-form-field>
+      </div>
+      <div class="containerRegistrarRecuperar">
+        <button type="submit" mat-flat-button class="btn-primary" >Registrar</button>
+        <a class="a-primary" routerLink="/login" >Login</a>
+      </div>
+    </form>
+
+  </div>
+

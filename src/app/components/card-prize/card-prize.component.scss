@@ -1,0 +1,14 @@
+:host{
+
+.container{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.2rem;
+    .quadrado {
+      width: 10px;
+      height: 10px;
+      background-color: rgb(156, 156, 156);
+    }
+}
+}

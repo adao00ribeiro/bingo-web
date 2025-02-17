@@ -1,0 +1,61 @@
+<section class="buycardsection">
+  <header class="buycardheader" *ngIf="!hiddenTittle">
+    <h3>Compra</h3>
+  </header>
+  <article class="buycardarticle">
+    <div class="articleTitle" *ngIf="!hiddenTittle">
+      <div style="display: flex; justify-content: space-between;">
+        <span>Sorteio:</span>
+        <span>{{  round().id | guid}}</span>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <span>Valor da Cartela:</span>
+        <span>{{ round().cardValue | currency }}</span>
+      </div>
+      <div style="display: flex; justify-content: space-between">
+        <span>Cartelas Compradas:</span>
+        <span>{{ round().cardSaleCount }}</span>
+      </div>
+    </div>
+
+    <div class="buycardcontainerBuy bg-second">
+      <input class="text-right" [disabled]="true" matInput [(ngModel)]="valueModel">
+      <div class="containerQtds">
+        <button class="button btnBtnQtds" (click)="handleReset()">0</button>
+        <button class="button btnBtnQtds" (click)="handleAddValue(10)">
+          10
+        </button>
+        <button class="button btnBtnQtds" (click)="handleAddValue(20)">
+          20
+        </button>
+        <button class="button btnBtnQtds" (click)="handleAddValue(30)">
+          30
+        </button>
+        <button class="button btnBtnQtds" (click)="handleAddValue(40)">
+          40
+        </button>
+        <button class="button btnBtnQtds" (click)="handleAddValue(50)">
+          50
+        </button>
+        <button class="button btnBtnQtds" (click)="handleAddValue(100)">
+          100
+        </button>
+      </div>
+
+    </div>
+  </article>
+  <footer class="buycardfooter">
+    <div style="display: flex; justify-content: space-between">
+      <span class title="Total stake"> Total </span>
+      <span title="2.5 mBTC">{{this.moneytotal | currency}}</span>
+  </div>
+  <div class="container-button">
+    <button class="button red" *ngIf="!hiddenTittle" (click)="closeModal.emit()">
+    Fechar
+  </button>
+  <button class="button green" [disabled]="loading" (click)="changeBuy()">
+    Comprar
+  </button>
+  </div>
+  </footer>
+</section>

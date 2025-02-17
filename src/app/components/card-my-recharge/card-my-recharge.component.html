@@ -1,0 +1,19 @@
+<div class="card bg-second">
+  <div class="header">
+    <p>{{ recharge?.createdAt || '03/08/2024' }}</p>
+    <h3>R${{ value.toFixed(2) }}</h3>
+    <span :class="{ color: recharge.status === 0 ? 'orange' : 'green' }">
+      {{ recharge?.status == 0 ? 'Aguardando Pagamento' : 'Recebido' }}
+    </span>
+  </div>
+  <footer class="footer">
+    @if(recharge?.status == 0) {
+      <button class="buttonOrange">
+        PIX
+      </button>
+    }
+    <button class="buttonOrange">
+      PIX
+    </button>
+  </footer>
+</div>

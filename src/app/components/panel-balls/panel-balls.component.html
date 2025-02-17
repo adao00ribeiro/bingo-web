@@ -1,0 +1,7 @@
+<div class="container-balls">
+  @for (item of data; track $index) {
+    <div [ngClass]="defineclass(item)">
+      {{ item }}
+    </div>
+  }
+</div>

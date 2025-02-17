@@ -1,0 +1,60 @@
+:host {
+  --bg-color: #f0f0f0; /* Cor de fundo */
+  --ball-color1: ''; /* Primeira cor da bola */
+  --ball-color2: ''; /* Segunda cor da bola */
+  --ball-color3: ''; /* Terceira cor da bola */
+  --ball-color4: ''; /* Quarta cor da bola */
+  --font-size: 5rem; /* Valor padrão para font-size */
+}
+
+.bingo-ball {
+  border: 2px solid black;
+  background: radial-gradient(
+    circle at 30% 30%,
+    #fff 2%,
+    var(--ball-color1) 20%,
+    var(--ball-color2) 40%,
+    var(--ball-color3) 60%,
+    var(--ball-color4) 80%
+  );
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 0 10px rgba(194, 194, 194, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    border: 4px solid white;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .middle-layer {
+    width: 55%;
+    height: 55%;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .number {
+      font-size: var(--font-size); /* Utiliza a variável --font-size */
+      color: #000;
+      font-weight: bold;
+    }
+  }
+}

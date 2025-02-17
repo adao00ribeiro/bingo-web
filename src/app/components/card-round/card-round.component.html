@@ -1,0 +1,45 @@
+<div class="card-round bg-second">
+  <main>
+    <div class="container-image">
+      <img [src]="getImage()" alt>
+    </div>
+    <div class="container-info">
+      <div class="timer">
+        <mat-icon>timer</mat-icon>
+        <span>{{minutes + ":" + seconds}}</span>
+      </div>
+      <div>
+        <h2>Sorteio {{round().id | guid}}</h2>
+      </div>
+
+      <div class="total-prize">
+        <div class="group" matTooltip="Prêmio Total" matTooltipPosition="below">
+          <mat-icon>emoji_events</mat-icon>
+          <span>{{ totalPrize() | currency }}</span>
+        </div>
+      </div>
+      <div class="info-group">
+        <div class="group" matTooltip="Valor Cartela" matTooltipPosition="below">
+          <mat-icon>label</mat-icon>
+          <span>{{ round().cardValue | currency  }}</span>
+        </div>
+        <div class="group" matTooltip="Total de premios" matTooltipPosition="below">
+          <mat-icon>stacked_bar_chart</mat-icon>
+          <span>{{round().prizes.length}} </span>
+        </div>
+        <div class="group"matTooltip="Total Cartelas Compradas" matTooltipPosition="below">
+          <mat-icon>confirmation_number</mat-icon>
+          <span class="card-sale-text">{{round().cardSaleCount}}  </span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <button class="button blue" (click)="goViewRound()" [disabled]="roundSocket() == null">
+      <span>Ver</span>
+    </button>
+    <button class="button green" (click)="openDialog()">
+      <span>Comprar</span>
+    </button>
+  </footer>
+</div>

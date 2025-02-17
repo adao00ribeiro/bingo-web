@@ -1,0 +1,26 @@
+:host{
+  width: 100%;
+  height: 100%;
+
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  h1 {
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 1rem
+  }
+}
+
+.reffils{
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 1rem;
+  padding: 0.5rem;
+}
