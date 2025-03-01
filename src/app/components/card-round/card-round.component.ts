@@ -40,15 +40,15 @@ export class CardRoundComponent implements OnInit ,OnDestroy {
   getImage = computed(() => {
     const maxBalls = this.round().maxBalls;
     if (maxBalls === 90) {
-      return "/assets/images/90.png";
+      return "/images/90.png";
     } else if (maxBalls === 80) {
-      return "/assets/images/80.png";
+      return "/images/80.png";
     } else if (maxBalls === 75) {
-      return "/assets/images/75.png";
+      return "/images/75.png";
     } else if (maxBalls === 50) {
-      return "/assets/images/50.png";
+      return "/images/50.png";
     } else if (maxBalls === 30) {
-      return "/assets/images/30.png";
+      return "/images/30.png";
     } else {
       return "";
     }
