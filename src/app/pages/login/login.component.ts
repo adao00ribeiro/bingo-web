@@ -21,7 +21,6 @@ import { timer } from 'rxjs';
   selector: 'app-login',
   standalone: true,
   imports: [
-    InputMaskComponent,
     ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule,

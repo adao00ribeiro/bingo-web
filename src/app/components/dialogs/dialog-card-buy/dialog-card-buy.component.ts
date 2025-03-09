@@ -19,7 +19,7 @@ export interface DialogCardBuyProps {
 @Component({
   selector: 'app-dialog-card-buy',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, CardBuyComponent],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule,  MatDialogContent,   MatButtonModule, CardBuyComponent],
   templateUrl: './dialog-card-buy.component.html',
   styleUrl: './dialog-card-buy.component.scss'
 })

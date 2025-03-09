@@ -25,7 +25,9 @@ export class RoundService {
   GetAll(): Observable<IRound[]> {
     return this.httpClient.get<IRound[]>(this.url);
   }
-
+  GetAllRoundFilterByRoomId(roomId : string){
+    return this.httpClient.post<IRound[]>(`${this.url}/all/filter/rounds`,{RoomId:roomId})
+  }
   Create(room: IRound): Observable<IRound> {
     return this.httpClient.post<IRound>(this.url, room);
   }

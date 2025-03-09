@@ -26,14 +26,12 @@ interface Notification {
   imports: [
     MatButtonModule,
     MatMenuModule,
-    ButtonMenuComponent,
     RouterOutlet,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
     MatListModule,
-    RoundsRealTimeComponent,
     MatSnackBarModule,
     MatBadgeModule
   ],

@@ -7,9 +7,16 @@
 ]"
 ></app-carousel>
 }
-<div class="grid">
-  @for (item of  rounds; track $index) {
-    <app-card-round [round]="item" [roundSocket]="this.roundsRealTimeService.getRoundSignal()(item.roomId,item.id)"></app-card-round>
-  }
-</div>
+<button (click)="testResourceClick()">CLICA</button>
+
+@if (roundsResourceService.roundsResource.isLoading()) {
+    <span >Carregando...</span>
+}@else {
+  <div class="grid">
+    @for (item of  roundsResourceService.roundsResource.value(); track $index) {
+      <app-card-round [round]="item" [roundSocket]="this.roundsRealTimeService.getRoundSignal()(item.roomId,item.id)"></app-card-round>
+    }
+  </div>
+}
+
 
