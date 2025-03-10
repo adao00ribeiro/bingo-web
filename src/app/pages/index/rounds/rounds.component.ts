@@ -3,7 +3,7 @@ import { CardRoundComponent } from "../../../components/card-round/card-round.co
 import { RoundsRealTimeService } from '../../../services/rounds-real-time.service';
 import { CarouselComponent } from "../../../components/carousel/carousel.component";
 import { RoundService } from '../../../services/round/round.service';
-import {  RoundsResourceService } from '../../../resource/round/rounds-resource.service';
+import { RoundsByRoomIdResourceService } from '../../../resource/round/rounds-by-room-id-resource.service';
 
 
 
@@ -17,16 +17,15 @@ import {  RoundsResourceService } from '../../../resource/round/rounds-resource.
 })
 export class RoundsComponent implements OnInit{
 
-
   public readonly roundService:RoundService = inject(RoundService);
   public readonly roundsRealTimeService : RoundsRealTimeService = inject(RoundsRealTimeService);
-  protected readonly roundsResourceService = inject(RoundsResourceService);
+  protected readonly RoundsByRoomIdResourceService = inject(RoundsByRoomIdResourceService);
 
   constructor(){
     effect(()=>{
-      console.log("Value: ", this.roundsResourceService.roundsResource.value());
-      console.log("Status: ",this.roundsResourceService.roundsResource.status());
-      console.log("Error: ", this.roundsResourceService.roundsResource.error());
+      console.log("Value: ", this.RoundsByRoomIdResourceService.resource.value());
+      console.log("Status: ",this.RoundsByRoomIdResourceService.resource.status());
+      console.log("Error: ", this.RoundsByRoomIdResourceService.resource.error());
     })
   }
   public readonly getRoundData = computed(() => {
@@ -34,10 +33,9 @@ export class RoundsComponent implements OnInit{
       this.roundsRealTimeService.getRoundSignal()(roomId, roundId);
   });
   ngOnInit(): void {
-    this.roundsResourceService.reloadRounds();
+    this.RoundsByRoomIdResourceService.loadRoundsByRoomId('1');
   }
   testResourceClick() {
-    this.roundsResourceService.reloadRounds();
+    this.RoundsByRoomIdResourceService.loadRoundsByRoomId('fa34814b-cbeb-4e4e-a17c-5d7e4f365d83');
   }
-
 }

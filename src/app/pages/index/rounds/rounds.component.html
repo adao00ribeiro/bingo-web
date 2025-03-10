@@ -9,11 +9,11 @@
 }
 <button (click)="testResourceClick()">CLICA</button>
 
-@if (roundsResourceService.roundsResource.isLoading()) {
+@if (RoundsByRoomIdResourceService.resource.isLoading()) {
     <span >Carregando...</span>
 }@else {
   <div class="grid">
-    @for (item of  roundsResourceService.roundsResource.value(); track $index) {
+    @for (item of  RoundsByRoomIdResourceService.resource.value(); track $index) {
       <app-card-round [round]="item" [roundSocket]="this.roundsRealTimeService.getRoundSignal()(item.roomId,item.id)"></app-card-round>
     }
   </div>
