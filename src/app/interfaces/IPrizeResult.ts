@@ -3,7 +3,7 @@ import { ITopCardInfo } from "./ITopCardInfo";
 import { IWinningCardsInfo } from "./IWinningCardsInfo";
 
 export interface IPrizeResult{
-   EPrizeType : EPrizeType ,
-    WinningCards :IWinningCardsInfo[],
-   ListTopCards :ITopCardInfo[],
+  prizeType : EPrizeType ,
+  winningCards :IWinningCardsInfo[],
+  listTopCards :ITopCardInfo[],
 }

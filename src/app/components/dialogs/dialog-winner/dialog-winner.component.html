@@ -1,16 +1,12 @@
 <mat-dialog-content class="dialog bg-primary">
-<!-- round-winner.component.html -->
-<div class="container-round-winner">
-  <h1>{{ getTitle() }}</h1>
+  <h1>{{getTitle() }}</h1>
   <div class="grid">
-    @for (wc of winningCards; track $index) {
+    @for (wc of winingCards(); track $index) {
     <div class="card-prize">
-      <h1>{{ wc.reseller.name }}</h1>
-      <app-card [card]="wc.cards" [balls]="numbers"></app-card>
-      <span>{{ wc.value_of_each_winner | currency }}</span>
+      <h1>{{ wc.punter.name }}</h1>
+      <app-card [card]="wc.card" [balls]="numbers()"></app-card>
+      <span>{{ wc.valueOfEachWinner| currency }}</span>
     </div>
   }
   </div>
-</div>
-
 </mat-dialog-content>

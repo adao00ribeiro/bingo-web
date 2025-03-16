@@ -11,22 +11,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CardService } from '../../../services/card/card.service';
 import { ICard } from '../../../interfaces/ICard';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { SocketService } from '../../../services/socket/socket.service';
-import { ISocketMessage } from '../../../interfaces/ISocketMessage';
 import { IRoundMessage } from '../../../interfaces/IRoundMessage';
 import { GuidPipe } from '../../../pipes/guid.pipe';
 import { CurrencyPipe } from '../../../pipes/currency.pipe';
 import { RoundsRealTimeService } from '../../../services/rounds-real-time.service';
 import { IRound } from '../../../interfaces/IRound';
 import { DialogWinnerComponent } from '../../../components/dialogs/dialog-winner/dialog-winner.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { EPrizeType } from '../../../enums/EPrizeType';
 
 
 
 @Component({
   selector: 'app-rounds-real-time',
   standalone: true,
-  imports: [CurrencyPipe,GuidPipe,ScrollingModule, MatIconModule, MatButtonModule, PanelBallsComponent, CardComponent, SungNumbersComponent, PrizeBoardComponent],
+  imports: [CurrencyPipe, GuidPipe, ScrollingModule, MatIconModule, MatButtonModule, PanelBallsComponent, CardComponent, SungNumbersComponent, PrizeBoardComponent],
   templateUrl: './rounds-real-time.component.html',
   styleUrl: './rounds-real-time.component.scss',
 })
@@ -36,28 +35,31 @@ export class RoundsRealTimeComponent implements OnInit {
   public readonly roundService = inject(RoundService);
   public readonly cardService = inject(CardService);
   public readonly snackBar = inject(MatSnackBar);
- public readonly roundsRealTimeService : RoundsRealTimeService = inject(RoundsRealTimeService);
- readonly dialog = inject(MatDialog);
+  public readonly roundsRealTimeService: RoundsRealTimeService = inject(RoundsRealTimeService);
+  readonly dialog = inject(MatDialog);
+  private dialogRef: MatDialogRef<DialogWinnerComponent> | null = null;
   private router: Router = inject(Router);
-  private route: ActivatedRoute = inject(ActivatedRoute);
+
   cards: ICard[] = [];
   rows: ICard[][] = [];
   round = signal<IRound | null>(null);
-  roundMessage? : IRoundMessage;
- constructor(){
-  effect(()=>{
-    const currentRound = this.round();
-    if (currentRound) {
-      this.roundMessage = this.roundsRealTimeService.getRoundSignal()(currentRound.roomId, currentRound.id);
-      if(this.roundMessage?.finished){
-        this.router.navigate(["/"]);
-      }
+  roundMessage?: IRoundMessage;
+  show_dialog = false;
 
-    }
-  })
- }
+
+  constructor() {
+    effect(() => {
+      const currentRound = this.round();
+      if (currentRound) {
+        this.roundMessage = this.roundsRealTimeService.getRoundSignal()(currentRound.roomId, currentRound.id);
+       console.log( this.roundMessage)
+
+        this.updateShowDialogWinner();
+      }
+    })
+  }
   ngOnInit(): void {
-  // this.openDialogWinner();
+
     this.getRound();
     this.cardService.GetAllByIdRound(this.id).subscribe({
       next: (data) => {
@@ -67,7 +69,7 @@ export class RoundsRealTimeComponent implements OnInit {
       error: (err) => {
         this.snackBar.open(err.error.detail, 'Ok', {
           duration: 5000, // Set the duration in milliseconds
-         horizontalPosition: 'center', // Options: 'start', 'center', 'end'
+          horizontalPosition: 'center', // Options: 'start', 'center', 'end'
           verticalPosition: 'bottom', // Options: 'top', 'bottom'
           panelClass: 'error-snackbar',
         });
@@ -85,7 +87,7 @@ export class RoundsRealTimeComponent implements OnInit {
     }
     return result;
   }
-  getRound():void{
+  getRound(): void {
     this.roundService.GetById(this.id).subscribe({
       next: (data) => {
         this.round.set(data);
@@ -93,7 +95,7 @@ export class RoundsRealTimeComponent implements OnInit {
       error: (err) => {
         this.snackBar.open(err.error.detail, 'Ok', {
           duration: 5000, // Set the duration in milliseconds
-         horizontalPosition: 'center', // Options: 'start', 'center', 'end'
+          horizontalPosition: 'center', // Options: 'start', 'center', 'end'
           verticalPosition: 'bottom', // Options: 'top', 'bottom'
           panelClass: 'error-snackbar',
         });
@@ -104,16 +106,40 @@ export class RoundsRealTimeComponent implements OnInit {
       }
     });
   }
-   openDialogWinner(){
-      this.dialog.open(DialogWinnerComponent, {
+  openDialogWinner() {
+    if (!this.dialogRef) { // Evita abrir múltiplas instâncias
+      this.dialogRef = this.dialog.open(DialogWinnerComponent, {
         disableClose: true,
         data: {
+        titlePrize:  this.roundMessage?.currentPrizeResult?.prizeType,
+        winningCards :  this.roundMessage?.currentPrizeResult?.winningCards,
+        numbers:  this.roundMessage?.numbers
+        }
+      });
 
-        },
+      this.dialogRef.afterClosed().subscribe(() => {
+        this.dialogRef = null; // Reseta a referência quando fechar
       });
     }
-
-    updateShowDialogWinner(){
-
+  }
+  closeDialogWinner() {
+    this.dialogRef?.close();
+    this.dialogRef = null;
+  }
+  updateShowDialogWinner() {
+    if (this.roundMessage?.currentPrizeResult != null) {
+      this.openDialogWinner();
+      if(this.roundMessage.numbers.length === 90 || this.roundMessage.currentPrizeResult.prizeType == EPrizeType.FullCard){
+        setTimeout(() => {
+          this.closeDialogWinner();
+          console.log("abrindo o final")
+        },10000);
+        setTimeout(() => {
+          this.router.navigate(["/"]);
+        },this.roundMessage.isAccumulated ? 15000 : 40000);
+      }
+    }else{
+      this.closeDialogWinner();
     }
+  }
 }

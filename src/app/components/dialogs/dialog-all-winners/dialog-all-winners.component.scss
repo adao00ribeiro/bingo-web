@@ -1,0 +1,69 @@
+.dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 100vh;
+  gap: 1rem;
+
+  h1 {
+    padding: 0;
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  .all-winners {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsividade */
+    grid-gap: 0.5rem;
+    overflow: hidden; /* Previne overflow */
+    max-height: 100vh;
+  }
+
+  .prize {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    background-color: rgb(251, 255, 0);
+    /* Deixe a altura do prize como 50% da altura disponível */
+    height: 50%;
+
+    h5 {
+      text-align: center;
+      color: black;
+    }
+  }
+
+  .grid {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    gap: 0.3rem;
+    overflow-y: auto;  /* Rolagem interna */
+    height: 50vh; /* Controla a altura para que a rolagem se ative */
+    max-height: 50vh; /* Garante que a grid tenha uma altura máxima proporcional à tela */
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgb(21, 31, 116);
+    color: white;
+    border-radius: 1rem;
+    padding: 0.2rem;
+
+    h4 {
+      padding: 0;
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    p {
+      font-weight: bold;
+      color: yellow;
+    }
+  }
+}

@@ -4,9 +4,12 @@
       <img [src]="getImage()" alt>
     </div>
     <div class="container-info">
-      <div class="timer">
-        <mat-icon>timer</mat-icon>
-        <span>{{minutes + ":" + seconds}}</span>
+      <div class="container-timer">
+        <div class="timer">
+          <mat-icon>timer</mat-icon>
+          <span>{{minutes + ":" + seconds}}</span>
+        </div>
+        <span>{{round().startedDate | dateTime}}</span>
       </div>
       <div>
         <h2>Sorteio {{round().id | guid}}</h2>

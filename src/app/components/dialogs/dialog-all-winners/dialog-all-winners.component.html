@@ -1,0 +1,21 @@
+<mat-dialog-content class="dialog bg-primary">
+
+  <h1>Ganhadores</h1>
+  <div class="all-winners">
+    @for (item of data.results; track $index) {
+    <div class="prize" >
+      <h5> Premio {{getTitle(item.prizeType)}}</h5>
+      <div class="grid">
+        @for (wc of  item.winningCards; track $index) {
+        <div  class="card">
+          <h4>{{ wc.card.id }}</h4>
+          <span>{{ wc.punter.name.split(" ")[0] }}</span>
+          <p>{{ wc.valueOfEachWinner | currency }}</p>
+        </div>
+      }
+      </div>
+    </div>
+  }
+  </div>
+
+</mat-dialog-content>

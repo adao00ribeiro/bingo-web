@@ -13,3 +13,19 @@ export enum EPrizeType {
   PlusShape = "PlusShape",            // Prêmio para quem acertar o formato de um sinal de mais (+) no cartão
   OuterEdge = "OuterEdge"             // Prêmio para quem acertar toda a borda do cartão
 }
+// Mapa de tradução do enum para português
+export const PRIZE_TYPE_TRANSLATIONS: Record<EPrizeType, string> = {
+  [EPrizeType.FourInLine]: "Quatro em Linha",
+  [EPrizeType.FourCorners]: "Quatro Cantos",
+  [EPrizeType.SingleLine]: "Uma Linha",
+  [EPrizeType.SingleColumn]: "Uma Coluna",
+  [EPrizeType.Diagonal]: "Diagonal",
+  [EPrizeType.InvertedDiagonal]: "Diagonal Invertida",
+  [EPrizeType.DoubleLine]: "Duas Linhas",
+  [EPrizeType.DoubleColumn]: "Duas Colunas",
+  [EPrizeType.FullCard]: "Cartela Cheia",
+  [EPrizeType.TShape]: "Formato de T",
+  [EPrizeType.XShape]: "Formato de X",
+  [EPrizeType.PlusShape]: "Formato de +",
+  [EPrizeType.OuterEdge]: "Borda Externa"
+};

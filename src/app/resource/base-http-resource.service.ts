@@ -5,6 +5,6 @@ import { environment } from '../../environments/environment';
 
 
 export abstract class BaseHttpResourceService {
-  protected url = `${environment.api}/api/v1/round`;
+  protected url = `${environment.api}/api/v1`;
   protected httpClient: HttpClient = inject(HttpClient);
 }

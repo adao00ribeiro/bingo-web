@@ -1,9 +1,11 @@
-import { Component, computed, effect, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { CardRoundComponent } from "../../../components/card-round/card-round.component";
 import { RoundsRealTimeService } from '../../../services/rounds-real-time.service';
 import { CarouselComponent } from "../../../components/carousel/carousel.component";
 import { RoundService } from '../../../services/round/round.service';
 import { RoundsByRoomIdResourceService } from '../../../resource/round/rounds-by-room-id-resource.service';
+
+import { PunterMeResourceService } from '../../../resource/punter/punter-me-resource.service';
 
 
 
@@ -17,12 +19,15 @@ import { RoundsByRoomIdResourceService } from '../../../resource/round/rounds-by
 })
 export class RoundsComponent implements OnInit{
 
+
   public readonly roundService:RoundService = inject(RoundService);
   public readonly roundsRealTimeService : RoundsRealTimeService = inject(RoundsRealTimeService);
   protected readonly RoundsByRoomIdResourceService = inject(RoundsByRoomIdResourceService);
+  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
 
   constructor(){
     effect(()=>{
+
       console.log("Value: ", this.RoundsByRoomIdResourceService.resource.value());
       console.log("Status: ",this.RoundsByRoomIdResourceService.resource.status());
       console.log("Error: ", this.RoundsByRoomIdResourceService.resource.error());
@@ -33,7 +38,10 @@ export class RoundsComponent implements OnInit{
       this.roundsRealTimeService.getRoundSignal()(roomId, roundId);
   });
   ngOnInit(): void {
-    this.RoundsByRoomIdResourceService.loadRoundsByRoomId('1');
+    const punter = this.PunterMeResourceService.resource.value();
+      if(punter){
+        this.RoundsByRoomIdResourceService.loadRoundsByRoomId(punter.seller.rooms[0].id);
+      }
   }
   testResourceClick() {
     this.RoundsByRoomIdResourceService.loadRoundsByRoomId('fa34814b-cbeb-4e4e-a17c-5d7e4f365d83');

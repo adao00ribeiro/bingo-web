@@ -10,12 +10,13 @@ import { DialogCardBuyComponent } from '../dialogs/dialog-card-buy/dialog-card-b
 import { GuidPipe } from '../../pipes/guid.pipe';
 import { IRoundMessage } from '../../interfaces/IRoundMessage';
 import { interval, Subscription } from 'rxjs';
+import { DateTimePipe } from '../../pipes/date-time.pipe';
 
 
 @Component({
   selector: 'app-card-round',
   standalone: true,
-  imports: [MatIcon, MatTooltipModule, CurrencyPipe, GuidPipe],
+  imports: [DateTimePipe,MatIcon, MatTooltipModule, CurrencyPipe, GuidPipe],
   templateUrl: './card-round.component.html',
   styleUrl: './card-round.component.scss'
 })

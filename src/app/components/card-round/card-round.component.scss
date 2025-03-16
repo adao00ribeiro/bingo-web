@@ -57,17 +57,28 @@
     gap: 0.5rem;
   }
 }
-.timer{
+.container-timer{
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.3rem;
-  span{
-    text-align: center;
-    width: 60px;
-    background-color: white;
-    color: rgb(0, 0, 0);
-    border-radius:0.5rem;
+
+  .timer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3rem;
+    span{
+      padding: 0.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      background-color: white;
+      color: rgb(0, 0, 0);
+      border-radius:0.5rem;
+    }
   }
+
 }
 .total-prize{
   display: flex;

@@ -1,9 +1,10 @@
+import { IAccumulated } from "./IAccumulated";
 import { IPrize } from "./IPrize";
 import { IPrizeResult } from "./IPrizeResult";
 import { IRound } from "./IRound";
 
 export interface IRoundMessage {
-  id: string; // Usamos `string` para representar GUIDs
+  id: string;
   finished: boolean;
   started: boolean;
   mainBall: number;
@@ -12,10 +13,10 @@ export interface IRoundMessage {
   forthBall: number;
   maxNumbers: number;
   numbers: number[];
- // accumulated: Accumulated | null;
+  accumulated: IAccumulated | null;
   isAccumulated: boolean;
   round: IRound ;
   prizes: IPrize[];
-  //results: IPrizeResult[];
-  currentPrizeResult: IPrizeResult | null; // Tipo pode ser ajustado conforme a estrutura
+  results: IPrizeResult[];
+  currentPrizeResult: IPrizeResult | null;
 }

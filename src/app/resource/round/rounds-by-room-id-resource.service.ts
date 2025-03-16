@@ -21,13 +21,13 @@ export class RoundsByRoomIdResourceService extends BaseHttpResourceService {
       if (!request.id) {
         throw new Error("ID do round não informado!");
       }
-      return this.httpClient.get<IRound[]>(`${this.url}/filter/room/${request.id}`);;
+      return this.httpClient.get<IRound[]>(`${this.url}/round/filter/room/${request.id}`);;
     },
   });
 
   // Método para carregar um round por ID
   loadRoundsByRoomId(id: string) {
     this.roomIdSignal.set(id);
-    this.resource.reload(); // Recarrega os dados
-  }
+    this.resource.reload();
+     }
 }

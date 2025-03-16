@@ -1,8 +1,17 @@
-import { Component, Input } from '@angular/core';
-import { MatDialogContent } from '@angular/material/dialog';
+import { Component, inject, Input, model } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { CardComponent } from "../../card/card.component";
 import { CurrencyPipe } from '../../../pipes/currency.pipe';
+import { IWinningCardsInfo } from '../../../interfaces/IWinningCardsInfo';
+import { EPrizeType, PRIZE_TYPE_TRANSLATIONS } from '../../../enums/EPrizeType';
 
+
+
+export interface DialogWinnerProps {
+  titlePrize: EPrizeType;
+  winningCards : IWinningCardsInfo[];
+  numbers:number[];
+}
 @Component({
   selector: 'app-dialog-winner',
   standalone: true,
@@ -11,20 +20,13 @@ import { CurrencyPipe } from '../../../pipes/currency.pipe';
   styleUrl: './dialog-winner.component.scss'
 })
 export class DialogWinnerComponent {
-  @Input() titlePrize!: string;
-  @Input() winningCards: any[] = [];
-  @Input() numbers: number[] = [];
+  readonly dialogRef = inject(MatDialogRef<DialogWinnerProps>);
+  readonly data = inject<DialogWinnerProps>(MAT_DIALOG_DATA);
+  readonly winingCards = model(this.data.winningCards);
+  readonly numbers = model(this.data.numbers);
 
-  getTitle(): string {
-    switch (this.titlePrize) {
-      case 'Bingo::PrizeFourNumber':
-        return 'Premio 1';
-      case 'Bingo::PrizeFullRow':
-        return 'Premio 2';
-      case 'Bingo::PrizeFullCard':
-        return 'Premio 3';
-      default:
-        return 'Premio';
-    }
+
+  getTitle( ){
+   return PRIZE_TYPE_TRANSLATIONS[this.data.titlePrize]
   }
 }
