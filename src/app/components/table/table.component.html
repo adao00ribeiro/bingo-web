@@ -1,8 +1,9 @@
+<mat-form-field class="input-filter">
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+</mat-form-field>
 <section class="container " tabindex="0">
-  <mat-form-field class="input-filter">
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-  </mat-form-field>
+
   <table class="mat-mdc-table" mat-table [dataSource]="dataSource">
     @for (columns of columnMappings; track $index) {
       <ng-container [matColumnDef]="columns.key">

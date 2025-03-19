@@ -1,1 +1,78 @@
-<p>my-account works!</p>
+<!-- minha-conta.component.html -->
+<div class="minha-conta-container">
+  <h1>Minha Conta</h1>
+
+  <div class="card">
+    <h2>Dados principais</h2>
+    <div class="campo">
+      <div class="label">Seu nome</div>
+      <div class="valor">
+        <span>{{dadosPrincipais.nome}}</span>
+        <button class="edit-btn" (click)="editarCampo('nome')">
+          <i class="material-icons">edit</i>
+        </button>
+      </div>
+    </div>
+
+    <div class="campo">
+      <div class="label">E-mail para contato</div>
+      <div class="valor">{{dadosPrincipais.email}}</div>
+    </div>
+
+    <div class="campo">
+      <div class="label">Login</div>
+      <div class="valor">{{dadosPrincipais.login}}</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Dados pessoais</h2>
+    <div class="campo">
+      <div class="label">CPF</div>
+      <div class="valor">{{dadosPessoais.cpf}}</div>
+    </div>
+
+    <div class="campo">
+      <div class="label">Telefone p/ contato</div>
+      <div class="valor">
+        <span>{{dadosPessoais.telefone}}</span>
+        <button class="edit-btn" (click)="editarCampo('telefone')">
+          <i class="material-icons">edit</i>
+        </button>
+      </div>
+    </div>
+
+    <div class="campo">
+      <div class="label">Chave PIX para pagamento</div>
+      <div class="valor">
+        <span>{{dadosPessoais.chavePix}}</span>
+        <button class="edit-btn" (click)="editarCampo('chavePix')">
+          <i class="material-icons">edit</i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Ações</h2>
+    <div class="acoes">
+      <button class="acao-btn" (click)="irParaCarteira()">
+        <i class="material-icons">account_balance_wallet</i>
+        <span>Ir para a carteira</span>
+      </button>
+
+      <button class="acao-btn" (click)="redefinirSenha()">
+        <i class="material-icons">key</i>
+        <span>Redefinir minha senha</span>
+      </button>
+
+      <button class="acao-btn danger" (click)="inativarConta()">
+        <span>Inativar minha conta</span>
+      </button>
+
+      <button class="acao-btn logout" (click)="logout()">
+        <span>Sair/Deslogar</span>
+      </button>
+    </div>
+  </div>
+</div>
