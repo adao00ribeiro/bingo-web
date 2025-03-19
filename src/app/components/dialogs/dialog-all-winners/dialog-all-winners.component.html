@@ -8,7 +8,7 @@
       <div class="grid">
         @for (wc of  item.winningCards; track $index) {
         <div  class="card">
-          <h4>{{ wc.card.id }}</h4>
+          <h4>{{ wc.card.id | guid }}</h4>
           <span>{{ wc.punter.name.split(" ")[0] }}</span>
           <p>{{ wc.valueOfEachWinner | currency }}</p>
         </div>

@@ -1,6 +1,5 @@
 import { Component, computed, effect, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { IRound } from '../../interfaces/IRound';
@@ -57,7 +56,7 @@ export class CardRoundComponent implements OnInit ,OnDestroy {
   constructor() {
 
     effect(() => {
-      console.log("aki", this.roundSocket())
+
     })
   }
   ngOnInit(): void {

@@ -5,33 +5,36 @@
   max-height: 100vh;
   gap: 1rem;
 
+
   h1 {
-    padding: 0;
-    margin: 0;
+
     font-size: 2rem;
   }
 
   .all-winners {
     width: 100%;
-    height: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsividade */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 0.5rem;
-    overflow: hidden; /* Previne overflow */
-    max-height: 100vh;
+    overflow-y: auto; /* Main scroll for all prizes */
+    max-height: calc(100vh - 4rem); /* Adjust based on header size */
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   .prize {
     display: flex;
     flex-direction: column;
-    border-radius: 1rem;
+    border-radius: 0.3rem;
     background-color: rgb(251, 255, 0);
-    /* Deixe a altura do prize como 50% da altura disponível */
-    height: 50%;
+    max-height: 400px; /* Fixed height for prizes */
 
     h5 {
       text-align: center;
       color: black;
+      padding: 0.5rem;
+      margin: 0;
     }
   }
 
@@ -40,9 +43,10 @@
     flex-direction: column;
     padding: 0.5rem;
     gap: 0.3rem;
-    overflow-y: auto;  /* Rolagem interna */
-    height: 50vh; /* Controla a altura para que a rolagem se ative */
-    max-height: 50vh; /* Garante que a grid tenha uma altura máxima proporcional à tela */
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    flex: 1; /* Takes remaining space */
   }
 
   .card {
@@ -52,8 +56,9 @@
     gap: 0.5rem;
     background-color: rgb(21, 31, 116);
     color: white;
-    border-radius: 1rem;
-    padding: 0.2rem;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    min-height: min-content; /* Ensures cards don't collapse */
 
     h4 {
       padding: 0;
@@ -64,6 +69,7 @@
     p {
       font-weight: bold;
       color: yellow;
+      margin: 0 0 0.2rem 0;
     }
   }
 }

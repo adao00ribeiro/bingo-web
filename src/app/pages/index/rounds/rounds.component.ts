@@ -17,9 +17,7 @@ import { PunterMeResourceService } from '../../../resource/punter/punter-me-reso
   templateUrl: './rounds.component.html',
   styleUrl: './rounds.component.scss',
 })
-export class RoundsComponent implements OnInit{
-
-
+export class RoundsComponent {
   public readonly roundService:RoundService = inject(RoundService);
   public readonly roundsRealTimeService : RoundsRealTimeService = inject(RoundsRealTimeService);
   protected readonly RoundsByRoomIdResourceService = inject(RoundsByRoomIdResourceService);
@@ -27,23 +25,21 @@ export class RoundsComponent implements OnInit{
 
   constructor(){
     effect(()=>{
-
-      console.log("Value: ", this.RoundsByRoomIdResourceService.resource.value());
-      console.log("Status: ",this.RoundsByRoomIdResourceService.resource.status());
-      console.log("Error: ", this.RoundsByRoomIdResourceService.resource.error());
+      const punter = this.PunterMeResourceService.resource.value();
+      if(punter){
+        this.RoundsByRoomIdResourceService.loadRoundsByRoomId(punter.seller.rooms[0].id);
+      }
     })
   }
   public readonly getRoundData = computed(() => {
     return (roomId: string, roundId: string) =>
       this.roundsRealTimeService.getRoundSignal()(roomId, roundId);
   });
-  ngOnInit(): void {
-    const punter = this.PunterMeResourceService.resource.value();
-      if(punter){
-        this.RoundsByRoomIdResourceService.loadRoundsByRoomId(punter.seller.rooms[0].id);
-      }
-  }
+
   testResourceClick() {
-    this.RoundsByRoomIdResourceService.loadRoundsByRoomId('fa34814b-cbeb-4e4e-a17c-5d7e4f365d83');
+    const punter = this.PunterMeResourceService.resource.value();
+    if(punter){
+      this.RoundsByRoomIdResourceService.loadRoundsByRoomId(punter.seller.rooms[0].id);
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, effect, inject, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, Input, OnDestroy, OnInit, signal, Signal, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,13 +8,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterOutlet } from '@angular/router';
 import { ButtonMenuComponent } from '../../components/button-menu/button-menu.component';
-import { RoundsRealTimeComponent } from "./rounds-real-time/rounds-real-time.component";
-import { UserService } from '../../services/auth/user.service';
 import { IPunter } from '../../interfaces/IPunter';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDepositComponent } from '../../components/dialogs/dialog-deposit/dialog-deposit.component';
 import { SocketService } from '../../services/socket/socket.service';
+import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
 @Component({
   selector: 'app-index',
   standalone: true,
@@ -34,25 +33,24 @@ export class IndexComponent implements OnInit {
   private _mobileQueryListener: () => void;
 
   isVisible: boolean = true;
-  private readonly userService = inject(UserService);
+  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
 
-  user: IPunter | null = null;
+  user =  signal<IPunter|undefined>(undefined);
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.socketService.connect();
     effect(() => {
-      this.user = this.userService.userSignal();
-      console.log( "Ak", this.user)
-      if( this.socketService.IsConnected() && this.user !=null){
-        console.log(this.user?.seller.rooms[0].id)
-        this.socketService.subscribeToChannel(`room_${ this.user?.seller.rooms[0].id}`);
+      this.user.set(this.PunterMeResourceService.resource.value());
+      if( this.socketService.IsConnected() && this.user() !=null){
+        console.log(this.user()?.seller.rooms[0].id)
+        this.socketService.subscribeToChannel(`room_${ this.user()?.seller.rooms[0].id}`);
       }
     })
   }
   ngOnInit(): void {
-    this.userService.loadUser();
+    this.PunterMeResourceService.reload();
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
@@ -82,7 +80,7 @@ export class IndexComponent implements OnInit {
     sessionStorage.removeItem('token-data');
 
     // Opcional: Limpa outros dados relacionados ao usuário, se necessário
-    this.userService.clearUser(); // Certifique-se de ter um método na UserService para limpar o estado do usuário
+   // this.userService.clearUser(); // Certifique-se de ter um método na UserService para limpar o estado do usuário
 
     // Redireciona para a página de login
     this.router.navigate(['/login']);

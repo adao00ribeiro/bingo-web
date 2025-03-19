@@ -1,16 +1,14 @@
 @if(false){
-<app-carousel
-[imagens]="[
+<app-carousel [imagens]="[
 'https://picsum.photos/id/17/2500/1667',
 'https://picsum.photos/id/18/2500/1667',
 'https://picsum.photos/id/19/2500/1667'
-]"
-></app-carousel>
+]"></app-carousel>
 }
-<button (click)="testResourceClick()">CLICA</button>
+
 
 @if (RoundsByRoomIdResourceService.resource.isLoading()) {
-    <span >Carregando...</span>
+    <span>Carregando...</span>
 }@else {
   <div class="grid">
     @for (item of  RoundsByRoomIdResourceService.resource.value(); track $index) {

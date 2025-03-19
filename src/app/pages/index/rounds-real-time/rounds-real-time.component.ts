@@ -19,6 +19,7 @@ import { IRound } from '../../../interfaces/IRound';
 import { DialogWinnerComponent } from '../../../components/dialogs/dialog-winner/dialog-winner.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EPrizeType } from '../../../enums/EPrizeType';
+import { DialogAllWinnersComponent } from '../../../components/dialogs/dialog-all-winners/dialog-all-winners.component';
 
 
 
@@ -38,6 +39,7 @@ export class RoundsRealTimeComponent implements OnInit {
   public readonly roundsRealTimeService: RoundsRealTimeService = inject(RoundsRealTimeService);
   readonly dialog = inject(MatDialog);
   private dialogRef: MatDialogRef<DialogWinnerComponent> | null = null;
+  private dialogAllWinnersRef: MatDialogRef<DialogAllWinnersComponent> | null = null;
   private router: Router = inject(Router);
 
   cards: ICard[] = [];
@@ -52,8 +54,7 @@ export class RoundsRealTimeComponent implements OnInit {
       const currentRound = this.round();
       if (currentRound) {
         this.roundMessage = this.roundsRealTimeService.getRoundSignal()(currentRound.roomId, currentRound.id);
-       console.log( this.roundMessage)
-
+        console.log(this.roundMessage)
         this.updateShowDialogWinner();
       }
     })
@@ -111,9 +112,9 @@ export class RoundsRealTimeComponent implements OnInit {
       this.dialogRef = this.dialog.open(DialogWinnerComponent, {
         disableClose: true,
         data: {
-        titlePrize:  this.roundMessage?.currentPrizeResult?.prizeType,
-        winningCards :  this.roundMessage?.currentPrizeResult?.winningCards,
-        numbers:  this.roundMessage?.numbers
+          titlePrize: this.roundMessage?.currentPrizeResult?.prizeType,
+          winningCards: this.roundMessage?.currentPrizeResult?.winningCards,
+          numbers: this.roundMessage?.numbers
         }
       });
 
@@ -122,23 +123,49 @@ export class RoundsRealTimeComponent implements OnInit {
       });
     }
   }
+  openDialogAllWinners() {
+    if (!this.dialogAllWinnersRef) { // Evita abrir múltiplas instâncias
+      this.dialogAllWinnersRef =  this.dialog.open(DialogAllWinnersComponent, {
+        disableClose: true,
+        maxWidth: '95vw',
+        maxHeight: '95vh',
+        height: '95%',
+        width: '95%',
+        data: {
+          results: this.roundMessage?.results
+        }
+      });
+
+      this.dialogAllWinnersRef.afterClosed().subscribe(() => {
+        this.dialogAllWinnersRef = null; // Reseta a referência quando fechar
+      });
+    }
+
+  }
   closeDialogWinner() {
     this.dialogRef?.close();
     this.dialogRef = null;
   }
+  closeDialogAllWinner() {
+    this.dialogAllWinnersRef?.close();
+    this.dialogAllWinnersRef = null;
+  }
   updateShowDialogWinner() {
     if (this.roundMessage?.currentPrizeResult != null) {
       this.openDialogWinner();
-      if(this.roundMessage.numbers.length === 90 || this.roundMessage.currentPrizeResult.prizeType == EPrizeType.FullCard){
+      if (this.roundMessage.numbers.length === 90 || this.roundMessage.currentPrizeResult.prizeType == EPrizeType.FullCard )  {
+        if(this.roundMessage.currentPrizeResult.winningCards.length > 0){
         setTimeout(() => {
           this.closeDialogWinner();
-          console.log("abrindo o final")
-        },10000);
+          this.openDialogAllWinners();
+        }, 10000);
         setTimeout(() => {
+          this.closeDialogAllWinner();
           this.router.navigate(["/"]);
-        },this.roundMessage.isAccumulated ? 15000 : 40000);
+        }, this.roundMessage.isAccumulated ? 15000 : 40000);
       }
-    }else{
+      }
+    } else {
       this.closeDialogWinner();
     }
   }
