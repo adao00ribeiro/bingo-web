@@ -3,16 +3,15 @@
     <div class="container-header">
       <div class="info-round">
         <span>
-          <mat-icon>emoji_events</mat-icon>
-           {{(round()?.id | guid )}}
+          Rodada: {{(round()?.id | guid )}}
         </span>
         <span>
-          <mat-icon>label</mat-icon>
+          Valor Cartela:
            {{round()?.cardValue |  currency }}
         </span>
         <span>
-          <mat-icon>stacked_bar_chart</mat-icon>
-           R$20,0000
+          Total Premios:
+          {{totalPrize()|  currency }}
         </span>
       </div>
       <div class="configuration">
@@ -25,7 +24,7 @@
         </button>
       </div>
     </div>
-    <app-prize-board />
+    <app-prize-board [prizes]="round() ? round()?.prizes : []" />
     <app-sung-numbers
     [mainBall]="roundMessage ? roundMessage.mainBall : 0 "
     [secondBall]="roundMessage ? roundMessage.secondBall : 0"

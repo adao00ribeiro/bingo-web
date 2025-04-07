@@ -1,13 +1,9 @@
 <section class="buycardsection">
   <header class="buycardheader" *ngIf="!hiddenTittle">
-    <h3>Compra</h3>
+    <h3>Rodada: {{  round().id | guid}}</h3>
   </header>
   <article class="buycardarticle">
     <div class="articleTitle" *ngIf="!hiddenTittle">
-      <div style="display: flex; justify-content: space-between;">
-        <span>Sorteio:</span>
-        <span>{{  round().id | guid}}</span>
-      </div>
       <div style="display: flex; justify-content: space-between;">
         <span>Valor da Cartela:</span>
         <span>{{ round().cardValue | currency }}</span>

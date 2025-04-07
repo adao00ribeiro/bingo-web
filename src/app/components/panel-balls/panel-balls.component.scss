@@ -12,9 +12,9 @@
     background-color: rgba(255, 255, 255, 0.2);
     margin-bottom: 0;
   }
-  .ballRed,
-  .ballGreen,
-  .ballBlack {
+  .ball,
+.ball-marked,
+.ball-current {
     width: 3.1%;
     margin: 0.08vw;
     color: #333;
@@ -29,17 +29,17 @@
     border-radius: 0.5vw;
     aspect-ratio: 1/1;
   }
-  .ballRed {
+  .ball-current  {
     color: white;
     background-color: #f70000;
   }
-  .ballGreen {
+  .ball {
     color: white;
-    background-color: #0c4e0a;
+    background-color: #707070;
   }
-  .ballBlack {
-    color: rgb(175, 170, 170);
-    background-color: #4e4e4e;
+  .ball-marked {
+    color: rgb(255, 255, 255);
+    background-color: #23ce01;
   }
 
   @media screen and (max-width: 425px) {

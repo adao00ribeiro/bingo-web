@@ -2,6 +2,7 @@ import { Component, input, Input, OnInit } from '@angular/core';
 import { ICard } from '../../interfaces/ICard';
 import { GuidPipe } from '../../pipes/guid.pipe';
 import { CommonModule } from '@angular/common';
+import { EPrizeType } from '../../enums/EPrizeType';
 
 @Component({
   selector: 'app-card',
@@ -10,13 +11,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss'
 })
-export class CardComponent implements OnInit {
-  ngOnInit(): void {
-    console.log(this.card().round)
-  }
+export class CardComponent  {
 
   card = input.required<ICard>();
-  balls = input.required<number[]>();
+  balls = input<number[]>([]);
+  prizeType = input<EPrizeType | undefined>();
 
    gridStyles() {
     const rows = this.card().round.cardRows;
@@ -27,7 +26,14 @@ export class CardComponent implements OnInit {
     };
   }
 
-  defineclass(nameClass : number) {
-    return this.balls().includes(nameClass) ? "ballRed" : "ballBlue";
+  defineclass(n : number) {
+    if (this.balls() == null) {
+      return "ball";
+    }
+    if (this.balls()[this.balls().length - 1] === n) {
+      return "ball-current";
+    }
+
+    return this.balls().includes(n) ? "ball-marked" : "ball";
   }
 }

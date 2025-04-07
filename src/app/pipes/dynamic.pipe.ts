@@ -2,6 +2,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { GuidPipe } from './guid.pipe';
 import { CurrencyPipe } from './currency.pipe';
+import { DateTimePipe } from './date-time.pipe';
 
 @Pipe({
   name: 'dynamic',
@@ -10,15 +11,17 @@ import { CurrencyPipe } from './currency.pipe';
 export class DynamicPipe implements PipeTransform {
   private currencyPipe = new CurrencyPipe();
   private guidpipe = new GuidPipe();
+  private dateTime = new DateTimePipe();
 
   transform(value: string | null | undefined, pipeName: string | null, ...args: any[]): any {
-    console.log(pipeName)
+
     switch (pipeName) {
       case 'currency':
-        console.log("fdp")
         return this.currencyPipe.transform(value);
       case 'guid':
         return this.guidpipe.transform(value);
+      case 'dateTime':
+        return this.dateTime.transform(value);
       default:
         return value;
     }

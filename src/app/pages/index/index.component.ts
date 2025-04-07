@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogDepositComponent } from '../../components/dialogs/dialog-deposit/dialog-deposit.component';
 import { SocketService } from '../../services/socket/socket.service';
 import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
+import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '../../constants/storage.service.constants';
 @Component({
   selector: 'app-index',
   standalone: true,
@@ -77,7 +78,8 @@ export class IndexComponent implements OnInit {
   }
   logout() {
     // Limpa o token de autenticação do sessionStorage
-    sessionStorage.removeItem('token-data');
+    sessionStorage.removeItem(STORAGE_TOKEN);
+    sessionStorage.removeItem(STORAGE_REFRESH_TOKEN);
 
     // Opcional: Limpa outros dados relacionados ao usuário, se necessário
    // this.userService.clearUser(); // Certifique-se de ter um método na UserService para limpar o estado do usuário

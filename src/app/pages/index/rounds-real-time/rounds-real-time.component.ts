@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, Input, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component,  computed,  effect, inject, Input, OnInit, signal } from '@angular/core';
+import { Router} from '@angular/router';
 import { PanelBallsComponent } from "../../../components/panel-balls/panel-balls.component";
 import { CardComponent } from "../../../components/card/card.component";
 import { SungNumbersComponent } from "../../../components/sung-numbers/sung-numbers.component";
@@ -8,7 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RoundService } from '../../../services/round/round.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CardService } from '../../../services/card/card.service';
 import { ICard } from '../../../interfaces/ICard';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { IRoundMessage } from '../../../interfaces/IRoundMessage';
@@ -20,6 +19,8 @@ import { DialogWinnerComponent } from '../../../components/dialogs/dialog-winner
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EPrizeType } from '../../../enums/EPrizeType';
 import { DialogAllWinnersComponent } from '../../../components/dialogs/dialog-all-winners/dialog-all-winners.component';
+import { AudioPlayerService } from '../../../services/audio-player.service';
+import { CardsByPunterResourceService } from '../../../resource/card/cards-by-punter-resource.service';
 
 
 
@@ -34,52 +35,94 @@ export class RoundsRealTimeComponent implements OnInit {
   @Input() id = '';
   isMuted: boolean = false; // Variável para controlar o estado de som
   public readonly roundService = inject(RoundService);
-  public readonly cardService = inject(CardService);
+  public readonly cardsByPunterResourceService = inject(CardsByPunterResourceService);
   public readonly snackBar = inject(MatSnackBar);
   public readonly roundsRealTimeService: RoundsRealTimeService = inject(RoundsRealTimeService);
   readonly dialog = inject(MatDialog);
   private dialogRef: MatDialogRef<DialogWinnerComponent> | null = null;
   private dialogAllWinnersRef: MatDialogRef<DialogAllWinnersComponent> | null = null;
   private router: Router = inject(Router);
-
+  readonly audioPlayer = inject(AudioPlayerService);
   cards: ICard[] = [];
   rows: ICard[][] = [];
   round = signal<IRound | null>(null);
   roundMessage?: IRoundMessage;
   show_dialog = false;
 
-
+  totalPrize = computed(() => {
+    if (this.round()) {
+      return this.round()?.prizes.reduce((total, prize) => total + prize.value, 0);
+    }
+    return 0;
+  });
   constructor() {
     effect(() => {
       const currentRound = this.round();
       if (currentRound) {
         this.roundMessage = this.roundsRealTimeService.getRoundSignal()(currentRound.roomId, currentRound.id);
         console.log(this.roundMessage)
+        if (this.roundMessage?.currentPrizeResult == null) {
+          this.audioPlayer.playNumber(this.roundMessage.mainBall);
+        }
         this.updateShowDialogWinner();
+        this.playSong();
       }
-    })
-  }
-  ngOnInit(): void {
+      const paged = this.cardsByPunterResourceService.resource.value()
 
-    this.getRound();
-    this.cardService.GetAllByIdRound(this.id).subscribe({
-      next: (data) => {
-        this.cards = data
+      if(paged){
+        this.cards = paged.items
         this.rows = this.chunkArray(this.cards, 4);
-      },
-      error: (err) => {
-        this.snackBar.open(err.error.detail, 'Ok', {
+      }
+
+      if( this.cardsByPunterResourceService.resource.error()){
+        this.snackBar.open("Erro de chamadas", 'Ok', {
           duration: 5000, // Set the duration in milliseconds
           horizontalPosition: 'center', // Options: 'start', 'center', 'end'
           verticalPosition: 'bottom', // Options: 'top', 'bottom'
           panelClass: 'error-snackbar',
         });
-        // Aqui você pode implementar a lógica para lidar com o erro, como exibir uma mensagem ao usuário
-      },
-      complete: () => {
-
       }
-    });
+
+
+
+    })
+  }
+  playSong() {
+    var currentPrizeResult = this.roundMessage?.currentPrizeResult;
+    if(currentPrizeResult==null){
+      return;
+    }
+    const prizeAudioMap: Record<EPrizeType, () => void> = {
+      [EPrizeType.FourInLine]: () => this.audioPlayer.playFourInLine(),
+      [EPrizeType.FourCorners]: () => this.audioPlayer.playFourCorners(),
+      [EPrizeType.SingleLine]: () => this.audioPlayer.playSingleLine(),
+      [EPrizeType.SingleColumn]: () => this.audioPlayer.playSingleColumn(),
+      [EPrizeType.Diagonal]: () => this.audioPlayer.playDiagonal(),
+      [EPrizeType.InvertedDiagonal]: () => this.audioPlayer.playInvertedDiagonal(),
+      [EPrizeType.DoubleLine]: () => this.audioPlayer.playDoubleLine(),
+      [EPrizeType.DoubleColumn]: () => this.audioPlayer.playDoubleColumn(),
+      [EPrizeType.TShape]: () => this.audioPlayer.playTShape(),
+      [EPrizeType.XShape]: () => this.audioPlayer.playXShape(),
+      [EPrizeType.PlusShape]: () => this.audioPlayer.playPlusShape(),
+      [EPrizeType.OuterEdge]: () => this.audioPlayer.playOuterEdge(),
+      [EPrizeType.FullCard]: () => {
+        if (this.roundMessage?.isAccumulated) {
+          this.audioPlayer.playAccumulated();
+        } else {
+          this.audioPlayer.playFullCard();
+        }
+      },
+    };
+    const playAudio = prizeAudioMap[currentPrizeResult.prizeType];
+    if (playAudio) {
+      playAudio();
+    } else {
+      console.warn("Áudio não encontrado para o tipo de prêmio:", currentPrizeResult.prizeType);
+    }
+  }
+  ngOnInit(): void {
+    this.getRound();
+    this.cardsByPunterResourceService.reload(this.id,null,null);
   }
   chunkArray(arr: any[], size: number): any[][] {
     const result = [];
@@ -91,7 +134,12 @@ export class RoundsRealTimeComponent implements OnInit {
   getRound(): void {
     this.roundService.GetById(this.id).subscribe({
       next: (data) => {
+        if(data.finishedDate){
+
+        }
+
         this.round.set(data);
+        console.log("opa",data)
       },
       error: (err) => {
         this.snackBar.open(err.error.detail, 'Ok', {
@@ -135,7 +183,6 @@ export class RoundsRealTimeComponent implements OnInit {
           results: this.roundMessage?.results
         }
       });
-
       this.dialogAllWinnersRef.afterClosed().subscribe(() => {
         this.dialogAllWinnersRef = null; // Reseta a referência quando fechar
       });

@@ -23,7 +23,7 @@ export class RoundByIdResourceService extends BaseHttpResourceService {
       if (!request.id) {
         throw new Error("ID do round não informado!");
       }
-      return this.httpClient.get<IRound>(`${this.url}/id/${request.id}`);;
+      return this.httpClient.get<IRound>(`${this.url}/id/${request.id}`);
     },
   });
 

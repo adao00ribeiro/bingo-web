@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-
+  background-color: var(--background-color-primary);
 }
 .filters{
   height: 3rem;
@@ -13,8 +13,42 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap:0.3rem;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE e Edge */
 }
 .grid > *:only-child {
   justify-self: start; /* Alinha o item à esquerda */
   width: 370px; /* Define a largura como 400px */
+}
+.container-menu {
+  display: flex;
+  justify-content: flex-start; // Alinha os botões à esquerda
+  gap: 10px; // Espaçamento entre os botões
+  padding: 10px;
+  background-color: var(--background-color-second);
+}
+.no-data{
+  text-align: center;
+  padding: 20px;
+  font-weight:bold;
+  font-size: 1.7rem;
+  color: #777;
+}
+button {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 5px;
+
+  &:hover {
+    color: #007bff; // Muda a cor ao passar o mouse
+  }
+
+  &:focus {
+    outline: none;
+  }
 }

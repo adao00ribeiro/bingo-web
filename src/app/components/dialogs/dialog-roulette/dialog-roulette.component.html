@@ -1,0 +1,20 @@
+
+<mat-dialog-content class="dialog bg-primary">
+  <div id="container">
+    <h1>Roleta Randômica</h1>
+    <div id="roleta">
+      <div #internoRoleta id="interno-roleta">
+        <div class="sec"><span class="texto">Front-End</span></div>
+        <div class="sec"><span class="texto">Back End</span></div>
+        <div class="sec"><span class="texto">Full Stack</span></div>
+        <div class="sec"><span class="texto">Des. Mobile</span></div>
+        <div class="sec"><span class="texto">DevOps</span></div>
+        <div class="sec"><span class="texto">Anal. de Dados</span></div>
+      </div>
+      <div  id="spin" (click)="spin()">
+        <div id="interno-spin"></div>
+      </div>
+    </div>
+    <div #txtResult id="result" class="result-text"></div>
+  </div>
+</mat-dialog-content>

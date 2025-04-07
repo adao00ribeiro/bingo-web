@@ -1,4 +1,4 @@
-import { Injectable,  signal } from "@angular/core";
+import { Injectable, signal} from "@angular/core";
 import { rxResource } from "@angular/core/rxjs-interop";
 import { BaseHttpResourceService } from "../base-http-resource.service";
 import { IRound } from "../../interfaces/IRound";

@@ -1,18 +1,26 @@
 <div class="card-round bg-second">
   <main>
     <div class="container-image">
-      <img [src]="getImage()" alt>
+      <img [src]="getImage()" alt />
     </div>
     <div class="container-info">
       <div class="container-timer">
         <div class="timer">
           <mat-icon>timer</mat-icon>
-          <span>{{minutes + ":" + seconds}}</span>
+          <span>
+            @if(days !== '00'){
+              <ng-container >{{ days + "d " }}</ng-container>
+            }
+            @if(hours !== '00'){
+              <ng-container>{{ hours + "h " }}</ng-container>
+            }
+            {{ minutes + "m " + seconds + "s" }}
+          </span>
         </div>
-        <span>{{round().startedDate | dateTime}}</span>
+        <span>{{ round().startedDate | dateTime }}</span>
       </div>
       <div>
-        <h2>Sorteio {{round().id | guid}}</h2>
+        <h2>Sorteio {{ round().id | guid }}</h2>
       </div>
 
       <div class="total-prize">
@@ -24,15 +32,20 @@
       <div class="info-group">
         <div class="group" matTooltip="Valor Cartela" matTooltipPosition="below">
           <mat-icon>label</mat-icon>
-          <span>{{ round().cardValue | currency  }}</span>
+          <span>{{ round().cardValue | currency }}</span>
         </div>
-        <div class="group" matTooltip="Total de premios" matTooltipPosition="below">
+        <div class="group" matTooltip="Total de prêmios" matTooltipPosition="below">
           <mat-icon>stacked_bar_chart</mat-icon>
-          <span>{{round().prizes.length}} </span>
+          <span>{{ round().prizes.length }} </span>
         </div>
-        <div class="group"matTooltip="Total Cartelas Compradas" matTooltipPosition="below">
+        <div
+          class="group"
+          matTooltip="Total Cartelas Compradas"
+          matTooltipPosition="below"
+          (click)="openDialogCardPurchased()"
+        >
           <mat-icon>confirmation_number</mat-icon>
-          <span class="card-sale-text">{{round().cardSaleCount}}  </span>
+          <span class="card-sale-text">{{ round().cardSaleCount }} </span>
         </div>
       </div>
     </div>

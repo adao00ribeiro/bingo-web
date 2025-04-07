@@ -16,7 +16,9 @@ export class CardWinnersService {
 
   loadCardWinners(): void {
     this.GetAll().subscribe({
-      next: (cardwinner) => this.cardwinnerSignal.set(cardwinner),
+      next: (cardwinner) => {
+        this.cardwinnerSignal.set(cardwinner)
+      },
       error: (error) => console.error('Erro ao carregar cardsWinners:', error),
     });
   }

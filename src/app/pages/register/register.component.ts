@@ -33,7 +33,8 @@ export class RegisterComponent {
   private snackBar: MatSnackBar= inject(MatSnackBar);
   private router: Router= inject(Router);
   private fb: FormBuilder= inject(FormBuilder);
-
+  hide1 = true;
+  hide2 = true;
   constructor( ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],

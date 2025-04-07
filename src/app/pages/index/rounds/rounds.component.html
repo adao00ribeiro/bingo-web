@@ -5,16 +5,27 @@
 'https://picsum.photos/id/19/2500/1667'
 ]"></app-carousel>
 }
+<div class="container-menu">
+  <button (click)="filterAllRounds()" >Todos</button>
+  <button (click)="filterRounds(90)" >90 Ball</button>
+  <button (click)="filterRounds(80)">80 Ball</button>
+  <button (click)="filterRounds(75)">75 Ball</button>
+  <button (click)="filterRounds(50)">50 Ball</button>
+  <button (click)="filterRounds(30)">30 Ball</button>
+</div>
 
 
-@if (RoundsByRoomIdResourceService.resource.isLoading()) {
-    <span>Carregando...</span>
-}@else {
+  @if(filteredRounds().length == 0){
+    <div class="no-data">
+      <p>Nenhum rodada disponível</p>
+    </div>
+  }@else {
   <div class="grid">
-    @for (item of  RoundsByRoomIdResourceService.resource.value(); track $index) {
+    @for (item of  filteredRounds(); track $index) {
       <app-card-round [round]="item" [roundSocket]="this.roundsRealTimeService.getRoundSignal()(item.roomId,item.id)"></app-card-round>
     }
   </div>
+
 }
 
 

@@ -36,7 +36,9 @@
   align-items: center;
 }
 
-.ball {
+.ball,
+.ball-marked,
+.ball-current {
   width: 100%;
   height: 100%;
   display: flex;
@@ -46,23 +48,13 @@
   background-color: #007bff;
   color: white;
   border-radius: 0.2rem;
-
 }
-
-.ballBlue,
-.ballRed {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
+.ball-current {
+  background-color: red;
 }
-.ballBlue {
-  color: white;
-  background-color: #007bff;
+.ball {
+  background-color: green;
 }
-.ballRed {
-  color: white;
-  background-color: #f70000;
+.ball-marked {
+  background-color:rgb(167, 167, 8);
 }

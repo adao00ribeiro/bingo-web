@@ -5,22 +5,23 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="formgroup">
         <mat-form-field class="example-full-width">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" />
+          <mat-label>Digite seu Email</mat-label>
+          <input matInput formControlName="email">
         </mat-form-field>
         <mat-form-field class="example-full-width">
-          <mat-label>Senha</mat-label>
-          <input matInput type="password"formControlName="password" />
+          <mat-label>Digite sua senha</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </mat-form-field>
       </div>
       <div class="containerRegistrarRecuperar">
-        <button type="submit" mat-flat-button class="btn-primary">Logar</button>
-        <a class="a-primary" routerLink="/cadastro" >Registrar</a>
+        <button class="btn-primary" type="submit" mat-flat-button>Entrar</button>
+        <a class="a-primary" routerLink="/cadastro">Registre-se já!</a>
       </div>
     </form>
     <div class="container18pix">
-      <img src="/images/+18.png" alt="18" />
-      <img src="/images/pix.png" alt="pix" />
+      <img src="/images/+18.png" alt="18">
+      <img src="/images/pix.png" alt="pix">
     </div>
   </div>
 

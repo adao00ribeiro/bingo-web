@@ -1,41 +1,33 @@
 <!-- minha-conta.component.html -->
 <div class="minha-conta-container">
   <h1>Minha Conta</h1>
-
   <div class="card">
     <h2>Dados principais</h2>
     <div class="campo">
       <div class="label">Seu nome</div>
       <div class="valor">
-        <span>{{dadosPrincipais.nome}}</span>
+        <span>{{punter()?.name}}</span>
         <button class="edit-btn" (click)="editarCampo('nome')">
           <i class="material-icons">edit</i>
         </button>
       </div>
     </div>
-
     <div class="campo">
       <div class="label">E-mail para contato</div>
-      <div class="valor">{{dadosPrincipais.email}}</div>
-    </div>
-
-    <div class="campo">
-      <div class="label">Login</div>
-      <div class="valor">{{dadosPrincipais.login}}</div>
+      <div class="valor">{{punter()?.user?.email}}</div>
     </div>
   </div>
-
   <div class="card">
     <h2>Dados pessoais</h2>
     <div class="campo">
       <div class="label">CPF</div>
-      <div class="valor">{{dadosPessoais.cpf}}</div>
+      <div class="valor">{{punter()?.cpf}}</div>
     </div>
 
     <div class="campo">
       <div class="label">Telefone p/ contato</div>
       <div class="valor">
-        <span>{{dadosPessoais.telefone}}</span>
+        <span>{{punter()?.user?.phoneNumber}}</span>
         <button class="edit-btn" (click)="editarCampo('telefone')">
           <i class="material-icons">edit</i>
         </button>

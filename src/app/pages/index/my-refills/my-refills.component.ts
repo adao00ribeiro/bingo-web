@@ -1,7 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { CardMyRechargeComponent } from "../../../components/card-my-recharge/card-my-recharge.component";
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { TableComponent } from '../../../components/table/table.component';
-import { RechargeService } from '../../../services/recharge/recharge.service';
+import { RechargesResourceService } from '../../../resource/recharge/recharges-resource.service';
 
 @Component({
   selector: 'app-my-refills',
@@ -10,17 +9,25 @@ import { RechargeService } from '../../../services/recharge/recharge.service';
   templateUrl: './my-refills.component.html',
   styleUrl: './my-refills.component.scss'
 })
-export class MyRefillsComponent  implements OnInit{
+export class MyRefillsComponent {
 
- protected readonly rechargeService: RechargeService = inject(RechargeService);
+  protected readonly rechargeService: RechargesResourceService = inject(RechargesResourceService);
 
+  recharges = computed(() => this.rechargeService.resource.value() || undefined);
+  totalItems = 0;
+  columnConfigs = [
+    { key: 'id', displayName: 'ID', pipe: "guid" },
+    { key: 'value', displayName: 'Valor', pipe: "currency" },
+    { key: 'status', displayName: 'Status' },
+  ];
+  constructor() {
+    effect(() => {
 
- columnConfigs = [
-  { key: 'id', displayName: 'ID', pipe: "guid" },
-  { key: 'value', displayName: 'Valor', pipe: "currency" },
-  { key: 'status', displayName: 'Status' },
-];
- ngOnInit(): void {
-  this.rechargeService.loadRecharges();
-}
+    })
+    this.loadData(1, 5);
+  }
+
+  loadData(page: number, size: number) {
+   this.rechargeService.reload(page,size)
+  }
 }

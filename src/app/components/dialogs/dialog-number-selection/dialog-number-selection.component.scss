@@ -1,0 +1,56 @@
+
+.dialog{
+  h2{
+    text-align: center;
+  }
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+
+  button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: #ccc;
+    cursor: pointer;
+
+    &.selected {
+      background-color: green;
+      color: white;
+    }
+    &.disabled {
+      background-color: lightgray;
+      cursor: not-allowed;
+    }
+  }
+}
+
+}
+.mdc-card__actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 52px;
+  padding: 8px;
+  justify-content: flex-end;
+ gap: 1rem;
+  button{
+    padding: 1rem;
+  }
+}
+/* Estiliza a seção dos números selecionados */
+.selected-numbers {
+
+
+  .step {
+    margin-bottom: 5px;
+    font-weight: bold;
+    span {
+      display: inline-block;
+      margin-right: 5px;
+      color: white;
+    }
+  }
+}

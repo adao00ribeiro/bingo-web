@@ -26,15 +26,17 @@
           <mat-label>Data de Nascimento</mat-label>
           <input matInput type="date" formControlName="dateBirth" />
         </mat-form-field>
-
         <mat-form-field class="example-full-width">
-          <mat-label>Senha</mat-label>
-          <input matInput type="password" formControlName="password" />
+          <mat-label>Digite sua senha</mat-label>
+          <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="password" required>
+          <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
         </mat-form-field>
-         <mat-form-field class="example-full-width">
-          <mat-label>Repetir Senha</mat-label>
-          <input matInput type="password" formControlName="passwordConfirmed" />
+        <mat-form-field class="example-full-width">
+          <mat-label>Repita sua senha</mat-label>
+          <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="passwordConfirmed" required>
+          <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
         </mat-form-field>
+
       </div>
       <div class="containerRegistrarRecuperar">
         <button type="submit" mat-flat-button class="btn-primary" >Registrar</button>

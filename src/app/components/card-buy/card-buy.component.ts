@@ -6,9 +6,9 @@ import { IRound } from '../../interfaces/IRound';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { CardBuyService } from '../../services/card/card-buy.service';
 import { ICardBuyRequest } from '../../interfaces/ICardBuyRequest';
-import { UserService } from '../../services/auth/user.service';
 import { RoundService } from '../../services/round/round.service';
 import { GuidPipe } from '../../pipes/guid.pipe';
+import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
 @Component({
   selector: 'app-card-buy',
   standalone: true,
@@ -19,7 +19,7 @@ import { GuidPipe } from '../../pipes/guid.pipe';
 })
 export class CardBuyComponent  {
   round = input.required<IRound>();
-  private readonly userService = inject(UserService);
+  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
   private readonly roundService = inject(RoundService);
 
 
@@ -71,13 +71,13 @@ export class CardBuyComponent  {
      const loginRequest: ICardBuyRequest = {
       quantity: this.valueQtds,
       roundId : this.round().id,
-      punterId : this.userService.userSignal()?.id
+      punterId : this.PunterMeResourceService.resource.value()?.id
     };
     this.cardBuyService.buy(loginRequest).subscribe({
       next: (data) => {
         if(data){
             this.roundService.loadRounds();
-            this.userService.loadUser();
+            this.PunterMeResourceService.resource.reload()
         }
         this.loading = false;
       },

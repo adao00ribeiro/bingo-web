@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { TableComponent } from "../../../components/table/table.component";
-import { CardWinnersService } from '../../../services/card-winners.service';
+import { CardWinnersResourceService } from '../../../resource/card-winner/card-winners-resource.service';
 
 
 @Component({
@@ -11,15 +11,22 @@ import { CardWinnersService } from '../../../services/card-winners.service';
   styleUrl: './my-awards.component.scss'
 })
 export class MyAwardsComponent {
- protected readonly cardwinnerService: CardWinnersService = inject(CardWinnersService);
+  protected readonly cardWinnersResourceService: CardWinnersResourceService = inject(CardWinnersResourceService);
 
+  columnConfigs = [
+    { key: 'card.round.id', displayName: 'Id rodada', pipe: "guid" },
+    { key: 'card.round.cardValue', displayName: 'Valor Cartela', pipe: "currency" },
+    { key: 'cardId', displayName: 'ID Card', pipe: "guid" },
+    { key: 'prize.type', displayName: 'Tipo do Premio' },
+    { key: 'prize.value', displayName: 'Valor Premio', pipe: "currency" },
 
- columnConfigs = [
-  { key: 'id', displayName: 'ID' , pipe: "guid"},
-  { key: 'value', displayName: 'Valor' , pipe: "currency" },
-  { key: 'cardId', displayName: 'ID Card',pipe: "guid" },
-];
- ngOnInit(): void {
- this.cardwinnerService.loadCardWinners();
-}
+  ];
+  cardWinners = computed(() => this.cardWinnersResourceService.resource.value()|| undefined);
+  totalItems = computed(() =>
+     this.cardWinnersResourceService.resource.value()?.totalCount || 0
+  );
+
+  loadData(page: number, size: number) {
+    this.cardWinnersResourceService.reload(page, size)
+  }
 }

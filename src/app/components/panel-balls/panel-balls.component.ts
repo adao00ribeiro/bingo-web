@@ -12,7 +12,13 @@ export class PanelBallsComponent {
   balls = input<number[]>([]);
   data = Array.from({ length: 90 }, (_, i) => i + 1);
 
-  defineclass(nameClass : number) {
-    return this.balls().includes(nameClass) ? "ballRed" : "ballBlack";
+  defineclass(n : number) {
+    if (this.balls() == null) {
+      return "ball";
+    }
+    if (this.balls()[this.balls().length - 1] === n) {
+      return "ball-current";
+    }
+    return this.balls().includes(n) ? "ball-marked" : "ball";
   }
 }

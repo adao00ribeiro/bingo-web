@@ -1,1 +1,20 @@
-<p>dialog-cards-purchased works!</p>
+<mat-dialog-content class="dialog bg-primary">
+  <h2>Cartelas Compradas</h2>
+  <div class="article-title">
+    <span>Rodada: {{ round().id  | guid }} </span>
+    <span>Data: {{ round().startedDate | dateTime }}</span>
+    <span>Cartelas: {{ round().cardsPurchased }}</span>
+  </div>
+    <cdk-virtual-scroll-viewport itemSize="100" class="example-viewport" (scrolledIndexChange)="onScroll()">
+      <div class="grid-container">
+      <div *cdkVirtualFor="let item of cards" class="example-row">
+          <app-card [card]="item" ></app-card>
+      </div>
+    </div>
+    </cdk-virtual-scroll-viewport>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="actions bg-primary" align="center">
+  <button mat-button color="primary" (click)="closeDialog()">Fechar</button>
+</mat-dialog-actions>

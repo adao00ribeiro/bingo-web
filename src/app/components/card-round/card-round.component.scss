@@ -76,13 +76,16 @@
     gap: 0.3rem;
     span{
       padding: 0.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 80px;
-      background-color: white;
-      color: rgb(0, 0, 0);
-      border-radius:0.5rem;
+    display: inline-block; // Garante que fique em linha
+    align-items: center;
+    justify-content: center;
+    width: auto; // Permite ajuste automático ao conteúdo
+    min-width: 80px; // Mantém um tamanho mínimo
+    background-color: white;
+    color: rgb(0, 0, 0);
+    border-radius: 0.5rem;
+    white-space: nowrap; // Impede a quebra de linha
+    text-align: center;
     }
   }
 

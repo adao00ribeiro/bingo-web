@@ -1,4 +1,5 @@
 import { ISeller } from "./ISeller"
+import { IUser } from "./IUser"
 
 export interface IPunter {
   id: string,
@@ -7,5 +8,6 @@ export interface IPunter {
   email:string,
   cpf:string,
   dateBirth : string,
-  seller : ISeller
+  seller : ISeller,
+  user: IUser
 }

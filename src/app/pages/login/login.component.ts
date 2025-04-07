@@ -17,6 +17,8 @@ import { LoginService } from '../../services/auth/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ILoginRequest } from '../../interfaces/ILoginRequest';
 import { timer } from 'rxjs';
+import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '../../constants/storage.service.constants';
+import { StorageService } from '../../services/storage.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -39,14 +41,16 @@ export class LoginComponent {
   private loginService: LoginService = inject(LoginService);
   private snackBar: MatSnackBar= inject(MatSnackBar);
   private router: Router= inject(Router);
+  private storageService = inject(StorageService);
 
+  hide = true;
   constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
   }
-
+  get passwordInput() { return this.loginForm.get('password'); }
   onSubmit() {
 
     if (this.loginForm.invalid) {
@@ -64,8 +68,9 @@ export class LoginComponent {
     };
     this.loginService.Login(loginRequest).subscribe({
       next: (data) => {
-        if(data.accessToken){
-          sessionStorage.setItem("token-data",data.accessToken)
+        if(data.accessToken && data.refreshToken){
+          this.storageService.setSessionItem(STORAGE_TOKEN,data.accessToken)
+          this.storageService.setSessionItem(STORAGE_REFRESH_TOKEN,data.refreshToken)
         }
       },
       error: (err) => {

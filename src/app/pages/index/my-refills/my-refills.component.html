@@ -2,6 +2,8 @@
   <h1>Recargas</h1>
   <app-table
   [columnMappings]="columnConfigs"
-  [data]="rechargeService.recharges()">
+  [data]="recharges()"
+  (pageChange)="loadData($event.page, $event.size)">
+  >
   ></app-table>
 </div>

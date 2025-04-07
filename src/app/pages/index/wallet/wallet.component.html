@@ -1,1 +1,12 @@
-<p>wallet works!</p>
+<div class="container">
+  <div class="container-button">
+    <button>DEPOSITAR</button>
+    <button>SACAR</button>
+  </div>
+  <h1>Resumo Carteira</h1>
+  <app-table
+  [columnMappings]="columnConfigs"
+  [data]="cardWinners()"
+  (pageChange)="loadData($event.page, $event.size)"
+  ></app-table>
+</div>

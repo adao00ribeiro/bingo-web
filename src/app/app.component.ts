@@ -3,6 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { RouterOutlet } from '@angular/router';
 import { DialogAllWinnersComponent } from './components/dialogs/dialog-all-winners/dialog-all-winners.component';
 import { EPrizeType } from './enums/EPrizeType';
+import { AudioDataBaseService } from './services/audio-data-base.service';
+import { DialogNumberSelectionComponent } from './components/dialogs/dialog-number-selection/dialog-number-selection.component';
+import { DialogRouletteComponent } from './components/dialogs/dialog-roulette/dialog-roulette.component';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
@@ -12,6 +15,7 @@ import { EPrizeType } from './enums/EPrizeType';
 export class AppComponent implements OnInit{
   title = 'bingo-web';
  readonly dialog = inject(MatDialog);
+ readonly audioDataBaseService = inject(AudioDataBaseService);
 
   constructor( ) {
     let theme = 'bingo-dark';
@@ -19,7 +23,20 @@ export class AppComponent implements OnInit{
 
   }
   ngOnInit(): void {
-  //this.openDialogWinner();
+  //this.openDialogRoulete();
+  //this.audioDataBaseService.
+  this.audioDataBaseService.initDatabase();
+
+  }
+  openDialogRoulete() {
+
+    this.dialog.open(DialogRouletteComponent, {})
+
+  }
+  openDialogNumberSelection() {
+
+    this.dialog.open(DialogNumberSelectionComponent, {})
+
   }
    openDialogWinner() {
 
