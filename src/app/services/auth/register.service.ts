@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { IRegister } from '../../interfaces/IRegister';
 import { Observable } from 'rxjs';
+import { IRegisterResponse } from '../../interfaces/response/IRegisterResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ export class RegisterService {
    private httpClient: HttpClient = inject(HttpClient);
 
 
- Register(data : IRegister) :Observable<string>{
-   return this.httpClient.post<string>(this.url, data);
+ Register(data : IRegister) :Observable<IRegisterResponse>{
+   return this.httpClient.post<IRegisterResponse>(this.url, data);
  }
 
 }

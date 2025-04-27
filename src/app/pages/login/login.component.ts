@@ -68,12 +68,14 @@ export class LoginComponent {
     };
     this.loginService.Login(loginRequest).subscribe({
       next: (data) => {
+        console.log(data)
         if(data.accessToken && data.refreshToken){
           this.storageService.setSessionItem(STORAGE_TOKEN,data.accessToken)
           this.storageService.setSessionItem(STORAGE_REFRESH_TOKEN,data.refreshToken)
         }
       },
       error: (err) => {
+
         this.snackBar.open(err.error.detail, 'Ok', {
           duration: 5000, // Set the duration in milliseconds
          horizontalPosition: 'center', // Options: 'start', 'center', 'end'
