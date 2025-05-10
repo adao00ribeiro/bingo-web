@@ -10,6 +10,7 @@ import { IRegister } from '../../interfaces/IRegister';
 import { RegisterService } from '../../services/auth/register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { IRegisterResponse } from '../../interfaces/response/IRegisterResponse';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -76,8 +77,8 @@ export class RegisterComponent {
       sellerId: 'b9c2d2b5-eeae-486c-85ea-06dd5cfe0c06',
     };
       this.registerService.Register(registerData).subscribe({
-        next: (data) => {
-          console.log('Dados recebidos:', data);
+        next: (data ) => {
+
         },
         error: (err) => {
           this.snackBar.open(err.error.detail, 'Ok', {
@@ -89,12 +90,10 @@ export class RegisterComponent {
           // Aqui você pode implementar a lógica para lidar com o erro, como exibir uma mensagem ao usuário
         },
         complete: () => {
-          console.log('Operação concluída.');
-          this.router.navigate(['/login']); // Redireciona para a página de login
+          //console.log('Operação concluída.');
+         this.router.navigate(['/login']); // Redireciona para a página de login
         }
       });
-
-
   }
    convertToIso8601(inputDate: string): string {
     try {
