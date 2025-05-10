@@ -4,29 +4,33 @@
       <button mat-icon-button (click)="toggleSidenav()">
         <mat-icon class="text">menu</mat-icon>
       </button>
-      <img src="/images/Icone.png" alt="">
-
+      <img src="/images/Icone.png" alt>
     </div>
     <div class="toolbar-right">
       <button class="btn-visibility" (click)="handleVisibity()">
         <mat-icon>{{ isVisible ? 'visibility' : 'visibility_off' }}</mat-icon>
       </button>
       <button class="btn-wallet" [matMenuTriggerFor]="belowMenuDeposit">
-        {{ isVisible ? (user()?.balance | currency) : 'R$#####' }}
+        {{ isVisible ? (total_credit() | currency) : 'R$#####' }}
       </button>
-      <mat-menu class="mat-menu-item" #belowMenuDeposit="matMenu" yPosition="below"  >
-        <button mat-menu-item (click)="deposit()">
+      <mat-menu class="mat-menu-item" #belowMenuDeposit="matMenu" yPosition="below">
+        <div class="container-balances">
+          <span>Crédito:  {{ isVisible ? (user()?.balance | currency) : 'R$#####' }}</span>
+          <span>Prêmios:  {{ isVisible ? (user()?.prizeBalance | currency) : 'R$#####' }}</span>
+        </div>
+        <div class="container-deposit-wallet">
+          <button mat-menu-item (click)="deposit()">
           <mat-icon>payments</mat-icon>
           Depositar</button>
         <button mat-menu-item (click)="wallet()">
           <mat-icon>wallet</mat-icon>
           Carteira</button>
+        </div>
       </mat-menu>
-
       <button class="btn-user" [matMenuTriggerFor]="belowMenu">
         <mat-icon>person</mat-icon>
       </button>
-      <mat-menu class="mat-menu-item" #belowMenu="matMenu" yPosition="below"  >
+      <mat-menu class="mat-menu-item" #belowMenu="matMenu" yPosition="below">
         <button mat-menu-item (click)="myAccount()">
           <mat-icon>person</mat-icon>
           Minha Conta
@@ -35,44 +39,26 @@
           <mat-icon>logout</mat-icon>
           Sair
         </button>
-
-
       </mat-menu>
     </div>
   </mat-toolbar>
-  <mat-sidenav-container
-    class="example-sidenav-container"
-    [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
-  >
-    <mat-sidenav
-      class="bg-primary"
-      [opened]="isSidenavOpen"
-      #snav
-      [mode]="mobileQuery.matches ? 'over' : 'side'"
-      [fixedInViewport]="mobileQuery.matches"
-      fixedTopGap="56"
-    >
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav class="bg-primary" [opened]="isSidenavOpen" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
         <app-button-menu descricao="Rodadas" (onClick)="handleClick('/')">
           <mat-icon>list_alt</mat-icon>
         </app-button-menu>
-        <app-button-menu
-          descricao="Meus Premios"
-          (onClick)="handleClick('/premios')"
-        >
+        <app-button-menu descricao="Meus Premios" (onClick)="handleClick('/premios')">
           <mat-icon>military_tech</mat-icon>
         </app-button-menu>
-        <app-button-menu
-          descricao="Minhas Recargas"
-          (onClick)="handleClick('/recargas')"
-        >
+        <app-button-menu descricao="Minhas Recargas" (onClick)="handleClick('/recargas')">
           <mat-icon>paid</mat-icon>
         </app-button-menu>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="routeoutlet">
       <div class="router-container bg-primary">
-        <router-outlet ></router-outlet>
+        <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>

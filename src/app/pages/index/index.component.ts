@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, effect, inject, Input, OnDestroy, OnInit, signal, Signal, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, effect, inject, Input, OnDestroy, OnInit, signal, Signal, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
@@ -29,14 +29,19 @@ export class IndexComponent implements OnInit {
   showFiller = true;
   mobileQuery: MediaQueryList;
   private router: Router = inject(Router);
-  private socketService :SocketService = inject(SocketService)
+  private socketService: SocketService = inject(SocketService)
   readonly dialog = inject(MatDialog);
   private _mobileQueryListener: () => void;
-
   isVisible: boolean = true;
   protected readonly PunterMeResourceService = inject(PunterMeResourceService);
 
-  user =  signal<IPunter|undefined>(undefined);
+  user = signal<IPunter | undefined>(undefined);
+
+  total_credit = computed(() => {
+    const userData = this.user(); // Supondo que user seja um `ref` ou `computed`
+    return userData ? (userData.balance + userData.prizeBalance) : 0;
+  })
+
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -44,9 +49,9 @@ export class IndexComponent implements OnInit {
     this.socketService.connect();
     effect(() => {
       this.user.set(this.PunterMeResourceService.resource.value());
-      if( this.socketService.IsConnected() && this.user() !=null){
+      if (this.socketService.IsConnected() && this.user() != null) {
         console.log(this.user()?.seller.rooms[0].id)
-        this.socketService.subscribeToChannel(`room_${ this.user()?.seller.rooms[0].id}`);
+        this.socketService.subscribeToChannel(`room_${this.user()?.seller.rooms[0].id}`);
       }
     })
   }
@@ -82,7 +87,7 @@ export class IndexComponent implements OnInit {
     sessionStorage.removeItem(STORAGE_REFRESH_TOKEN);
 
     // Opcional: Limpa outros dados relacionados ao usuário, se necessário
-   // this.userService.clearUser(); // Certifique-se de ter um método na UserService para limpar o estado do usuário
+    // this.userService.clearUser(); // Certifique-se de ter um método na UserService para limpar o estado do usuário
 
     // Redireciona para a página de login
     this.router.navigate(['/login']);

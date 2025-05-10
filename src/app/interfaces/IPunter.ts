@@ -4,7 +4,8 @@ import { IUser } from "./IUser"
 export interface IPunter {
   id: string,
   name:string,
-  balance:number
+  balance:number,
+  prizeBalance:number,
   email:string,
   cpf:string,
   dateBirth : string,
