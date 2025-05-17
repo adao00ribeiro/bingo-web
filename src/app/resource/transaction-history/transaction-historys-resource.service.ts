@@ -18,7 +18,7 @@ export class TransactionHistorysResourceService extends BaseHttpResourceService 
       size: this.size(), // Obtém o ID dinamicamente
     }), // Pode ser um objeto vazio caso não precise de parâmetros
     loader: ({request}) =>
-      this.httpClient.get<IPaged>(`${this.url}/recharge?page=${request.page}&size=${request.size}`)
+      this.httpClient.get<IPaged>(`${this.url}/transactionhistory?page=${request.page}&size=${request.size}`)
   });
 
   // Método opcional para recarregar os rounds
