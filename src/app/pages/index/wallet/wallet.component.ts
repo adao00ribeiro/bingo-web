@@ -14,16 +14,15 @@ export class WalletComponent {
 
   columnConfigs = [
     { key: 'id', displayName: 'Id', pipe: "guid" },
-    { key: 'valor', displayName: 'Valor', pipe: "currency" },
-    { key: 'cardId', displayName: 'Saldo anterior', pipe: "currency"  },
-    { key: 'prize.type', displayName: 'Saldo Posterior' , pipe: "currency"  },
-    { key: 'prize.value', displayName: 'Tipo' },
-    { key: 'prize.value', displayName: 'Situacao' },
-    { key: 'prize.value', displayName: 'Data Criação', pipe: "date" },
+    { key: 'amount', displayName: 'Valor', pipe: "currency" },
+    { key: 'previousBalance', displayName: 'Saldo anterior', pipe: "currency"  },
+    { key: 'currentBalance', displayName: 'Saldo Posterior' , pipe: "currency"  },
+    { key: 'type', displayName: 'Tipo' },
+    { key: 'createAt', displayName: 'Data Criação', pipe: "dateTime" },
 
   ];
 
-    cardWinners = computed(() => this.transactionHistorysResourceService.resource.value()|| undefined);
+    transactionsHistory = computed(() => this.transactionHistorysResourceService.resource.value()|| undefined);
     totalItems = computed(() =>
        this.transactionHistorysResourceService.resource.value()?.totalCount || 0
     );
