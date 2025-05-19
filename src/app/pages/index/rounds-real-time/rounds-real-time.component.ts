@@ -1,5 +1,5 @@
-import { Component,  computed,  effect, inject, Input, OnInit, signal } from '@angular/core';
-import { Router} from '@angular/router';
+import { Component, computed, effect, inject, Input, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { PanelBallsComponent } from "../../../components/panel-balls/panel-balls.component";
 import { CardComponent } from "../../../components/card/card.component";
 import { SungNumbersComponent } from "../../../components/sung-numbers/sung-numbers.component";
@@ -21,13 +21,14 @@ import { EPrizeType } from '../../../enums/EPrizeType';
 import { DialogAllWinnersComponent } from '../../../components/dialogs/dialog-all-winners/dialog-all-winners.component';
 import { AudioPlayerService } from '../../../services/audio-player.service';
 import { CardsByPunterResourceService } from '../../../resource/card/cards-by-punter-resource.service';
+import { TableAlmostThereComponent } from "../../../components/tables/table-almost-there/table-almost-there.component";
 
 
 
 @Component({
   selector: 'app-rounds-real-time',
   standalone: true,
-  imports: [CurrencyPipe, GuidPipe, ScrollingModule, MatIconModule, MatButtonModule, PanelBallsComponent, CardComponent, SungNumbersComponent, PrizeBoardComponent],
+  imports: [CurrencyPipe, GuidPipe, ScrollingModule, MatIconModule, MatButtonModule, PanelBallsComponent, CardComponent, SungNumbersComponent, PrizeBoardComponent, TableAlmostThereComponent],
   templateUrl: './rounds-real-time.component.html',
   styleUrl: './rounds-real-time.component.scss',
 })
@@ -46,35 +47,49 @@ export class RoundsRealTimeComponent implements OnInit {
   cards: ICard[] = [];
   rows: ICard[][] = [];
   round = signal<IRound | null>(null);
-  roundMessage?: IRoundMessage;
+  roundMessage = signal<IRoundMessage | undefined>(undefined);
   show_dialog = false;
-
+  prize_type = "";
   totalPrize = computed(() => {
     if (this.round()) {
       return this.round()?.prizes.reduce((total, prize) => total + prize.value, 0);
     }
     return 0;
   });
+  top_list = computed(() => {
+    const prize_results = this.roundMessage()?.results;
+
+    if (prize_results == null) {
+      return [];
+    }
+    var result = prize_results.find((p) => p.prizeType == EPrizeType.FullCard);
+
+    if (result) {
+      return result.listTopCards;
+    } else {
+      return [];
+    }
+  });
+
   constructor() {
     effect(() => {
       const currentRound = this.round();
       if (currentRound) {
-        this.roundMessage = this.roundsRealTimeService.getRoundSignal()(currentRound.roomId, currentRound.id);
-        console.log(this.roundMessage)
-        if (this.roundMessage?.currentPrizeResult == null) {
-          this.audioPlayer.playNumber(this.roundMessage.mainBall);
+        this.roundMessage.set(this.roundsRealTimeService.getRoundSignal()(currentRound.roomId, currentRound.id));
+        if (this.roundMessage()?.currentPrizeResult == null) {
+          this.audioPlayer.playNumber(this.roundMessage()?.mainBall ?? 0);
         }
         this.updateShowDialogWinner();
         this.playSong();
       }
       const paged = this.cardsByPunterResourceService.resource.value()
 
-      if(paged){
+      if (paged) {
         this.cards = paged.items
         this.rows = this.chunkArray(this.cards, 4);
       }
 
-      if( this.cardsByPunterResourceService.resource.error()){
+      if (this.cardsByPunterResourceService.resource.error()) {
         this.snackBar.open("Erro de chamadas", 'Ok', {
           duration: 5000, // Set the duration in milliseconds
           horizontalPosition: 'center', // Options: 'start', 'center', 'end'
@@ -82,14 +97,12 @@ export class RoundsRealTimeComponent implements OnInit {
           panelClass: 'error-snackbar',
         });
       }
-
-
-
     })
   }
+
   playSong() {
-    var currentPrizeResult = this.roundMessage?.currentPrizeResult;
-    if(currentPrizeResult==null){
+    var currentPrizeResult = this.roundMessage()?.currentPrizeResult;
+    if (currentPrizeResult == null) {
       return;
     }
     const prizeAudioMap: Record<EPrizeType, () => void> = {
@@ -106,7 +119,7 @@ export class RoundsRealTimeComponent implements OnInit {
       [EPrizeType.PlusShape]: () => this.audioPlayer.playPlusShape(),
       [EPrizeType.OuterEdge]: () => this.audioPlayer.playOuterEdge(),
       [EPrizeType.FullCard]: () => {
-        if (this.roundMessage?.isAccumulated) {
+        if (this.roundMessage()?.isAccumulated) {
           this.audioPlayer.playAccumulated();
         } else {
           this.audioPlayer.playFullCard();
@@ -120,10 +133,12 @@ export class RoundsRealTimeComponent implements OnInit {
       console.warn("Áudio não encontrado para o tipo de prêmio:", currentPrizeResult.prizeType);
     }
   }
+
   ngOnInit(): void {
     this.getRound();
-    this.cardsByPunterResourceService.reload(this.id,null,null);
+    this.cardsByPunterResourceService.reload(this.id, null, null);
   }
+
   chunkArray(arr: any[], size: number): any[][] {
     const result = [];
     for (let i = 0; i < arr.length; i += size) {
@@ -131,15 +146,16 @@ export class RoundsRealTimeComponent implements OnInit {
     }
     return result;
   }
+
   getRound(): void {
     this.roundService.GetById(this.id).subscribe({
       next: (data) => {
-        if(data.finishedDate){
-
+        if (data.finishedDate) {
+          // Logic for finished round if needed
         }
 
         this.round.set(data);
-        console.log("opa",data)
+        console.log("opa", data)
       },
       error: (err) => {
         this.snackBar.open(err.error.detail, 'Ok', {
@@ -151,18 +167,19 @@ export class RoundsRealTimeComponent implements OnInit {
         // Aqui você pode implementar a lógica para lidar com o erro, como exibir uma mensagem ao usuário
       },
       complete: () => {
-
+        // Complete logic if needed
       }
     });
   }
+
   openDialogWinner() {
     if (!this.dialogRef) { // Evita abrir múltiplas instâncias
       this.dialogRef = this.dialog.open(DialogWinnerComponent, {
         disableClose: true,
         data: {
-          titlePrize: this.roundMessage?.currentPrizeResult?.prizeType,
-          winningCards: this.roundMessage?.currentPrizeResult?.winningCards,
-          numbers: this.roundMessage?.numbers
+          titlePrize: this.roundMessage()?.currentPrizeResult?.prizeType,
+          winningCards: this.roundMessage()?.currentPrizeResult?.winningCards,
+          numbers: this.roundMessage()?.numbers
         }
       });
 
@@ -171,46 +188,50 @@ export class RoundsRealTimeComponent implements OnInit {
       });
     }
   }
+
   openDialogAllWinners() {
     if (!this.dialogAllWinnersRef) { // Evita abrir múltiplas instâncias
-      this.dialogAllWinnersRef =  this.dialog.open(DialogAllWinnersComponent, {
+      this.dialogAllWinnersRef = this.dialog.open(DialogAllWinnersComponent, {
         disableClose: true,
         maxWidth: '95vw',
         maxHeight: '95vh',
         height: '95%',
         width: '95%',
         data: {
-          results: this.roundMessage?.results
+          results: this.roundMessage()?.results
         }
       });
       this.dialogAllWinnersRef.afterClosed().subscribe(() => {
         this.dialogAllWinnersRef = null; // Reseta a referência quando fechar
       });
     }
-
   }
+
   closeDialogWinner() {
     this.dialogRef?.close();
     this.dialogRef = null;
   }
+
   closeDialogAllWinner() {
     this.dialogAllWinnersRef?.close();
     this.dialogAllWinnersRef = null;
   }
+
   updateShowDialogWinner() {
-    if (this.roundMessage?.currentPrizeResult != null) {
+    const roundMessageValue = this.roundMessage();
+    if (roundMessageValue?.currentPrizeResult != null) {
       this.openDialogWinner();
-      if (this.roundMessage.numbers.length === 90 || this.roundMessage.currentPrizeResult.prizeType == EPrizeType.FullCard )  {
-        if(this.roundMessage.currentPrizeResult.winningCards.length > 0){
-        setTimeout(() => {
-          this.closeDialogWinner();
-          this.openDialogAllWinners();
-        }, 10000);
-        setTimeout(() => {
-          this.closeDialogAllWinner();
-          this.router.navigate(["/"]);
-        }, this.roundMessage.isAccumulated ? 15000 : 40000);
-      }
+      if (roundMessageValue.numbers.length === 90 || roundMessageValue.currentPrizeResult.prizeType == EPrizeType.FullCard) {
+        if (roundMessageValue.currentPrizeResult.winningCards.length > 0) {
+          setTimeout(() => {
+            this.closeDialogWinner();
+            this.openDialogAllWinners();
+          }, 10000);
+          setTimeout(() => {
+            this.closeDialogAllWinner();
+            this.router.navigate(["/"]);
+          }, roundMessageValue.isAccumulated ? 15000 : 40000);
+        }
       }
     } else {
       this.closeDialogWinner();

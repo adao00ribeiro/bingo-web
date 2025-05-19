@@ -26,24 +26,29 @@
     </div>
     <app-prize-board [prizes]="round() ? round()?.prizes : []" />
     <app-sung-numbers
-    [mainBall]="roundMessage ? roundMessage.mainBall : 0 "
-    [secondBall]="roundMessage ? roundMessage.secondBall : 0"
-    [thirdBall]="roundMessage ? roundMessage.thirdBall : 0"
-    [fourthBall]="roundMessage ? roundMessage.forthBall : 0"
-    [MaxNumbers]="roundMessage ? roundMessage.maxNumbers : 0"
-    [maxBalls]="roundMessage && roundMessage.round ? roundMessage.round.maxBalls : 0"
+   [mainBall]="roundMessage()?.mainBall ?? 0"
+    [secondBall]="roundMessage()?.secondBall ?? 0"
+    [thirdBall]="roundMessage()?.thirdBall ?? 0"
+    [fourthBall]="roundMessage()?.forthBall ?? 0"
+    [MaxNumbers]="roundMessage()?.maxNumbers ?? 0"
+    [maxBalls]="roundMessage()?.round?.maxBalls ?? 0"
     class="bg-primary" />
-    <app-panel-balls [balls]="roundMessage ? roundMessage.numbers : []" ></app-panel-balls>
+    <app-panel-balls [balls]="roundMessage()?.numbers ?? []" ></app-panel-balls>
     <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
       <div *cdkVirtualFor="let row of rows" class="example-row">
         @for (item of row; track $index) {
           <div class="example-item" >
-            <app-card [card]="item" [balls]="roundMessage ? roundMessage.numbers : []"></app-card>
+            <app-card [card]="item" [balls]="roundMessage()?.numbers ?? []"></app-card>
           </div>
         }
       </div>
     </cdk-virtual-scroll-viewport>
 
   </div>
+  <div class="right bg-second">
+    <app-table-almost-there [toplist]="top_list()" />
+    <div class="chat">
 
+    </div>
+  </div>
 </div>

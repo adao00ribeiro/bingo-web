@@ -1,0 +1,28 @@
+<div class="my-sticky-dynamic">
+  <div class="my-card-table">
+    <div class="table-wrapper">
+      <table class="my-table">
+        <thead class="my-header-table">
+          <tr>
+            <th *ngFor="let col of columns" [class]="'text-' + col.align">
+              {{ col.label }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of datatable; let i = index" [attr.data-index]="i">
+            <td class="text-left">{{ row.cupom }}</td>
+            <td class="text-left">{{ row.doador }}</td>
+            <td>
+              <div class="almostballs bg-primary">
+                <div *ngFor="let num of row.faltam; let j = index" [attr.key]="j">
+                  {{ formatNumber(num) }}
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

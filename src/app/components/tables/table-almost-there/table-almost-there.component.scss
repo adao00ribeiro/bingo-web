@@ -1,0 +1,77 @@
+.my-sticky-dynamic {
+  .my-card-table {
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+    .table-wrapper {
+      max-height: 400px;
+      overflow-y: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .my-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th,
+      td {
+        padding: 0.75rem 1rem;
+
+        text-align: left;
+      }
+
+      th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+
+        background-color: var(--background-color-second); // ou a cor do seu tema
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+
+      tbody tr:nth-child(odd) {
+      }
+
+      tbody tr:nth-child(even) {
+      }
+    }
+
+    td.text-left {
+      text-align: left;
+    }
+    td.text-center {
+      text-align: center;
+    }
+    td.text-right {
+      text-align: right;
+    }
+
+    .almostballs {
+      display: flex;
+      flex-wrap: nowrap; // <-- impede quebra de linha
+      gap: 0.4rem;
+      overflow-x: hidden; // <-- scroll horizontal se necessário
+      -ms-overflow-style: none;
+
+      div {
+        min-width: 1.5rem;
+        height: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+
+        font-size: 0.75rem;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      &.bg-primary div {
+        background-color: #3b82f6;
+      }
+    }
+  }
+}

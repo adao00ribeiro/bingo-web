@@ -3,7 +3,7 @@
   <div class="grid">
     @for (wc of winingCards(); track $index) {
     <div class="card-prize">
-      <h1>{{ wc.punter.name }}</h1>
+      <h1>{{ wc.card.name }}</h1>
       <app-card [card]="wc.card" [balls]="numbers()"></app-card>
       <span>{{ wc.valueOfEachWinner| currency }}</span>
     </div>
