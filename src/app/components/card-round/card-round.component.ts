@@ -49,7 +49,7 @@ export class CardRoundComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.round());
+
     this.intervalId = interval(1000).subscribe(() => this.updateTimeRemaining());
   }
 
