@@ -1,6 +1,6 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ContentChild, ContentChildren, ElementRef, EventEmitter, inject, input, Input, OnInit, Output, QueryList, SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
-import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { AfterViewInit, ChangeDetectorRef, Component, ContentChild, ContentChildren, ElementRef, EventEmitter, inject, input, Input, OnInit, Output, QueryList, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DynamicPipe } from '../../pipes/dynamic.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,10 +28,11 @@ import { IPaged } from '../../interfaces/IPaged';
   styleUrl: './table.component.scss'
 })
 
-export class TableComponent<T extends object> implements OnInit, AfterViewInit{
-  @Input() columnMappings: { key: string; displayName: string , pipe?: string }[] = [];
+export class TableComponent<T extends object> implements OnInit, AfterViewInit {
+  @Input() columnMappings: { key: string; displayName: string, pipe?: string }[] = [];
   @Input() data: IPaged | undefined = undefined;
   @Output() pageChange = new EventEmitter<{ page: number; size: number }>();
+  //@Output() changeRefresh: EventEmitter<void> = new EventEmitter<void>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ContentChildren(TemplateRef) columnTemplatesList!: QueryList<TemplateRef<any>>;
@@ -40,35 +41,35 @@ export class TableComponent<T extends object> implements OnInit, AfterViewInit{
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef)
 
   displayedColumns: string[] = [];
-   totalItems : number = 0;
-   pageIndex: number = 0;
-   pageSize: number = 10;
+  totalItems: number = 0;
+  pageIndex: number = 0;
+  pageSize: number = 10;
 
   ngOnInit() {
 
-   this.initializeColumnsAndData();
-   this.displayedColumns = this.columnMappings.map(col => col.key);
+    this.initializeColumnsAndData();
+    this.displayedColumns = this.columnMappings.map(col => col.key);
 
-   this.dataSource.filterPredicate = (data: T, filter: string) => {
-    const formattedFilter = filter.trim().toLowerCase();
+    this.dataSource.filterPredicate = (data: T, filter: string) => {
+      const formattedFilter = filter.trim().toLowerCase();
 
-    // Concatena todos os valores relevantes da linha em uma única string pesquisável
-    const searchableData = this.columnMappings
-      .map(col => {
-        let value = this.getValue(data, col.key);
-        // Se houver um pipe associado, aplicamos a transformação
-        if (col.pipe) {
-          const dynamicPipe = new DynamicPipe(); // Criamos uma instância do pipe
-          value = dynamicPipe.transform(value, col.pipe); // Aplicamos o pipe correto
-        }
+      // Concatena todos os valores relevantes da linha em uma única string pesquisável
+      const searchableData = this.columnMappings
+        .map(col => {
+          let value = this.getValue(data, col.key);
+          // Se houver um pipe associado, aplicamos a transformação
+          if (col.pipe) {
+            const dynamicPipe = new DynamicPipe(); // Criamos uma instância do pipe
+            value = dynamicPipe.transform(value, col.pipe); // Aplicamos o pipe correto
+          }
 
-        return value;
-      })
-      .join(' ')
-      .toLowerCase();
+          return value;
+        })
+        .join(' ')
+        .toLowerCase();
 
-    return searchableData.includes(formattedFilter);
-  };
+      return searchableData.includes(formattedFilter);
+    };
   }
   ngAfterContentInit() {
     this.columnTemplatesList.forEach((template) => {
@@ -93,7 +94,7 @@ export class TableComponent<T extends object> implements OnInit, AfterViewInit{
       (obj && obj[key] !== undefined) ? obj[key] : null, element);
   }
   ngAfterViewInit() {
-   this.initializeColumnsAndData();
+    this.initializeColumnsAndData();
     this.dataSource.sort = this.sort;
     this.handleEmit();
     if (this.sort) {
@@ -118,12 +119,15 @@ export class TableComponent<T extends object> implements OnInit, AfterViewInit{
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  handleEmit(){
+  handleEmit() {
     this.pageChange.emit({ page: this.pageIndex + 1, size: this.pageSize });
   }
   onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-     this.handleEmit();
+    this.handleEmit();
+  }
+  handleClick() {
+   this.handleEmit();
   }
 }

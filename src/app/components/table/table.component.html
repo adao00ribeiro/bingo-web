@@ -1,5 +1,7 @@
 
-
+<div class="header">
+    <button class="btn-add" (click)="handleClick()">Atualizar</button>
+</div>
 <mat-form-field class="input-filter">
   <mat-label>Filter</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
