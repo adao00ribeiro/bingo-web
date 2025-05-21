@@ -29,4 +29,5 @@ export class MyAwardsComponent {
   loadData(page: number, size: number) {
     this.cardWinnersResourceService.reload(page, size)
   }
+
 }
