@@ -15,8 +15,8 @@
         </span>
       </div>
       <div class="configuration">
-        <button class="button">
-          @if(!isMuted){
+        <button class="button" (click)="audioPlayer.toggleMute()">
+          @if(!audioPlayer.isMuted){
           <mat-icon>volume_up</mat-icon>
           }@else{
            <mat-icon>volume_mute</mat-icon>
@@ -24,8 +24,8 @@
         </button>
       </div>
     </div>
-    <app-prize-board [prizes]="round() ? round()?.prizes : []" />
-    <app-sung-numbers
+   <div class="group">
+        <app-sung-numbers
    [mainBall]="roundMessage()?.mainBall ?? 0"
     [secondBall]="roundMessage()?.secondBall ?? 0"
     [thirdBall]="roundMessage()?.thirdBall ?? 0"
@@ -33,6 +33,9 @@
     [MaxNumbers]="roundMessage()?.maxNumbers ?? 0"
     [maxBalls]="roundMessage()?.round?.maxBalls ?? 0"
     class="bg-primary" />
+     <app-prize-board [prizeResults]="roundMessage() ? roundMessage()?.results : []" />
+   </div>
+
     <app-panel-balls [balls]="roundMessage()?.numbers ?? []" ></app-panel-balls>
     <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
       <div *cdkVirtualFor="let row of rows" class="example-row">

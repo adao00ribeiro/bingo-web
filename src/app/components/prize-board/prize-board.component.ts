@@ -1,15 +1,30 @@
-import { Component, input } from '@angular/core';
-import { CardComponent } from "../card/card.component";
-import { CardPrizeComponent } from "../card-prize/card-prize.component";
+import {Component, computed, input} from '@angular/core';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { IPrize } from '../../interfaces/IPrize';
+import { IPrizeResult } from '../../interfaces/IPrizeResult';
 
 @Component({
   selector: 'app-prize-board',
   standalone: true,
-  imports: [ CardPrizeComponent],
+  imports: [ MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule],
   templateUrl: './prize-board.component.html',
   styleUrl: './prize-board.component.scss'
 })
 export class PrizeBoardComponent {
-  prizes= input<IPrize[] | undefined>([])
+  prizeResults = input<IPrizeResult[] | undefined>([]);
+
+
+  isOpen = false;
+  currentPrize = computed(()=>{
+    console.log(this.prizeResults())
+    return this.prizeResults()?.find(x=>x.winningCards.length==0)?.prizeType
+  })
+  toggleDropdown() {
+    this.isOpen = !this.isOpen;
+  }
+
+  // Computa o primeiro prêmio que ainda não saiu
+
 }

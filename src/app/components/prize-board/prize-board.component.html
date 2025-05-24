@@ -1,4 +1,15 @@
-
-     @for (item of prizes(); track $index) {
-    <app-card-prize/>
+<div class="custom-select-container" (click)="toggleDropdown()">
+  <div class="custom-select-label">
+    {{ currentPrize()}}
+    <span class="arrow" [class.open]="isOpen">▼</span>
+  </div>
+  @if (isOpen) {
+    <div class="custom-options">
+      @for (prize of prizeResults(); track $index) {
+        <div [class.drawn]="prize.winningCards.length > 0">
+          {{ prize.prizeType }}
+        </div>
+      }
+    </div>
   }
+</div>

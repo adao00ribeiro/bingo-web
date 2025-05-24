@@ -48,7 +48,14 @@
       }
     }
   }
+.group{
 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--background-color-primary);
+}
   .container-prizes {
     background-color: blue;
   }
