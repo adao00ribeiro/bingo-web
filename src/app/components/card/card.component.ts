@@ -1,13 +1,12 @@
-import { Component, input, Input, OnInit } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ICard } from '../../interfaces/ICard';
-import { GuidPipe } from '../../pipes/guid.pipe';
 import { CommonModule } from '@angular/common';
 import { EPrizeType } from '../../enums/EPrizeType';
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [GuidPipe,CommonModule ],
+  imports: [CommonModule ],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss'
 })

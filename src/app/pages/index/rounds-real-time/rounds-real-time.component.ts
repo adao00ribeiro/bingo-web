@@ -23,8 +23,6 @@ import { AudioPlayerService } from '../../../services/audio-player.service';
 import { CardsByPunterResourceService } from '../../../resource/card/cards-by-punter-resource.service';
 import { TableAlmostThereComponent } from "../../../components/tables/table-almost-there/table-almost-there.component";
 
-
-
 @Component({
   selector: 'app-rounds-real-time',
   standalone: true,
@@ -34,7 +32,6 @@ import { TableAlmostThereComponent } from "../../../components/tables/table-almo
 })
 export class RoundsRealTimeComponent implements OnInit {
   @Input() id = '';
-  isMuted: boolean = false; // Variável para controlar o estado de som
   public readonly roundService = inject(RoundService);
   public readonly cardsByPunterResourceService = inject(CardsByPunterResourceService);
   public readonly snackBar = inject(MatSnackBar);
@@ -47,15 +44,17 @@ export class RoundsRealTimeComponent implements OnInit {
   cards: ICard[] = [];
   rows: ICard[][] = [];
   round = signal<IRound | null>(null);
-  roundMessage = signal<IRoundMessage | undefined>(undefined);
+  roundMessage = signal<IRoundMessage | null>(null);
   show_dialog = false;
   prize_type = "";
+
   totalPrize = computed(() => {
     if (this.round()) {
       return this.round()?.prizes.reduce((total, prize) => total + prize.value, 0);
     }
     return 0;
   });
+
   top_list = computed(() => {
     const prize_results = this.roundMessage()?.results;
 
@@ -72,32 +71,44 @@ export class RoundsRealTimeComponent implements OnInit {
   });
 
   constructor() {
+    // Effect específico para mudanças na roundMessage da sala atual
     effect(() => {
       const currentRound = this.round();
       if (currentRound) {
-        this.roundMessage.set(this.roundsRealTimeService.getRoundSignal()(currentRound.roomId, currentRound.id));
-        if (this.roundMessage()?.currentPrizeResult == null) {
-          this.audioPlayer.playNumber(this.roundMessage()?.mainBall ?? 0);
+        // Obter especificamente o round message da sala atual
+        const currentRoundMessage = this.roundsRealTimeService.getRoundSignal()(currentRound.roomId, currentRound.id);
+
+        // Só processa se realmente mudou
+        if (currentRoundMessage && currentRoundMessage !== this.roundMessage()) {
+          this.roundMessage.set(currentRoundMessage);
+
+          if (this.roundMessage()?.currentPrizeResult == null) {
+            this.audioPlayer.playNumber(this.roundMessage()?.mainBall ?? 0);
+          }
+          this.updateShowDialogWinner();
+          this.playSong();
         }
-        this.updateShowDialogWinner();
-        this.playSong();
       }
-      const paged = this.cardsByPunterResourceService.resource.value()
+    });
+
+    // Effect separado para cards (não relacionado aos rounds)
+    effect(() => {
+      const paged = this.cardsByPunterResourceService.resource.value();
 
       if (paged) {
-        this.cards = paged.items
+        this.cards = paged.items;
         this.rows = this.chunkArray(this.cards, 4);
       }
 
       if (this.cardsByPunterResourceService.resource.error()) {
         this.snackBar.open("Erro de chamadas", 'Ok', {
-          duration: 5000, // Set the duration in milliseconds
-          horizontalPosition: 'center', // Options: 'start', 'center', 'end'
-          verticalPosition: 'bottom', // Options: 'top', 'bottom'
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
           panelClass: 'error-snackbar',
         });
       }
-    })
+    });
   }
 
   playSong() {
@@ -159,12 +170,11 @@ export class RoundsRealTimeComponent implements OnInit {
       },
       error: (err) => {
         this.snackBar.open(err.error.detail, 'Ok', {
-          duration: 5000, // Set the duration in milliseconds
-          horizontalPosition: 'center', // Options: 'start', 'center', 'end'
-          verticalPosition: 'bottom', // Options: 'top', 'bottom'
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
           panelClass: 'error-snackbar',
         });
-        // Aqui você pode implementar a lógica para lidar com o erro, como exibir uma mensagem ao usuário
       },
       complete: () => {
         // Complete logic if needed
@@ -173,7 +183,7 @@ export class RoundsRealTimeComponent implements OnInit {
   }
 
   openDialogWinner() {
-    if (!this.dialogRef) { // Evita abrir múltiplas instâncias
+    if (!this.dialogRef) {
       this.dialogRef = this.dialog.open(DialogWinnerComponent, {
         disableClose: true,
         data: {
@@ -184,13 +194,13 @@ export class RoundsRealTimeComponent implements OnInit {
       });
 
       this.dialogRef.afterClosed().subscribe(() => {
-        this.dialogRef = null; // Reseta a referência quando fechar
+        this.dialogRef = null;
       });
     }
   }
 
   openDialogAllWinners() {
-    if (!this.dialogAllWinnersRef) { // Evita abrir múltiplas instâncias
+    if (!this.dialogAllWinnersRef) {
       this.dialogAllWinnersRef = this.dialog.open(DialogAllWinnersComponent, {
         disableClose: true,
         maxWidth: '95vw',
@@ -202,7 +212,7 @@ export class RoundsRealTimeComponent implements OnInit {
         }
       });
       this.dialogAllWinnersRef.afterClosed().subscribe(() => {
-        this.dialogAllWinnersRef = null; // Reseta a referência quando fechar
+        this.dialogAllWinnersRef = null;
       });
     }
   }
