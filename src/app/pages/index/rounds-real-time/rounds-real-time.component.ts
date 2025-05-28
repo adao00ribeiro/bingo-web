@@ -22,15 +22,39 @@ import { DialogAllWinnersComponent } from '../../../components/dialogs/dialog-al
 import { AudioPlayerService } from '../../../services/audio-player.service';
 import { CardsByPunterResourceService } from '../../../resource/card/cards-by-punter-resource.service';
 import { TableAlmostThereComponent } from "../../../components/tables/table-almost-there/table-almost-there.component";
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-rounds-real-time',
   standalone: true,
-  imports: [CurrencyPipe, GuidPipe, ScrollingModule, MatIconModule, MatButtonModule, PanelBallsComponent, CardComponent, SungNumbersComponent, PrizeBoardComponent, TableAlmostThereComponent],
+  imports: [
+    CurrencyPipe,
+    GuidPipe,
+    ScrollingModule,
+     MatIconModule,
+     MatButtonModule,
+     PanelBallsComponent,
+     CardComponent,
+     SungNumbersComponent,
+     PrizeBoardComponent,
+     TableAlmostThereComponent,
+       MatButtonModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    ],
+    providers: [provideNativeDateAdapter()],
   templateUrl: './rounds-real-time.component.html',
   styleUrl: './rounds-real-time.component.scss',
 })
 export class RoundsRealTimeComponent implements OnInit {
+
   @Input() id = '';
   public readonly roundService = inject(RoundService);
   public readonly cardsByPunterResourceService = inject(CardsByPunterResourceService);
@@ -47,7 +71,10 @@ export class RoundsRealTimeComponent implements OnInit {
   roundMessage = signal<IRoundMessage | null>(null);
   show_dialog = false;
   prize_type = "";
-
+  getImage = computed(() => {
+    const maxBalls = this.round()?.maxBalls;
+    return maxBalls ? `/images/${maxBalls}.png` : '/images/90.png';
+  });
   totalPrize = computed(() => {
     if (this.round()) {
       return this.round()?.prizes.reduce((total, prize) => total + prize.value, 0);
@@ -247,4 +274,5 @@ export class RoundsRealTimeComponent implements OnInit {
       this.closeDialogWinner();
     }
   }
+
 }

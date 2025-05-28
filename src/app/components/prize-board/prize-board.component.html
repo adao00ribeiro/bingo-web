@@ -1,15 +1,16 @@
-<div class="custom-select-container" (click)="toggleDropdown()">
-  <div class="custom-select-label">
-    {{ currentPrize()}}
-    <span class="arrow" [class.open]="isOpen">▼</span>
-  </div>
-  @if (isOpen) {
-    <div class="custom-options">
-      @for (prize of prizeResults(); track $index) {
-        <div [class.drawn]="prize.winningCards.length > 0">
-          {{ prize.prizeType }}
-        </div>
-      }
-    </div>
-  }
-</div>
+<table class="custom-prize-table">
+  <thead class="scrollable-thead">
+    <tr>
+      <th>Premios</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody class="scrollable-tbody">
+    @for (prize of prizeResults(); track $index) {
+    <tr [class.line-through]="prize.winningCards.length > 0">
+      <td>{{ prize.prizeType }}</td>
+      <td>{{ prize.value | currency }} </td>
+    </tr>
+    }
+  </tbody>
+</table>

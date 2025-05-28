@@ -1,19 +1,20 @@
 import {Component, computed, input} from '@angular/core';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { IPrize } from '../../interfaces/IPrize';
 import { IPrizeResult } from '../../interfaces/IPrizeResult';
+import { CurrencyPipe } from '../../pipes/currency.pipe';
+
 
 @Component({
   selector: 'app-prize-board',
   standalone: true,
-  imports: [ MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule],
+  imports: [ CurrencyPipe,MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule],
   templateUrl: './prize-board.component.html',
   styleUrl: './prize-board.component.scss'
 })
 export class PrizeBoardComponent {
-  prizeResults = input<IPrizeResult[] | undefined>([]);
+   prizeResults = input<IPrizeResult[] | undefined>();
 
 
   isOpen = false;
