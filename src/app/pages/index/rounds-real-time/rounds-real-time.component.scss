@@ -1,5 +1,3 @@
-
-
 .rounds-real-time {
   display: flex;
   flex-direction: row;
@@ -13,20 +11,44 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0.5rem;
+
   gap: 0.5rem;
 
-
-  .container-header{
+  .container-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     background-color: var(--background-color-primary);
     padding: 0.5rem;
-    .info-round{
+    border-radius: 1rem;
+    .info-round {
+      flex: 1;
       display: flex;
       gap: 1rem;
-      span{
+
+      .group-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        span{
+          font-size: 1rem
+        }
+      }
+
+      .container-image {
+        width: 100px;
+        height: 100px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: fill;
+        }
+      }
+
+      span {
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -35,39 +57,60 @@
       }
     }
 
-    .configuration{
-      button{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius:50%;
-        color: white;
-        background-color: rgba(11, 73, 207, 0.603);
-      }
+    .container-timer {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .configuration {
+      flex: 1;
     }
   }
-.group{
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-  background-color: var(--background-color-primary);
-}
+  .container-balls {
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 1rem;
+    gap: 1rem;
+
+    .container-balls-right{
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+    }
+    .size-cards {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      color: white;
+      background-color: rgba(11, 73, 207, 0.603);
+    }
+  }
+
   .container-prizes {
     background-color: blue;
   }
+
   .container-info-ball {
     background-color: rgb(14, 179, 30);
   }
-  .container-balls {
-    flex: 1;
-    background-color: rgb(179, 179, 14);
-  }
-
-
 }
 .example-viewport {
   flex: 2;
@@ -78,13 +121,24 @@
 .example-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-
-
+  gap: 0.5rem;
 }
 
 .right {
   flex: 1;
 }
-.chat{
+
+.chat {
   flex: 1;
+}
+
+.expansion-panel{
+  background-color: var(--background-color-primary);
+}
+.expansion-panel-header{
+
+height: auto !important;
+}
+::ng-deep  .mat-expansion-panel-body {
+  padding: 0.5rem !important;
 }

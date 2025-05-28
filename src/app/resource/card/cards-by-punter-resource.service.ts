@@ -34,7 +34,6 @@ export class CardsByPunterResourceService extends BaseHttpResourceService {
 
   // Método opcional para recarregar os rounds
   reload(roundId :string, page:number | null , size:number | null) {
-
     this.roundId.set(roundId);
     this.page.set(page);
     this.size.set(size);

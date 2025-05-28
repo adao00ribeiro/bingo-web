@@ -1,57 +1,79 @@
-<div class="rounds-real-time bg-primary">
-  <div class="left bg-second">
+<div class="rounds-real-time">
+  <div class="left">
     <div class="container-header">
       <div class="info-round">
-        <span>
-          Rodada: {{(round()?.id | guid )}}
-        </span>
-        <span>
-          Valor Cartela:
-           {{round()?.cardValue |  currency }}
-        </span>
-        <span>
-          Total Premios:
-          {{totalPrize()|  currency }}
-        </span>
+        <div class="container-image">
+          <img alt [src]="getImage()">
+        </div>
+        <div class="group-info">
+          <span>
+            Rodada: {{(round()?.id | guid )}}
+          </span>
+          <span>
+            Valor Cartela:
+            {{round()?.cardValue | currency }}
+          </span>
+          <span>
+            Total Premios:
+            {{totalPrize()| currency }}
+          </span>
+        </div>
+      </div>
+      <div class="container-timer">
       </div>
       <div class="configuration">
-        <button class="button" (click)="audioPlayer.toggleMute()">
-          @if(!audioPlayer.isMuted){
-          <mat-icon>volume_up</mat-icon>
-          }@else{
-           <mat-icon>volume_mute</mat-icon>
-          }
-        </button>
+        <app-prize-board [prizeResults]="roundMessage() ? roundMessage()?.results : []">
+        </app-prize-board>
       </div>
     </div>
-   <div class="group">
-        <app-sung-numbers
-   [mainBall]="roundMessage()?.mainBall ?? 0"
-    [secondBall]="roundMessage()?.secondBall ?? 0"
-    [thirdBall]="roundMessage()?.thirdBall ?? 0"
-    [fourthBall]="roundMessage()?.forthBall ?? 0"
-    [MaxNumbers]="roundMessage()?.maxNumbers ?? 0"
-    [maxBalls]="roundMessage()?.round?.maxBalls ?? 0"
-    class="bg-primary" />
-     <app-prize-board [prizeResults]="roundMessage() ? roundMessage()?.results : []" />
-   </div>
-
-    <app-panel-balls [balls]="roundMessage()?.numbers ?? []" ></app-panel-balls>
-    <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
-      <div *cdkVirtualFor="let row of rows" class="example-row">
-        @for (item of row; track $index) {
-          <div class="example-item" >
-            <app-card [card]="item" [balls]="roundMessage()?.numbers ?? []"></app-card>
+    <mat-accordion  >
+      <mat-expansion-panel class="expansion-panel" >
+        <mat-expansion-panel-header class="expansion-panel-header" >
+          <div class="container-balls">
+            <app-sung-numbers  [mainBall]="roundMessage()?.mainBall ?? 0"
+              [secondBall]="roundMessage()?.secondBall ?? 0" [thirdBall]="roundMessage()?.thirdBall ?? 0"
+              [fourthBall]="roundMessage()?.forthBall ?? 0" [MaxNumbers]="roundMessage()?.maxNumbers ?? 0"
+              [maxBalls]="roundMessage()?.round?.maxBalls ?? 0">
+            </app-sung-numbers>
+            <div class="container-balls-right">
+              <div class="size-cards">
+                <span>Size:</span>
+                <button class="button">
+                  P
+                </button>
+                <button class="button">
+                  M
+                </button>
+                <button class="button">
+                  G
+                </button>
+              </div>
+              <button class="button" (click)="audioPlayer.toggleMute();$event.stopPropagation()">
+                @if(!audioPlayer.isMuted){
+                <mat-icon>volume_up</mat-icon>
+                }@else{
+                <mat-icon>volume_mute</mat-icon>
+                }
+              </button>
+            </div>
           </div>
+        </mat-expansion-panel-header>
+        <app-panel-balls [balls]="roundMessage()?.numbers ?? []"></app-panel-balls>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <cdk-virtual-scroll-viewport class="example-viewport" itemSize="50">
+      <div class="example-row" *cdkVirtualFor="let row of rows">
+        @for (item of cards; track $index) {
+          <app-card [card]="item" [balls]="roundMessage()?.numbers ?? []"></app-card>
         }
       </div>
     </cdk-virtual-scroll-viewport>
-
   </div>
-  <div class="right bg-second">
-    <app-table-almost-there [toplist]="top_list()" />
-    <div class="chat">
+  <div class="right">
+    <app-table-almost-there [toplist]="top_list()">
+      <div class="chat">
 
-    </div>
+      </div>
+    </app-table-almost-there>
   </div>
 </div>
