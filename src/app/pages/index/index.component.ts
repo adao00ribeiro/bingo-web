@@ -32,7 +32,7 @@ export class IndexComponent implements OnInit {
   private socketService: SocketService = inject(SocketService)
   readonly dialog = inject(MatDialog);
   private _mobileQueryListener: () => void;
-  isVisible: boolean = true;
+  isVisible: boolean = false;
   protected readonly PunterMeResourceService = inject(PunterMeResourceService);
 
   user = signal<IPunter | undefined>(undefined);
