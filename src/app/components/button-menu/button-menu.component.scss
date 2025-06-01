@@ -9,6 +9,16 @@
    &:hover{
     color: blue;
    }
-
+   span{
+    font-size: 1rem;
+   }
   }
+
+@media (max-width: 725px) {
+ .button-link{
+    span{
+   font-size:1.5rem;
+   }
+  }
+}
 

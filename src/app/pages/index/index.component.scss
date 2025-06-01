@@ -80,7 +80,6 @@
 .container-deposit-wallet {
   display: flex;
   flex-direction: row;
-
   gap: 0.5rem;
 }
 .example-is-mobile .example-toolbar {
@@ -89,9 +88,6 @@
   z-index: 2;
 }
 
-h1.example-app-name {
-  margin-left: 8px;
-}
 
 .example-sidenav-container {
   background-color: transparent;
@@ -99,35 +95,23 @@ h1.example-app-name {
      causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
   flex: 1;
 
-}
 
-.example-is-mobile .example-sidenav-container {
-  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
-     `<body>` to be our scrolling element for mobile layouts. */
-  flex: 1 0 auto;
 }
-.mat-toolbar {
-  min-height: 20px !important;
-  height: 40px !important;
-}
-.mat-toolbar-row {
-  min-height: 50px !important;
-  height: 200px !important;
+mat-sidenav{
+      border-radius: 0;
 }
 .mdc-list {
-  margin: 0.5rem;
+
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding: 1rem;
 }
 mat-sidenav {
   width: 270px;
 }
 
-.mat-toolbar {
-}
-.mat-drawer {
-}
+
 .route-outlet {
   flex: 2;
   padding: 0.5rem;
@@ -136,27 +120,9 @@ mat-sidenav {
   -ms-overflow-style: none;    /* IE 10+ */
 }
 
-/* Para telas menores */
-@media (max-width: 1200px) {
-  mat-sidenav {
-    width: 300px;
-  }
-}
 
-@media (max-width: 900px) {
-  mat-sidenav {
-    width: 250px;
-  }
-}
-
-@media (max-width: 600px) {
-  mat-sidenav {
-    width: 200px;
-  }
-}
-
-@media (max-width: 425px) {
-  mat-sidenav {
+@media (max-width: 725px) {
+ mat-sidenav {
     width: 100%;
   }
 }
