@@ -26,14 +26,13 @@
         </app-prize-board>
       </div>
     </div>
-    <mat-accordion  >
-      <mat-expansion-panel class="expansion-panel" >
-        <mat-expansion-panel-header class="expansion-panel-header" >
+    <mat-accordion>
+      <mat-expansion-panel class="expansion-panel">
+        <mat-expansion-panel-header class="expansion-panel-header">
           <div class="container-balls">
-            <app-sung-numbers  [mainBall]="roundMessage()?.mainBall ?? 0"
-              [secondBall]="roundMessage()?.secondBall ?? 0" [thirdBall]="roundMessage()?.thirdBall ?? 0"
-              [fourthBall]="roundMessage()?.forthBall ?? 0" [MaxNumbers]="roundMessage()?.maxNumbers ?? 0"
-              [maxBalls]="roundMessage()?.round?.maxBalls ?? 0">
+            <app-sung-numbers [mainBall]="roundMessage()?.mainBall ?? 0" [secondBall]="roundMessage()?.secondBall ?? 0"
+              [thirdBall]="roundMessage()?.thirdBall ?? 0" [fourthBall]="roundMessage()?.forthBall ?? 0"
+              [MaxNumbers]="roundMessage()?.maxNumbers ?? 0" [maxBalls]="roundMessage()?.round?.maxBalls ?? 0">
             </app-sung-numbers>
             <div class="container-balls-right">
               <div class="size-cards">
@@ -61,13 +60,15 @@
         <app-panel-balls [balls]="roundMessage()?.numbers ?? []"></app-panel-balls>
       </mat-expansion-panel>
     </mat-accordion>
-    <cdk-virtual-scroll-viewport class="example-viewport" itemSize="50">
-      <div class="example-row" *cdkVirtualFor="let row of rows">
-        @for (item of cards; track $index) {
-          <app-card [card]="item" [balls]="roundMessage()?.numbers ?? []"></app-card>
-        }
-      </div>
-    </cdk-virtual-scroll-viewport>
+    <div class="grid-container"
+     infinite-scroll
+     [infiniteScrollDistance]="scrollDistance"
+      [infiniteScrollThrottle]="scrollUpDistance"
+      (scrolled)="onScroll()" [scrollWindow]="false">
+      @for (item of top_cards(); track $index) {
+      <app-card [card]="item" [balls]="roundMessage()?.numbers ?? []"></app-card>
+      }
+    </div>
   </div>
   <div class="right">
     <app-table-almost-there [toplist]="top_list()">

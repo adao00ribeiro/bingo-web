@@ -20,7 +20,8 @@
   width: 40px;
   height: 40px;
   border-radius: 20rem;
-  color: var(--black);
+  color: rgb(121, 122, 122);
+
 }
 .example-toolbar {
   display: flex;
@@ -47,11 +48,22 @@
   .btn-wallet {
     display: flex;
     align-items: center;
-    width: 8rem;
-    height: 30px;
-    background-color: antiquewhite;
+
+    height: 20px;
+    background: none;
     justify-content: center;
-    color: black;
+    color: rgb(255, 255, 255);
+    border-radius: 5rem;
+    font-size: 1rem;
+  }
+  .btn-deposit {
+    display: flex;
+    align-items: center;
+    width: 8rem;
+    height: 40px;
+    background-color: #FF8638;
+    justify-content: center;
+    color: rgb(255, 255, 255);
     border-radius: 5rem;
     font-size: 1rem;
   }

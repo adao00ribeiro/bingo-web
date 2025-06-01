@@ -12,19 +12,24 @@
       </button>
       <button class="btn-wallet" [matMenuTriggerFor]="belowMenuDeposit">
         {{ isVisible ? (total_credit() | currency) : 'R$#####' }}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+
+      <button class="btn-deposit" (click)="deposit()">
+        Depositar
       </button>
       <mat-menu class="mat-menu-item" #belowMenuDeposit="matMenu" yPosition="below">
         <div class="container-balances">
-          <span>Crédito:  {{ isVisible ? (user()?.balance | currency) : 'R$#####' }}</span>
-          <span>Prêmios:  {{ isVisible ? (user()?.prizeBalance | currency) : 'R$#####' }}</span>
+          <span>Crédito: {{ isVisible ? (user()?.balance | currency) : 'R$#####' }}</span>
+          <span>Prêmios: {{ isVisible ? (user()?.prizeBalance | currency) : 'R$#####' }}</span>
         </div>
         <div class="container-deposit-wallet">
           <button mat-menu-item (click)="deposit()">
-          <mat-icon>payments</mat-icon>
-          Depositar</button>
-        <button mat-menu-item (click)="wallet()">
-          <mat-icon>wallet</mat-icon>
-          Carteira</button>
+            <mat-icon>payments</mat-icon>
+            Depositar</button>
+          <button mat-menu-item (click)="wallet()">
+            <mat-icon>wallet</mat-icon>
+            Carteira</button>
         </div>
       </mat-menu>
       <button class="btn-user" [matMenuTriggerFor]="belowMenu">
@@ -43,7 +48,8 @@
     </div>
   </mat-toolbar>
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav class="bg-primary" [opened]="isSidenavOpen" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+    <mat-sidenav class="bg-primary" [opened]="isSidenavOpen" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
         <app-button-menu descricao="Rodadas" (onClick)="handleClick('/')">
           <mat-icon>list_alt</mat-icon>
@@ -57,7 +63,7 @@
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="route-outlet">
-        <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

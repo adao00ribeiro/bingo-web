@@ -27,7 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 @Component({
   selector: 'app-rounds-real-time',
   standalone: true,
@@ -35,21 +35,22 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     CurrencyPipe,
     GuidPipe,
     ScrollingModule,
-     MatIconModule,
-     MatButtonModule,
-     PanelBallsComponent,
-     CardComponent,
-     SungNumbersComponent,
-     PrizeBoardComponent,
-     TableAlmostThereComponent,
-       MatButtonModule,
+    MatIconModule,
+    MatButtonModule,
+    PanelBallsComponent,
+    CardComponent,
+    SungNumbersComponent,
+    PrizeBoardComponent,
+    TableAlmostThereComponent,
+    MatButtonModule,
     MatExpansionModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
-    ],
-    providers: [provideNativeDateAdapter()],
+    InfiniteScrollDirective
+  ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './rounds-real-time.component.html',
   styleUrl: './rounds-real-time.component.scss',
 })
@@ -66,6 +67,13 @@ export class RoundsRealTimeComponent implements OnInit {
   private router: Router = inject(Router);
   readonly audioPlayer = inject(AudioPlayerService);
   cards: ICard[] = [];
+  page = 1;
+  pageSize = 50;
+  totalItems = 1000; // Suponha que o total venha do backend
+  loading = false;
+  throttle = 300;
+  scrollDistance = 1;
+  scrollUpDistance = 2;
   rows: ICard[][] = [];
   round = signal<IRound | null>(null);
   roundMessage = signal<IRoundMessage | null>(null);
@@ -81,7 +89,28 @@ export class RoundsRealTimeComponent implements OnInit {
     }
     return 0;
   });
+  top_cards = computed(() => {
 
+    if (!this.roundMessage()) return [];
+
+    const roundNumbersSet = new Set(this.roundMessage()?.numbers);
+    const heap = []; // Simulando uma min-heap para os 20 melhores
+
+    for (const card of this.cards) {
+      const score = card.numbers.reduce(
+        (count: number, num: number) => count + (roundNumbersSet.has(num) ? 1 : 0), 0
+      );
+
+      if (heap.length < 100) {
+        heap.push({ ...card, score });
+        heap.sort((a, b) => a.score - b.score); // Ordenação apenas dos 20 elementos
+      } else if (score > heap[0].score) {
+        heap[0] = { ...card, score };
+        heap.sort((a, b) => a.score - b.score); // Reorganiza a heap com os melhores
+      }
+    }
+    return heap.sort((a, b) => b.score - a.score); // Ordena do maior para o menor
+  })
   top_list = computed(() => {
     const prize_results = this.roundMessage()?.results;
 
@@ -123,8 +152,10 @@ export class RoundsRealTimeComponent implements OnInit {
       const paged = this.cardsByPunterResourceService.resource.value();
 
       if (paged) {
-        this.cards = paged.items;
+        this.cards = [...this.cards, ...paged.items];
+        this.totalItems += paged.totalCount;
         this.rows = this.chunkArray(this.cards, 4);
+        this.loading = false;
       }
 
       if (this.cardsByPunterResourceService.resource.error()) {
@@ -174,7 +205,7 @@ export class RoundsRealTimeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRound();
-    this.cardsByPunterResourceService.reload(this.id, null, null);
+    this.loadNextPage();
   }
 
   chunkArray(arr: any[], size: number): any[][] {
@@ -267,12 +298,23 @@ export class RoundsRealTimeComponent implements OnInit {
           setTimeout(() => {
             this.closeDialogAllWinner();
             this.router.navigate(["/"]);
-          }, roundMessageValue.isAccumulated ? 15000 : 40000);
+          }, roundMessageValue.isAccumulated ? 15000 : 20000);
         }
       }
     } else {
       this.closeDialogWinner();
     }
   }
+  onScroll() {
+    if (this.loading) {
+      return;
+    }
+    this.loadNextPage();
+  }
 
+  loadNextPage() {
+    this.loading = true;
+    this.cardsByPunterResourceService.reload(this.id, this.page, this.pageSize);
+    this.page++;
+  }
 }
