@@ -51,13 +51,13 @@
     <mat-sidenav class="bg-primary" [opened]="isSidenavOpen" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
       [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
-        <app-button-menu descricao="Rodadas" (onClick)="handleClick('/')">
+        <app-button-menu descricao="Rodadas" (onClick)="handleClick('/',snav)">
           <mat-icon>list_alt</mat-icon>
         </app-button-menu>
-        <app-button-menu descricao="Meus Premios" (onClick)="handleClick('/premios')">
+        <app-button-menu descricao="Meus Premios" (onClick)="handleClick('/premios',snav)">
           <mat-icon>military_tech</mat-icon>
         </app-button-menu>
-        <app-button-menu descricao="Minhas Recargas" (onClick)="handleClick('/recargas')">
+        <app-button-menu descricao="Minhas Recargas" (onClick)="handleClick('/recargas',snav)">
           <mat-icon>paid</mat-icon>
         </app-button-menu>
       </mat-nav-list>

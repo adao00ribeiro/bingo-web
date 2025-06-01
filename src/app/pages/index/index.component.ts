@@ -61,8 +61,12 @@ export class IndexComponent implements OnInit {
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-  handleClick(route: string) {
+  handleClick(route: string,sidenav?: MatSidenav) {
     this.router.navigate([route]);
+
+     if (this.mobileQuery.matches && sidenav) {
+    this.toggleSidenav()
+  }
   }
   handleVisibity() {
     this.isVisible = !this.isVisible;
