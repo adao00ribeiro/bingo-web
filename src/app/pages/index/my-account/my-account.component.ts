@@ -1,31 +1,65 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { PunterMeResourceService } from '../../../resource/punter/punter-me-resource.service';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-account',
   standalone: true,
-  imports: [],
+  imports: [
+       ReactiveFormsModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatDividerModule,
+        MatButtonModule,
+  ],
   templateUrl: './my-account.component.html',
   styleUrl: './my-account.component.scss'
 })
-export class MyAccountComponent {
-    protected readonly PunterMeResourceService = inject(PunterMeResourceService);
+export class MyAccountComponent implements OnInit {
+  form: FormGroup;
+  isEditing = {
+    name: false,
+    phoneNumber: false,
+    chavePix: false,
+  };
+    private router: Router= inject(Router);
+  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
 
+  punter = computed(() => {
+    return this.PunterMeResourceService.resource.value()
+  })
 
-    punter = computed(()=>{
-           return this.PunterMeResourceService.resource.value()
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      name: [''],
+      email: ['',Validators.email],
+      cpf: [''],
+      phoneNumber: [''],
+      chavePix: [''],
+    });
+
+    effect(() => {
+      let me = this.PunterMeResourceService.resource.value()
+      this.form.patchValue({
+      name: me?.name,
+      email: me?.user.email,
+      cpf: me?.cpf,
+      phoneNumber: me?.user.phoneNumber,
+      chavePix: me?.cpf,
+      });
     })
-  dadosPrincipais = {
-    nome: 'adao correia',
-    email: 'adao-eduardo@hotmail.com',
-    login: 'adao00ribeiro'
-  };
-
-  dadosPessoais = {
-    cpf: '093.113.239-85',
-    telefone: '(44) 999246859',
-    chavePix: 'N/A'
-  };
+  }
+  ngOnInit(): void {
+    this.PunterMeResourceService.reload();
+  }
 
   editarCampo(campo: string): void {
     // Implementação da lógica de edição
@@ -33,8 +67,7 @@ export class MyAccountComponent {
   }
 
   irParaCarteira(): void {
-    // Implementação da navegação para a carteira
-    console.log('Navegando para a carteira');
+   this.router.navigate(['/wallet']);
   }
 
   redefinirSenha(): void {
@@ -51,4 +84,6 @@ export class MyAccountComponent {
     // Implementação da lógica de logout
     console.log('Realizando logout');
   }
+
+
 }

@@ -1,70 +1,62 @@
-<!-- minha-conta.component.html -->
-<div class="minha-conta-container">
+<form class="minha-conta-container" [formGroup]="form">
   <h1>Minha Conta</h1>
-  <div class="card">
-    <h2>Dados principais</h2>
-    <div class="campo">
-      <div class="label">Seu nome</div>
-      <div class="valor">
-        <span>{{punter()?.name}}</span>
-        <button class="edit-btn" (click)="editarCampo('nome')">
-          <i class="material-icons">edit</i>
-        </button>
-      </div>
-    </div>
-    <div class="campo">
-      <div class="label">E-mail para contato</div>
-      <div class="valor">{{punter()?.user?.email}}</div>
-    </div>
+  <h2>Dados principais</h2>
+  <!-- Nome -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Seu nome</mat-label>
+    <input matInput formControlName="name" [readonly]="!isEditing.name">
+    <button mat-icon-button *ngIf="!isEditing.name" matSuffix (click)="editarCampo('name')">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <!-- E-mail -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>E-mail para contato</mat-label>
+    <input matInput formControlName="email" readonly>
+  </mat-form-field>
+
+  <h2>Dados pessoais</h2>
+
+  <!-- CPF -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>CPF</mat-label>
+    <input matInput formControlName="cpf" readonly>
+  </mat-form-field>
+
+  <!-- Telefone -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Telefone para contato</mat-label>
+    <input matInput formControlName="phoneNumber" [readonly]="!isEditing.phoneNumber">
+    <button mat-icon-button *ngIf="!isEditing.phoneNumber" matSuffix (click)="editarCampo('phoneNumber')">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <!-- Chave PIX -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Chave PIX para pagamento</mat-label>
+    <input matInput formControlName="chavePix" [readonly]="!isEditing.chavePix">
+    <button mat-icon-button *ngIf="!isEditing.chavePix" matSuffix (click)="editarCampo('chavePix')">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <div class="acoes">
+    <button mat-raised-button color="primary" (click)="irParaCarteira()">
+      <mat-icon>account_balance_wallet</mat-icon>
+      Ir para a carteira
+    </button>
+
+    <button mat-raised-button color="accent" (click)="redefinirSenha()">
+      <mat-icon>key</mat-icon>
+      Redefinir minha senha
+    </button>
+
+    <button mat-raised-button color="warn" (click)="inativarConta()">
+      Inativar minha conta
+    </button>
+
   </div>
-  <div class="card">
-    <h2>Dados pessoais</h2>
-    <div class="campo">
-      <div class="label">CPF</div>
-      <div class="valor">{{punter()?.cpf}}</div>
-    </div>
 
-    <div class="campo">
-      <div class="label">Telefone p/ contato</div>
-      <div class="valor">
-        <span>{{punter()?.user?.phoneNumber}}</span>
-        <button class="edit-btn" (click)="editarCampo('telefone')">
-          <i class="material-icons">edit</i>
-        </button>
-      </div>
-    </div>
-
-    <div class="campo">
-      <div class="label">Chave PIX para pagamento</div>
-      <div class="valor">
-        <span>{{dadosPessoais.chavePix}}</span>
-        <button class="edit-btn" (click)="editarCampo('chavePix')">
-          <i class="material-icons">edit</i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Ações</h2>
-    <div class="acoes">
-      <button class="acao-btn" (click)="irParaCarteira()">
-        <i class="material-icons">account_balance_wallet</i>
-        <span>Ir para a carteira</span>
-      </button>
-
-      <button class="acao-btn" (click)="redefinirSenha()">
-        <i class="material-icons">key</i>
-        <span>Redefinir minha senha</span>
-      </button>
-
-      <button class="acao-btn danger" (click)="inativarConta()">
-        <span>Inativar minha conta</span>
-      </button>
-
-      <button class="acao-btn logout" (click)="logout()">
-        <span>Sair/Deslogar</span>
-      </button>
-    </div>
-  </div>
-</div>
+</form>

@@ -2,8 +2,11 @@
 
 
 .minha-conta-container {
-  background-color: rgb(104, 3, 151);
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+   color: #ffffff;
   h1 {
     text-align: center;
     font-size:1rem;
@@ -17,9 +20,7 @@
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     padding: 24px;
-    margin-bottom: 24px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    background-color: #fff;
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
@@ -28,7 +29,6 @@
     h2 {
       font-size: 20px;
       font-weight: 600;
-      color: #1a1a2e;
       margin-bottom: 20px;
       padding-bottom: 12px;
       border-bottom: 1px solid #f0f0f0;
@@ -49,7 +49,7 @@
 
     .label {
       font-size: 14px;
-      color: #6b7280;
+      color: #a7a9ad;
       margin-bottom: 6px;
       font-weight: 500;
     }
@@ -97,12 +97,10 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-  }
-
-  .acao-btn {
+      button {
     display: flex;
     align-items: center;
-    background-color: #f9fafb;
+
     border: 1px solid #f0f0f0;
     border-radius: 12px;
     padding: 16px;
@@ -137,6 +135,9 @@
       }
     }
   }
+  }
+
+
 
   /* Estilo para a primeira ação (Ir para a carteira) */
   .acao-btn:first-child {
