@@ -1,7 +1,5 @@
-import { Injectable, inject, signal } from "@angular/core";
+import { Injectable,  signal } from "@angular/core";
 import { rxResource } from "@angular/core/rxjs-interop";
-import { RoundService } from "../../services/round/round.service";
-import { IRound } from "../../interfaces/IRound";
 import { BaseHttpResourceService } from "../base-http-resource.service";
 import { IPaged } from "../../interfaces/IPaged";
 
@@ -11,8 +9,8 @@ import { IPaged } from "../../interfaces/IPaged";
 })
 export class CardsByPunterResourceService extends BaseHttpResourceService {
   private roundId = signal<string | null>(null);
-  private page = signal<number | null>(null);
-  private size = signal<number | null>(null);
+  private page = signal<number>(1);
+  private size = signal<number>(100);
 
   resource = rxResource({
     request: () => ({
@@ -22,18 +20,12 @@ export class CardsByPunterResourceService extends BaseHttpResourceService {
     }), // Pode ser um objeto vazio caso não precise de parâmetros
     loader: ({request}) =>
     {
-
-      if(request.page ==null || request.size ==null)
-      {
-        return this.httpClient.get<IPaged>(`${this.url}/card/round/${request.roundId}`)
-      }
-
       return this.httpClient.get<IPaged>(`${this.url}/card/round/${request.roundId}?page=${request.page}&size=${request.size}`)
     }
   });
 
   // Método opcional para recarregar os rounds
-  reload(roundId :string, page:number | null , size:number | null) {
+  reload(roundId :string, page:number  , size:number ) {
     this.roundId.set(roundId);
     this.page.set(page);
     this.size.set(size);

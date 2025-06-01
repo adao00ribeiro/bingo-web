@@ -112,17 +112,14 @@
     background-color: rgb(14, 179, 30);
   }
 }
-.example-viewport {
-  flex: 2;
-  overflow-y: auto;
-  scrollbar-width: none;
-
-}
-.example-row {
+  .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.5rem;
-}
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  padding: 10px;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
 
 .right {
   flex: 1;
