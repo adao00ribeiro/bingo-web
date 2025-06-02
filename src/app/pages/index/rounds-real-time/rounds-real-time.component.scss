@@ -139,3 +139,11 @@ height: auto !important;
 ::ng-deep  .mat-expansion-panel-body {
   padding: 0.5rem !important;
 }
+@media screen and (max-width: 1024px) {
+  .rounds-real-time {
+
+  flex-direction: column;
+  height: auto;
+
+}
+}

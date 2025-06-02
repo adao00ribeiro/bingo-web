@@ -1,80 +1,97 @@
-:host {
+.container-balls {
+  width: 100%;
+  height: 100%; // importante: o pai deve ter altura definida
+  display: grid;
+   grid-template-columns: repeat(30, 1fr); /* 5 colunas fixas */
+  grid-auto-rows: minmax(50px, auto);   /* altura das linhas se adapta */
+  gap: 0.4rem;
+  padding: 0.3rem;
+  box-sizing: border-box;
+  border-radius: 0.2rem;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.ball,
+.ball-marked,
+.ball-current {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #000;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.ball {
+  background-color: #707070;
+}
+
+.ball-marked {
+  background-color: #23ce01;
+}
+
+.ball-current {
+  background-color: #f70000;
+}
+@media screen and (max-width: 1440px) {
   .container-balls {
-    width: 100%;
-    height: 100%; // importante: o pai deve ter altura definida
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-rows: repeat(3, 1fr);
-    gap: 0.4rem;
-    padding: 0.3rem;
-    box-sizing: border-box;
-    border-radius: 0.2rem;
-    background-color: rgba(255, 255, 255, 0.2);
+      grid-template-columns: repeat(30, 1fr); /* 5 colunas fixas */
+  grid-auto-rows: minmax(33px, auto);   /* altura das linhas se adapta */
   }
 
   .ball,
   .ball-marked,
   .ball-current {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #000;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    box-sizing: border-box;
-  }
-
-  .ball {
-    background-color: #707070;
-  }
-
-  .ball-marked {
-    background-color: #23ce01;
-  }
-
-  .ball-current {
-    background-color: #f70000;
-  }
-
-  // Media queries
-  @media screen and (max-width: 425px) {
-    .container-balls {
-      grid-template-rows: repeat(5, 1fr);
-    }
-
-    .ball,
-    .ball-marked,
-    .ball-current {
-      width: 10px;
-      height: 10px;
-      font-size: 0.5rem;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .ball,
-    .ball-marked,
-    .ball-current {
-      width: 20px;
-      height: 20px;
-    }
-  }
-
-  @media screen and (max-width: 1024px) {
-    .container-balls {
-      grid-template-rows: repeat(3, 1fr);
-    }
-
-    .ball,
-    .ball-marked,
-    .ball-current {
-      width: 30px;
-      height: 30px;
-    }
+    width: 30px;
+    height: 30px;
   }
 }
+@media screen and (max-width: 1024px) {
+  .container-balls {
+      grid-template-columns: repeat(30, 1fr); /* 5 colunas fixas */
+  grid-auto-rows: minmax(33px, auto);   /* altura das linhas se adapta */
+  }
+
+  .ball,
+  .ball-marked,
+  .ball-current {
+    width: 25px;
+    height: 25px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .container-balls {
+     grid-template-columns: repeat(15, 1fr); /* 5 colunas fixas */
+    grid-auto-rows: minmax(33px, auto);   /* altura das linhas se adapta */
+  }
+
+  .ball,
+  .ball-marked,
+  .ball-current {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+
+// Media queries
+@media screen and (max-width: 425px) {
+  .container-balls {
+   grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  }
+
+  .ball,
+  .ball-marked,
+  .ball-current {
+    width: 25px;
+    height:25px;
+    font-size: 0.5rem;
+  }
+}
+
