@@ -72,9 +72,17 @@
   </div>
   <div class="right">
     <app-table-almost-there [toplist]="top_list()">
-      <div class="chat">
-
-      </div>
     </app-table-almost-there>
+    @if(isOpen){
+    <app-chat [roomId]="round()?.roomId" ></app-chat>
+    }
   </div>
+  <button
+    class="chat-button"
+    matSuffix
+    mat-fab
+    (click)="onChangeChatState()"
+    [disableRipple]="true">
+    <mat-icon [@rotateAnimation]="iconState" >chat</mat-icon>
+</button>
 </div>

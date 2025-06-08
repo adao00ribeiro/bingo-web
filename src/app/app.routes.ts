@@ -10,6 +10,7 @@ import { MyAccountComponent } from './pages/index/my-account/my-account.componen
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SocketComponent } from './pages/socket/socket.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 export const routes: Routes = [
   {
@@ -46,6 +47,10 @@ export const routes: Routes = [
         path: 'account',
         component: MyAccountComponent,
       },
+        {
+    path: 'socket',
+    component: ChatComponent,
+  },
     ],
   },
   {
@@ -56,9 +61,6 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
   },
-  {
-    path: 'socket',
-    component: SocketComponent,
-  },
+
 ];
 

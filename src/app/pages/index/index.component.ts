@@ -52,6 +52,7 @@ export class IndexComponent implements OnInit {
       if (this.socketService.IsConnected() && this.user() != null) {
         console.log(this.user()?.seller.rooms[0].id)
         this.socketService.subscribeToChannel(`room_${this.user()?.seller.rooms[0].id}`);
+        this.socketService.subscribeToChannel(`chat_room_${this.user()?.seller.rooms[0].id}`);
       }
     })
   }

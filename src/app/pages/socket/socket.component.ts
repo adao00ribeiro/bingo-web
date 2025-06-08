@@ -1,19 +1,21 @@
 
-import {MatListModule} from '@angular/material/list';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatBadgeModule } from '@angular/material/badge';
 import { Router, RouterOutlet } from '@angular/router';
 import { ButtonMenuComponent } from '../../components/button-menu/button-menu.component';
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { RoundsRealTimeComponent } from '../index/rounds-real-time/rounds-real-time.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { SocketService } from '../../services/socket/socket.service';
 import { computed } from '@angular/core';
+import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
+import { IPunter } from '../../interfaces/IPunter';
 
 interface Notification {
   message: string;
@@ -39,13 +41,14 @@ interface Notification {
   styleUrl: './socket.component.scss',
 
 })
-export class SocketComponent implements OnInit, OnDestroy  {
+export class SocketComponent implements OnInit, OnDestroy {
 
   showFiller = true;
   mobileQuery: MediaQueryList;
   private router: Router = inject(Router);
   private snackBar = inject(MatSnackBar);
-
+  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
+  user = signal<IPunter | undefined>(undefined);
   // Signals para notificações
   unreadNotifications = signal(0);
   notifications = signal<Notification[]>([]);
@@ -60,16 +63,26 @@ export class SocketComponent implements OnInit, OnDestroy  {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    this.socketService.connect();
+    effect(() => {
+      this.user.set(this.PunterMeResourceService.resource.value());
+      if (this.socketService.IsConnected() && this.user() != null) {
+        console.log(this.user()?.seller.rooms[0].id)
+        this.socketService.subscribeToChannel(`room_${this.user()?.seller.rooms[0].id}`);
+        this.socketService.subscribeToChannel(`chat_room_${this.user()?.seller.rooms[0].id}`);
+      }
+    })
   }
 
   ngOnInit(): void {
-
+    this.PunterMeResourceService.reload();
 
   }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
-   // this.socketService.disconnect();
+    // this.socketService.disconnect();
   }
 
 
