@@ -10,17 +10,12 @@ import { MatInputModule } from '@angular/material/input';
 import { SocketService } from '../../services/socket/socket.service';
 import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
 import { IPunter } from '../../interfaces/IPunter';
+import { EMessageType } from '../../enums/EMessageType';
 
-interface Message {
-  id : string | undefined;
+export interface ChatMessage {
+  id: string | undefined;
   text?: string;
-  type: MessageType;
-}
-
-enum MessageType {
-  Bot = 'bot',
-  User = 'user',
-  Loading = 'loading'
+  type: EMessageType;
 }
 
 @Component({
@@ -46,9 +41,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   roomId = input.required<string | undefined>();
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
   private socketService: SocketService = inject(SocketService)
-   protected readonly PunterMeResourceService = inject(PunterMeResourceService);
+  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
   public form: FormGroup;
-  messages = signal<Message[]>([]);
+  messages = signal<ChatMessage[]>([]);
   user = signal<IPunter | undefined>(undefined);
   private canSendMessage = true;
 
@@ -59,16 +54,15 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
 
     effect(() => {
-      const message = this.socketService.LastMessage();
+      const message = this.socketService.ChatLastMessage();
+      console.log(message)
       this.user.set(this.PunterMeResourceService.resource.value());
-      if (this.IsJson(message?.message) && message?.message) {
-        const parsedMessage: Message = JSON.parse(message.message);
-        if (parsedMessage && parsedMessage.id != this.user()?.id) {
-          console.log('fdp',parsedMessage)
-          this.messages.update(current => current.slice(0, -1));
-          this.messages.update(current => [...current, parsedMessage]);
-        }
+      if (message && message.id != this.user()?.id) {
+        this.messages.update(current => current.slice(0, -1));
+        const convidado = { ...message, type: EMessageType.Bot };
+        this.messages.update(current => [...current, convidado]);
       }
+
     });
   }
 
@@ -81,16 +75,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   }
   get message() { return this.form.get('message'); }
   public onClickSendMessage(): void {
-      const messageValue = this.message?.value?.trim();
+    const messageValue = this.message?.value?.trim();
 
-  if (!messageValue) {
-    return; // não envia se estiver vazia ou só com espaços
-  }
+    if (!messageValue) {
+      return; // não envia se estiver vazia ou só com espaços
+    }
     if (this.message && this.message && this.canSendMessage) {
-      const userMessage: Message = { id:this.user()?.id,  text: this.message.value, type: MessageType.User };
-     this.messages.update(current => [...current, userMessage]);
-      this.socketService.sendMessage("message",`chat_room_${this.roomId()}`,JSON.stringify(userMessage));
-      //this.socketService.sendMessage("message", `chat_room_11e96bc2-6a2f-48b2-9199-05b89bd249a4`, JSON.stringify(userMessage));
+      const userMessage: ChatMessage = { id: this.user()?.id, text: this.message.value, type: EMessageType.User };
+      this.messages.update(current => [...current, userMessage]);
+      // this.socketService.sendMessage("message",`chat_room_${this.roomId()}`,JSON.stringify(userMessage));
+      this.socketService.sendMessage("message", `chat_room_11e96bc2-6a2f-48b2-9199-05b89bd249a4`, JSON.stringify(userMessage));
       this.message.setValue('');
       this.form.updateValueAndValidity();
     }
@@ -113,7 +107,4 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       return false;
     }
   }
-
-
-
 }

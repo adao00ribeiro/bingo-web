@@ -2,6 +2,8 @@ import { computed, Injectable, signal, WritableSignal } from '@angular/core';
 import { ISocketMessage } from '../../interfaces/ISocketMessage';
 import { IRoundMessage } from '../../interfaces/IRoundMessage';
 import { environment } from '../../../environments/environment';
+import { ChatMessage } from '../../components/chat/chat.component';
+import { EMessageType } from '../../enums/EMessageType';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +14,12 @@ export class SocketService {
   private readonly SOCKET_URL = `${environment.API_WS}`;
   private isConnected = signal<boolean>(false);
   private lastMessage = signal<ISocketMessage | null>(null);
+  private chatLastMessage = signal<ChatMessage | null>(null);
   public socketErrors = signal<string>('');
 
   public readonly IsConnected = this.isConnected.asReadonly();
   public readonly LastMessage = this.lastMessage.asReadonly();
+  public readonly ChatLastMessage = this.chatLastMessage.asReadonly();
 
   private setupSocketListeners(): void {
     if (this.socket) {
@@ -24,14 +28,25 @@ export class SocketService {
         this.isConnected.set(true);
         this.socketErrors.set('');
         console.log("Conectado ao WebSocket");
-      //  this.subscribeToChannel("room_98522b7d-81d9-4c71-9ef4-fe505aae92b6");
+        //  this.subscribeToChannel("room_98522b7d-81d9-4c71-9ef4-fe505aae92b6");
       };
 
       // Listener de mensagens
       this.socket.onmessage = (event: MessageEvent) => {
         try {
           const message: ISocketMessage = JSON.parse(event.data);
-          this.lastMessage.set(message);
+          if (this.IsJson(message.message)) {
+            const chatMessage: ChatMessage = JSON.parse(message.message)
+
+            if (this.isChatMessage(chatMessage)) {
+              this.chatLastMessage.set(chatMessage)
+
+            } else {
+              this.lastMessage.set(message);
+            }
+          }
+
+
         } catch (error) {
           console.error("Erro ao processar mensagem do WebSocket", error);
         }
@@ -69,11 +84,11 @@ export class SocketService {
   }
 
   // Método para enviar mensagens
-  public sendMessage(command: string,channel:string, message: string): void {
+  public sendMessage(command: string, channel: string, message: string): void {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-      const socketMessage : ISocketMessage = {
-        command:command,
-        channel : channel,
+      const socketMessage: ISocketMessage = {
+        command: command,
+        channel: channel,
         message: message
       }
       this.socket.send(JSON.stringify(socketMessage));
@@ -92,5 +107,21 @@ export class SocketService {
   public getConnectionStatus(): boolean {
     return this.isConnected();
   }
+  IsJson(jsonString: string): boolean {
+    try {
+      JSON.parse(jsonString);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+  isChatMessage(obj: any): obj is ChatMessage {
 
+    return (
+      typeof obj === 'object' &&
+      (typeof obj.id === 'string' || typeof obj.id === 'undefined') &&
+      (typeof obj.text === 'string' || typeof obj.text === 'undefined') &&
+      Object.values(EMessageType).includes(obj.type)
+    );
+  }
 }
