@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewChecked, ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, Input, OnInit, signal, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, } from '@angular/forms';
+import {  FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -13,9 +13,10 @@ import { IPunter } from '../../interfaces/IPunter';
 import { EMessageType } from '../../enums/EMessageType';
 
 export interface ChatMessage {
-  id: string | undefined;
+  id : string | undefined;
   text?: string;
   type: EMessageType;
+   time: Date;
 }
 
 @Component({
@@ -37,69 +38,71 @@ export interface ChatMessage {
   styleUrl: './chat.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements  AfterViewChecked {
   roomId = input.required<string | undefined>();
-  @ViewChild('messageContainer') private messageContainer!: ElementRef;
+ @ViewChild('messagesContainer') messagesContainer!: ElementRef;
   private socketService: SocketService = inject(SocketService)
-  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
-  public form: FormGroup;
-  messages = signal<ChatMessage[]>([]);
-  user = signal<IPunter | undefined>(undefined);
-  private canSendMessage = true;
+   protected readonly PunterMeResourceService = inject(PunterMeResourceService);
+    user = signal<IPunter | undefined>(undefined);
+   messages = signal<ChatMessage[]>([]);
+  messageText: string = '';
+  isTyping: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.form = this.formBuilder.group({
-      message: ['']
-    });
-
+  private shouldScrollToBottom = false;
+  constructor() {
 
     effect(() => {
       const message = this.socketService.ChatLastMessage();
-      console.log(message)
       this.user.set(this.PunterMeResourceService.resource.value());
       if (message && message.id != this.user()?.id) {
         this.messages.update(current => current.slice(0, -1));
-        const convidado = { ...message, type: EMessageType.Bot };
+        const convidado = { ...message, type: EMessageType.RECEIVED };
         this.messages.update(current => [...current, convidado]);
       }
 
     });
   }
 
-  ngOnInit(): void {
-
-  }
-
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
-  }
-  get message() { return this.form.get('message'); }
-  public onClickSendMessage(): void {
-    const messageValue = this.message?.value?.trim();
-
-    if (!messageValue) {
-      return; // não envia se estiver vazia ou só com espaços
-    }
-    if (this.message && this.message && this.canSendMessage) {
-      const userMessage: ChatMessage = { id: this.user()?.id, text: this.message.value, type: EMessageType.User };
-      this.messages.update(current => [...current, userMessage]);
-      // this.socketService.sendMessage("message",`chat_room_${this.roomId()}`,JSON.stringify(userMessage));
-      this.socketService.sendMessage("message", `chat_room_11e96bc2-6a2f-48b2-9199-05b89bd249a4`, JSON.stringify(userMessage));
-      this.message.setValue('');
-      this.form.updateValueAndValidity();
+  ngAfterViewChecked() {
+    if (this.shouldScrollToBottom) {
+      this.scrollToBottom();
+      this.shouldScrollToBottom = false;
     }
   }
 
-  public onClickEnter(): void {
-    this.onClickSendMessage();
+  sendMessage(): void {
+    const text = this.messageText.trim();
+    if (!text) return;
+    const userMessage: ChatMessage = { id: this.user()?.id, text: text, type: EMessageType.SENT , time: new Date() };
+    this.messages.update(current => [...current, userMessage]);
+    this.messageText = '';
+    this.socketService.sendMessage("message", `chat_room_11e96bc2-6a2f-48b2-9199-05b89bd249a4`, JSON.stringify(userMessage));
+      this.shouldScrollToBottom = true;
   }
+
+  onKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.sendMessage();
+    }
+  }
+
 
   private scrollToBottom(): void {
-    this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    if (this.messagesContainer) {
+      const element = this.messagesContainer.nativeElement;
+      element.scrollTop = element.scrollHeight;
+    }
   }
 
 
-  IsJson(jsonString: string): boolean {
+  formatTime(date: Date): string {
+    return date.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+    IsJson(jsonString: string): boolean {
     try {
       JSON.parse(jsonString);
       return true;
