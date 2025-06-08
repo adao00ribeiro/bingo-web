@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewChecked, ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, Input, OnInit, signal, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,17 +10,13 @@ import { MatInputModule } from '@angular/material/input';
 import { SocketService } from '../../services/socket/socket.service';
 import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
 import { IPunter } from '../../interfaces/IPunter';
+import { EMessageType } from '../../enums/EMessageType';
 
-interface Message {
-  id : string | undefined;
+export interface ChatMessage {
+  id: string | undefined;
   text?: string;
-  type: MessageType;
-}
-
-enum MessageType {
-  Bot = 'bot',
-  User = 'user',
-  Loading = 'loading'
+  type: EMessageType;
+  time: Date;
 }
 
 @Component({
@@ -42,69 +38,82 @@ enum MessageType {
   styleUrl: './chat.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatComponent implements OnInit, AfterViewChecked {
+export class ChatComponent implements AfterViewChecked {
   roomId = input.required<string | undefined>();
-  @ViewChild('messageContainer') private messageContainer!: ElementRef;
+  @ViewChild('messagesContainer') messagesContainer!: ElementRef;
   private socketService: SocketService = inject(SocketService)
-   protected readonly PunterMeResourceService = inject(PunterMeResourceService);
-  public form: FormGroup;
-  messages = signal<Message[]>([]);
+  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
   user = signal<IPunter | undefined>(undefined);
-  private canSendMessage = true;
+  messages = signal<ChatMessage[]>([]);
+  messageText: string = '';
+  isTyping: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.form = this.formBuilder.group({
-      message: ['']
-    });
-
+  private shouldScrollToBottom = false;
+  constructor() {
 
     effect(() => {
-      const message = this.socketService.LastMessage();
+      const message = this.socketService.ChatLastMessage();
+      console.log(message)
       this.user.set(this.PunterMeResourceService.resource.value());
-      if (this.IsJson(message?.message) && message?.message) {
-        const parsedMessage: Message = JSON.parse(message.message);
-        if (parsedMessage && parsedMessage.id != this.user()?.id) {
-          console.log('fdp',parsedMessage)
-          this.messages.update(current => current.slice(0, -1));
-          this.messages.update(current => [...current, parsedMessage]);
-        }
+      if (message && message.id != this.user()?.id) {
+
+        const received = { ...message, type: EMessageType.RECEIVED };
+    this.messages.update(current => {
+      const updated = [...current, received];
+      return updated.length > 20 ? updated.slice(-20) : updated;
+    });
       }
+
     });
   }
 
-  ngOnInit(): void {
-
-  }
-
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
-  }
-  get message() { return this.form.get('message'); }
-  public onClickSendMessage(): void {
-      const messageValue = this.message?.value?.trim();
-
-  if (!messageValue) {
-    return; // não envia se estiver vazia ou só com espaços
-  }
-    if (this.message && this.message && this.canSendMessage) {
-      const userMessage: Message = { id:this.user()?.id,  text: this.message.value, type: MessageType.User };
-     this.messages.update(current => [...current, userMessage]);
-      this.socketService.sendMessage("message",`chat_room_${this.roomId()}`,JSON.stringify(userMessage));
-      //this.socketService.sendMessage("message", `chat_room_11e96bc2-6a2f-48b2-9199-05b89bd249a4`, JSON.stringify(userMessage));
-      this.message.setValue('');
-      this.form.updateValueAndValidity();
+  ngAfterViewChecked() {
+    if (this.shouldScrollToBottom) {
+      this.scrollToBottom();
+      this.shouldScrollToBottom = false;
     }
   }
 
-  public onClickEnter(): void {
-    this.onClickSendMessage();
+  sendMessage(): void {
+    const text = this.messageText.trim();
+    if (!text) return;
+    const userMessage: ChatMessage = { id: this.user()?.id, text: text, type: EMessageType.SENT, time: new Date() };
+  this.messages.update(current => {
+    const updated = [...current, userMessage];
+    return updated.length > 20 ? updated.slice(-20) : updated;
+  });
+    this.messageText = '';
+    this.socketService.sendMessage("message", `chat_room_11e96bc2-6a2f-48b2-9199-05b89bd249a4`, JSON.stringify(userMessage));
+    this.shouldScrollToBottom = true;
+  }
+
+  onKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.sendMessage();
+    }
   }
 
   private scrollToBottom(): void {
-    this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    if (this.messagesContainer) {
+      const element = this.messagesContainer.nativeElement;
+      element.scrollTop = element.scrollHeight;
+    }
   }
 
+  formatTime(date: Date | string): string {
+    const d = date instanceof Date ? date : new Date(date);
 
+    if (isNaN(d.getTime())) {
+      console.warn("Data inválida:", date);
+      return '';
+    }
+
+    return d.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
   IsJson(jsonString: string): boolean {
     try {
       JSON.parse(jsonString);
@@ -113,7 +122,4 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       return false;
     }
   }
-
-
-
 }

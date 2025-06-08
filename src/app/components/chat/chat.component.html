@@ -1,39 +1,48 @@
-<form [formGroup]="form"  class="container">
-   <mat-card class="card">
-        <mat-card-header class="chat-header">
-            <mat-card-title class="chat-title">Chat</mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="chat-content" #messageContainer>
-          @for (message of messages(); track $index) {
-           <div  class="messages">
-                <div [ngClass]="'message ' + message.type">
-                    {{ message.text }}
-                </div>
-            </div>
-          }
-        </mat-card-content>
-        <mat-card-actions class="chat-actions">
-            <mat-form-field  class="chat-form">
-            <textarea
-                class="chat-input"
-                matInput
-                type="text"
-                placeholder="Type message..."
-                formControlName="message"
-                (keydown.enter)="onClickEnter()"
+ <div class="chat-container">
+      <div class="chat-header">
+        <h2>💬 Chat </h2>
+      </div>
+      <div class="messages-container" #messagesContainer>
+        <div class="empty-state" *ngIf="messages.length === 0">
+          <div class="empty-state-icon">💭</div>
+          <h3>Nenhuma mensagem ainda</h3>
+          <p>Inicie uma conversa digitando uma mensagem abaixo</p>
+        </div>
 
-            ></textarea>
-            <button
-                class="send-button"
-                matSuffix
-                mat-icon-button
-                aria-label="Send"
-                (click)="onClickSendMessage()"
-                [disableRipple]="true"
-            >
-                <mat-icon class="send-icon">send</mat-icon>
-            </button>
-            </mat-form-field>
-        </mat-card-actions>
-    </mat-card>
-</form>
+        <div
+          *ngFor="let message of messages()"
+          class="message"
+          [ngClass]="message.type"
+        >
+          <div>{{ message.text }}</div>
+          <div class="message-time">{{ formatTime(message.time) }}</div>
+        </div>
+
+        <div class="typing-indicator" *ngIf="isTyping">
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-container">
+        <input
+          type="text"
+          class="message-input"
+          [(ngModel)]="messageText"
+          (keypress)="onKeyPress($event)"
+          placeholder="Digite sua mensagem..."
+          maxlength="500"
+          #messageInput
+        >
+        <button
+          class="send-button"
+          (click)="sendMessage()"
+          [disabled]="!messageText.trim()"
+        >
+          ➤
+        </button>
+      </div>
+    </div>
