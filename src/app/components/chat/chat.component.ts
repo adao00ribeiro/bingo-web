@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewChecked, ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, Input, OnInit, signal, ViewChild } from '@angular/core';
-import {  FormsModule, ReactiveFormsModule, } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -13,10 +13,10 @@ import { IPunter } from '../../interfaces/IPunter';
 import { EMessageType } from '../../enums/EMessageType';
 
 export interface ChatMessage {
-  id : string | undefined;
+  id: string | undefined;
   text?: string;
   type: EMessageType;
-   time: Date;
+  time: Date;
 }
 
 @Component({
@@ -38,13 +38,13 @@ export interface ChatMessage {
   styleUrl: './chat.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatComponent implements  AfterViewChecked {
+export class ChatComponent implements AfterViewChecked {
   roomId = input.required<string | undefined>();
- @ViewChild('messagesContainer') messagesContainer!: ElementRef;
+  @ViewChild('messagesContainer') messagesContainer!: ElementRef;
   private socketService: SocketService = inject(SocketService)
-   protected readonly PunterMeResourceService = inject(PunterMeResourceService);
-    user = signal<IPunter | undefined>(undefined);
-   messages = signal<ChatMessage[]>([]);
+  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
+  user = signal<IPunter | undefined>(undefined);
+  messages = signal<ChatMessage[]>([]);
   messageText: string = '';
   isTyping: boolean = false;
 
@@ -53,11 +53,15 @@ export class ChatComponent implements  AfterViewChecked {
 
     effect(() => {
       const message = this.socketService.ChatLastMessage();
+      console.log(message)
       this.user.set(this.PunterMeResourceService.resource.value());
       if (message && message.id != this.user()?.id) {
-        this.messages.update(current => current.slice(0, -1));
-        const convidado = { ...message, type: EMessageType.RECEIVED };
-        this.messages.update(current => [...current, convidado]);
+
+        const received = { ...message, type: EMessageType.RECEIVED };
+    this.messages.update(current => {
+      const updated = [...current, received];
+      return updated.length > 20 ? updated.slice(-20) : updated;
+    });
       }
 
     });
@@ -73,11 +77,14 @@ export class ChatComponent implements  AfterViewChecked {
   sendMessage(): void {
     const text = this.messageText.trim();
     if (!text) return;
-    const userMessage: ChatMessage = { id: this.user()?.id, text: text, type: EMessageType.SENT , time: new Date() };
-    this.messages.update(current => [...current, userMessage]);
+    const userMessage: ChatMessage = { id: this.user()?.id, text: text, type: EMessageType.SENT, time: new Date() };
+  this.messages.update(current => {
+    const updated = [...current, userMessage];
+    return updated.length > 20 ? updated.slice(-20) : updated;
+  });
     this.messageText = '';
     this.socketService.sendMessage("message", `chat_room_11e96bc2-6a2f-48b2-9199-05b89bd249a4`, JSON.stringify(userMessage));
-      this.shouldScrollToBottom = true;
+    this.shouldScrollToBottom = true;
   }
 
   onKeyPress(event: KeyboardEvent): void {
@@ -87,7 +94,6 @@ export class ChatComponent implements  AfterViewChecked {
     }
   }
 
-
   private scrollToBottom(): void {
     if (this.messagesContainer) {
       const element = this.messagesContainer.nativeElement;
@@ -95,14 +101,20 @@ export class ChatComponent implements  AfterViewChecked {
     }
   }
 
+  formatTime(date: Date | string): string {
+    const d = date instanceof Date ? date : new Date(date);
 
-  formatTime(date: Date): string {
-    return date.toLocaleTimeString('pt-BR', {
+    if (isNaN(d.getTime())) {
+      console.warn("Data inválida:", date);
+      return '';
+    }
+
+    return d.toLocaleTimeString('pt-BR', {
       hour: '2-digit',
       minute: '2-digit'
     });
   }
-    IsJson(jsonString: string): boolean {
+  IsJson(jsonString: string): boolean {
     try {
       JSON.parse(jsonString);
       return true;
