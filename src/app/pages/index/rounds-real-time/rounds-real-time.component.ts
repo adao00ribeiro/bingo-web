@@ -1,4 +1,5 @@
 import { Component, computed, effect, inject, Input, OnInit, signal } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { PanelBallsComponent } from "../../../components/panel-balls/panel-balls.component";
 import { CardComponent } from "../../../components/card/card.component";
@@ -28,6 +29,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { ChatComponent } from "../../../components/chat/chat.component";
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-rounds-real-time',
   standalone: true,
@@ -48,11 +51,37 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
-    InfiniteScrollDirective
-  ],
+    InfiniteScrollDirective,
+    ChatComponent,
+    CommonModule
+],
   providers: [provideNativeDateAdapter()],
   templateUrl: './rounds-real-time.component.html',
   styleUrl: './rounds-real-time.component.scss',
+   animations: [
+    trigger('rotateAnimation', [
+      state('rotated', style({ transform: 'rotate(0deg)' })),
+      state('default', style({ transform: 'rotate(-360deg)' })),
+      transition('default => rotated', animate('500ms ease-out')),
+      transition('rotated => default', animate('500ms ease-out')),
+    ]),
+    trigger('fadeAnimation', [
+      transition(":enter", [
+        style({ opacity: 0 }),
+        animate(
+          "150ms ease-in-out",
+          style({ opacity: 1})
+        )
+      ]),
+      transition(":leave", [
+        style({ opacity: 1}),
+        animate(
+          "150ms ease-in-out",
+          style({ opacity: 0,})
+        )
+      ])
+    ]),
+  ]
 })
 export class RoundsRealTimeComponent implements OnInit {
 
@@ -79,6 +108,10 @@ export class RoundsRealTimeComponent implements OnInit {
   roundMessage = signal<IRoundMessage | null>(null);
   show_dialog = false;
   prize_type = "";
+
+  public isOpen = true;
+  public iconState = 'default';
+
   getImage = computed(() => {
     const maxBalls = this.round()?.maxBalls;
     return maxBalls ? `/images/${maxBalls}.png` : '/images/90.png';
@@ -316,5 +349,10 @@ export class RoundsRealTimeComponent implements OnInit {
     this.loading = true;
     this.cardsByPunterResourceService.reload(this.id, this.page, this.pageSize);
     this.page++;
+  }
+    public onChangeChatState(): void {
+    this.isOpen = !this.isOpen;
+    this.iconState = (this.iconState === 'default' ? 'rotated' : 'default');
+
   }
 }

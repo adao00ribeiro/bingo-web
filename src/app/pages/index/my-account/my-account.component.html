@@ -5,9 +5,11 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Seu nome</mat-label>
     <input matInput formControlName="name" [readonly]="!isEditing.name">
-    <button mat-icon-button *ngIf="!isEditing.name" matSuffix (click)="editarCampo('name')">
+      @if (!isEditing.name) {
+    <button mat-icon-button  matSuffix (click)="editarCampo('name')">
       <mat-icon>edit</mat-icon>
     </button>
+  }
   </mat-form-field>
 
   <!-- E-mail -->
@@ -28,18 +30,23 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Telefone para contato</mat-label>
     <input matInput formControlName="phoneNumber" [readonly]="!isEditing.phoneNumber">
-    <button mat-icon-button *ngIf="!isEditing.phoneNumber" matSuffix (click)="editarCampo('phoneNumber')">
+      @if (!isEditing.phoneNumber) {
+    <button mat-icon-button matSuffix (click)="editarCampo('phoneNumber')">
       <mat-icon>edit</mat-icon>
     </button>
+  }
   </mat-form-field>
 
   <!-- Chave PIX -->
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Chave PIX para pagamento</mat-label>
     <input matInput formControlName="chavePix" [readonly]="!isEditing.chavePix">
-    <button mat-icon-button *ngIf="!isEditing.chavePix" matSuffix (click)="editarCampo('chavePix')">
+    @if (!isEditing.chavePix) {
+    <button mat-icon-button  matSuffix (click)="editarCampo('chavePix')">
       <mat-icon>edit</mat-icon>
     </button>
+    }
+
   </mat-form-field>
 
   <div class="acoes">
