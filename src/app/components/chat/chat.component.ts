@@ -83,7 +83,7 @@ export class ChatComponent implements AfterViewChecked {
     return updated.length > 20 ? updated.slice(-20) : updated;
   });
     this.messageText = '';
-    this.socketService.sendMessage("message", `chat_room_11e96bc2-6a2f-48b2-9199-05b89bd249a4`, JSON.stringify(userMessage));
+    this.socketService.sendMessage("message", `chat_room_${this.roomId()}`, JSON.stringify(userMessage));
     this.shouldScrollToBottom = true;
   }
 
