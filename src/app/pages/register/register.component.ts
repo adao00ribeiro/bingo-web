@@ -124,6 +124,21 @@ export function passwordValidator(control: AbstractControl): ValidationErrors | 
     // Retorna o objeto de erros se houver algum, ou null se a senha for válida
     return Object.keys(errors).length ? errors : null;
 }
+
+// Esta função recebe o FormGroup inteiro como argumento
+export function  passwordsMatchValidator(form: FormGroup): ValidationErrors | null {
+  // 1. Pega o valor do controle 'password'
+  const senha = form.get('password')?.value;
+  console.log('>> senha: ', senha)
+  // 2. Pega o valor do controle 'passwordConfirmed'
+  const repetirsenha = form.get('passwordConfirmed')?.value;
+  console.log('>> repetirsenha: ', repetirsenha)
+
+  // 3. Compara os dois valores.
+  // Se forem iguais, retorna null (sem erro).
+  // Se forem diferentes, retorna um objeto de erro.
+  return senha === repetirsenha ? null : { passwordsDontMatch: true };
+}
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -160,7 +175,7 @@ export class RegisterComponent {
       cpf: ['', [Validators.required, cpfValidator]],
       dateBirth: ['', [Validators.required, idadeValidator(18)]],
       password: ['', [Validators.required, Validators.minLength(8), passwordValidator]],
-      passwordConfirmed: ['', [Validators.required, ]]
+      passwordConfirmed: ['', [Validators.required]]
     }, { validators: this.passwordsMatchValidator });
   }
 
@@ -172,6 +187,7 @@ export class RegisterComponent {
 
   async submitRegistrar(): Promise<void> {
     if (this.registerForm.invalid) {
+      console.log(">>> registerForm.hasError('passwordsDontMatch'): ", this.registerForm.hasError('passwordsDontMatch'))
       this.snackBar.open("Campo Invalidos", 'Ok', {
         duration: 150000, // Set the duration in milliseconds
         horizontalPosition: 'center', // Options: 'start', 'center', 'end'
@@ -213,6 +229,10 @@ export class RegisterComponent {
   }
   get f() {
     return this.registerForm.controls;
+  }
+
+  get rf() {
+    return this.registerForm;
   }
 
   convertToIso8601(inputDate: string): string {
