@@ -66,13 +66,7 @@
         <mat-label>Digite sua senha</mat-label>
         <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="password" required>
         <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
-        <mat-hint style="color: red">
-          <p>A senha deve ter no mínimo 8 caracteres.</p>
-        </mat-hint>
-        A senha deve ter no mínimo 8 caracteres.
-        Deve conter ao menos uma letra maiúscula.
-        Deve conter ao menos um número.
-        Deve conter ao menos um caractere especial (ex: !&#64;#$).
+
 
         <mat-error *ngIf="f['password'].hasError('minlength')">
           A senha deve ter no mínimo 8 caracteres.
