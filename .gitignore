@@ -10,7 +10,7 @@ lerna-debug.log*
 # Angular
 /dist
 /tmp
-/.angular
+.angular/
 .angular/cache/
 /node_modules
 # Diagnostic reports (https://nodejs.org/api/report.html)
