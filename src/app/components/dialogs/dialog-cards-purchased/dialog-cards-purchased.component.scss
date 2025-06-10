@@ -37,13 +37,15 @@
     scrollbar-width: none;
 
   }
-  .grid-container {
-
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ajusta dinamicamente */
-    gap: 0.2rem; /* Espaço entre os itens */
-
-  }
+ .grid-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  padding: 10px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
   .example-row {
 
     height: 150px; /* Deve corresponder ao itemSize no viewport */

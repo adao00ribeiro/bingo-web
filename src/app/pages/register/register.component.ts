@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +11,17 @@ import { RegisterService } from '../../services/auth/register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { IRegisterResponse } from '../../interfaces/response/IRegisterResponse';
+
+
+
+
+export const confirmPasswordValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  return control.value.password1 === control.value.password2
+    ? null
+    : { PasswordNoMatch: true };
+};
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -44,8 +55,9 @@ export class RegisterComponent {
       cpf: ['', [Validators.required]],
       dateBirth: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      passwordConfirmed: ['', [Validators.required]]
-    }, { validators: this.passwordsMatchValidator });
+      passwordConfirmed: ['', [Validators.required]],
+      confirmPasswordValidator
+    },);
   }
 
   private passwordsMatchValidator(form: FormGroup): null | object {

@@ -35,6 +35,9 @@
           <mat-label>Repita sua senha</mat-label>
           <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="passwordConfirmed" required>
           <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <div class="error-message" *ngIf="passwordForm.errors?.['PasswordNoMatch']">
+      Password does'nt match.
+        </div>
         </mat-form-field>
 
       </div>
