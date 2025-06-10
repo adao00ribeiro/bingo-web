@@ -18,6 +18,19 @@
     justify-content: space-between;
     scale: 0.9;
 
+    .go_back {
+      align-self: start;
+      color: white;
+      cursor: pointer;
+      text-decoration: none;
+
+      background: none;
+      border: none;
+      text-decoration: underline;
+      padding: 0;
+      font-size: inherit;
+      font-family: inherit;
+    }
     form {
       width: 100%;
       display: flex;

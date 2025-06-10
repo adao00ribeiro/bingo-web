@@ -1,4 +1,7 @@
 <div class="container bg-primary">
+  <button type="button" (click)="goBack()" class="go_back">
+    voltar
+  </button>
   <h1>B1NGO PIX ON-LINE</h1>
   <span>Registre-se agora mesmo e concorra a milhares de prêmios.</span>
   <form [formGroup]="registerForm" (ngSubmit)="submitRegistrar()">
@@ -66,20 +69,24 @@
         <mat-label>Digite sua senha</mat-label>
         <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="password" required>
         <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
-        
-        <mat-error [style.color]="f['password'].hasError('required') || f['password'].hasError('minlength') ? 'red' : 'green'" >
+
+        <mat-error
+          [style.color]="f['password'].hasError('required') || f['password'].hasError('minlength') ? 'red' : 'green'">
           A senha deve ter no mínimo 8 caracteres.
         </mat-error>
 
-        <mat-error [style.color]="f['password'].hasError('required') || f['password'].hasError('requiresUppercase') ? 'red' : 'green'" >
+        <mat-error
+          [style.color]="f['password'].hasError('required') || f['password'].hasError('requiresUppercase') ? 'red' : 'green'">
           Deve conter ao menos uma letra maiúscula.
         </mat-error>
 
-        <mat-error [style.color]="f['password'].hasError('required') || f['password'].hasError('requiresNumber') ? 'red' : 'green'" >
+        <mat-error
+          [style.color]="f['password'].hasError('required') || f['password'].hasError('requiresNumber') ? 'red' : 'green'">
           Deve conter ao menos um número.
         </mat-error>
 
-        <mat-error [style.color]="f['password'].hasError('required') || f['password'].hasError('requiresSpecialChar') ? 'red' : 'green'" >
+        <mat-error
+          [style.color]="f['password'].hasError('required') || f['password'].hasError('requiresSpecialChar') ? 'red' : 'green'">
           Deve conter ao menos um caractere especial (ex: !&#64;#$).
         </mat-error>
       </mat-form-field>
@@ -88,7 +95,7 @@
         <mat-label>Repita sua senha</mat-label>
         <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="passwordConfirmed" required>
         <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
-        <mat-error *ngIf="registerForm.errors?.['passwordsDontMatch']">
+        <mat-error *ngIf="rf.hasError('passwordsDontMatch')">
           As senhas não são iguais.
         </mat-error>
       </mat-form-field>
@@ -96,7 +103,6 @@
     </div>
     <div class="containerRegistrarRecuperar">
       <button type="submit" mat-flat-button class="btn-primary">Registrar</button>
-      <a class="a-primary" routerLink="/login">Login</a>
     </div>
   </form>
 

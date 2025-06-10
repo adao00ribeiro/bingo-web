@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { IRegisterResponse } from '../../interfaces/response/IRegisterResponse';
 import { CommonModule } from '@angular/common'; 
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
-
+import { Location } from '@angular/common';
 
 // --- Validador Customizado para CPF ---
 export function cpfValidator(control: AbstractControl): ValidationErrors | null {
@@ -129,11 +129,8 @@ export function passwordValidator(control: AbstractControl): ValidationErrors | 
 export function  passwordsMatchValidator(form: FormGroup): ValidationErrors | null {
   // 1. Pega o valor do controle 'password'
   const senha = form.get('password')?.value;
-  console.log('>> senha: ', senha)
   // 2. Pega o valor do controle 'passwordConfirmed'
   const repetirsenha = form.get('passwordConfirmed')?.value;
-  console.log('>> repetirsenha: ', repetirsenha)
-
   // 3. Compara os dois valores.
   // Se forem iguais, retorna null (sem erro).
   // Se forem diferentes, retorna um objeto de erro.
@@ -167,7 +164,7 @@ export class RegisterComponent {
   private fb: FormBuilder = inject(FormBuilder);
   hide1 = true;
   hide2 = true;
-  constructor() {
+  constructor(private location: Location) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -187,9 +184,8 @@ export class RegisterComponent {
 
   async submitRegistrar(): Promise<void> {
     if (this.registerForm.invalid) {
-      console.log(">>> registerForm.hasError('passwordsDontMatch'): ", this.registerForm.hasError('passwordsDontMatch'))
-      this.snackBar.open("Campo Invalidos", 'Ok', {
-        duration: 150000, // Set the duration in milliseconds
+      this.snackBar.open("Campos invalidos, preencha novamente", 'Ok', {
+        duration: 10 * 1000, // Set the duration in milliseconds
         horizontalPosition: 'center', // Options: 'start', 'center', 'end'
         verticalPosition: 'bottom', // Options: 'top', 'bottom'
         panelClass: ['warning-snackbar'],
@@ -214,7 +210,7 @@ export class RegisterComponent {
       },
       error: (err) => {
         this.snackBar.open(err.error.detail, 'Ok', {
-          duration: 5000, // Set the duration in milliseconds
+          duration: 10 * 1000, // Set the duration in milliseconds
           horizontalPosition: 'center', // Options: 'start', 'center', 'end'
           verticalPosition: 'bottom', // Options: 'top', 'bottom'
           panelClass: 'error-snackbar',
@@ -233,6 +229,10 @@ export class RegisterComponent {
 
   get rf() {
     return this.registerForm;
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   convertToIso8601(inputDate: string): string {
