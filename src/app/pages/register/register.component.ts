@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,7 +11,7 @@ import { RegisterService } from '../../services/auth/register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { IRegisterResponse } from '../../interfaces/response/IRegisterResponse';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { Location } from '@angular/common';
 
@@ -70,19 +70,19 @@ export function idadeValidator(idadeMinima: number) {
     // O valor do input type="date" vem como uma string 'YYYY-MM-DD'
     let [dia, mes, ano] = [control.value.substr(0, 2), control.value.substr(2, 2), control.value.substr(4, 4)]
     const dataNascimento = new Date(`${ano}-${mes}-${dia}`);
-    
+
     // Checa se a data é válida (ex: evita datas como 31/02/2023)
     if (isNaN(dataNascimento.getTime())) {
       return { dataErro: true };
     }
 
     const hoje = new Date();
-    
+
     // Checa se a data de nascimento não é no futuro
     if (dataNascimento > hoje) {
       return { dataErro: true };
     }
-    
+
     // Calcula a data limite para ter a idade mínima
     const dataMinima = new Date(hoje.getFullYear() - idadeMinima, hoje.getMonth(), hoje.getDate());
 
@@ -95,7 +95,13 @@ export function idadeValidator(idadeMinima: number) {
     return null;
   };
 }
-
+ export function confirmPasswordValidator (control: AbstractControl): ValidationErrors | null {
+  const password = control.parent?.get('password');
+  const confirmPassword = control.parent?.get('confirmPassword');
+   return password && confirmPassword && password.value !== confirmPassword.value
+    ? { 'passwordsDoNotMatch': true }
+    : null;
+};
 // --- Validador Customizado para Força da Senha ---
 export function passwordValidator(control: AbstractControl): ValidationErrors | null {
     const value: string = control.value || '';
@@ -125,17 +131,7 @@ export function passwordValidator(control: AbstractControl): ValidationErrors | 
     return Object.keys(errors).length ? errors : null;
 }
 
-// Esta função recebe o FormGroup inteiro como argumento
-export function  passwordsMatchValidator(form: FormGroup): ValidationErrors | null {
-  // 1. Pega o valor do controle 'password'
-  const senha = form.get('password')?.value;
-  // 2. Pega o valor do controle 'passwordConfirmed'
-  const repetirsenha = form.get('passwordConfirmed')?.value;
-  // 3. Compara os dois valores.
-  // Se forem iguais, retorna null (sem erro).
-  // Se forem diferentes, retorna um objeto de erro.
-  return senha === repetirsenha ? null : { passwordsDontMatch: true };
-}
+
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -156,31 +152,31 @@ export function  passwordsMatchValidator(form: FormGroup): ValidationErrors | nu
   styleUrl: './register.component.scss',
 
 })
-export class RegisterComponent {
-  registerForm: FormGroup;
+export class RegisterComponent implements OnInit {
+   registerForm = new FormGroup({
+    name: new FormControl('', [Validators.pattern(/\s/), Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    phone: new FormControl('', [Validators.required ]),
+    cpf: new FormControl('', [Validators.required]),
+    dateBirth: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required,Validators.minLength(8),passwordValidator]),
+    confirmPassword: new FormControl('', [Validators.required ,confirmPasswordValidator])
+  }, );
+
   private registerService: RegisterService = inject(RegisterService);
   private snackBar: MatSnackBar = inject(MatSnackBar);
   private router: Router = inject(Router);
   private fb: FormBuilder = inject(FormBuilder);
   hide1 = true;
   hide2 = true;
-  constructor(private location: Location) {
-    this.registerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern('^[- +()0-9]+$')]],
-      cpf: ['', [Validators.required, cpfValidator]],
-      dateBirth: ['', [Validators.required, idadeValidator(18)]],
-      password: ['', [Validators.required, Validators.minLength(8), passwordValidator]],
-      passwordConfirmed: ['', [Validators.required]]
-    }, { validators: this.passwordsMatchValidator });
+
+  ngOnInit(): void {
+     this.registerForm.get('password')?.valueChanges.subscribe(() => {
+    this.registerForm.get('passwordConfirmed')?.updateValueAndValidity();
+  });
   }
 
-  private passwordsMatchValidator(form: FormGroup): null | object {
-    const senha = form.get('password')?.value;
-    const repetirsenha = form.get('passwordConfirmed')?.value;
-    return senha === repetirsenha ? null : { passwordsDontMatch: true };
-  }
+
 
   async submitRegistrar(): Promise<void> {
     if (this.registerForm.invalid) {
@@ -193,17 +189,17 @@ export class RegisterComponent {
       return;
     }
 
-    const registerData: IRegister = {
-      name: this.registerForm.value.name,
-      userName: this.registerForm.value.email,
-      email: this.registerForm.value.email,
-      phone: this.registerForm.value.phone,
-      cpf: this.registerForm.value.cpf,
-      password: this.registerForm.value.password,
-      passwordConfirmed: this.registerForm.value.passwordConfirmed,
-      dateBirth: this.convertToIso8601(this.registerForm.value.dateBirth),
-      sellerId: 'b9c2d2b5-eeae-486c-85ea-06dd5cfe0c06',
-    };
+const registerData: IRegister = {
+  name: this.registerForm.value.name ?? '',
+  userName: this.registerForm.value.email ?? '',
+  email: this.registerForm.value.email ?? '',
+  phone: this.registerForm.value.phone ?? '',
+  cpf: this.registerForm.value.cpf ?? '',
+  password: this.registerForm.value.password ?? '',
+  passwordConfirmed: this.registerForm.value.confirmPassword ?? '',
+  dateBirth: this.registerForm.value.dateBirth? this.convertToIso8601(this.registerForm.value.dateBirth) : '',
+  sellerId: 'b9c2d2b5-eeae-486c-85ea-06dd5cfe0c06',
+};
     this.registerService.Register(registerData).subscribe({
       next: (data) => {
 
@@ -232,7 +228,7 @@ export class RegisterComponent {
   }
 
   goBack(): void {
-    this.location.back();
+   // this.location.back();
   }
 
   convertToIso8601(inputDate: string): string {

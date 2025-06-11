@@ -1,5 +1,5 @@
 <div class="container bg-primary">
-  <button type="button" (click)="goBack()" class="go_back">
+  <button class="go_back" type="button" (click)="goBack()">
     voltar
   </button>
   <h1>B1NGO PIX ON-LINE</h1>
@@ -9,7 +9,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Nome</mat-label>
-        <input matInput type="text" formControlName="name" />
+        <input type="text" matInput formControlName="name">
         <mat-error *ngIf="f['name'].hasError('required')">
           O nome é obrigatório.
         </mat-error>
@@ -21,7 +21,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" />
+        <input type="email" matInput formControlName="email">
         <mat-error *ngIf="f['email'].hasError('required')">
           O E-mail é obrigatório.
         </mat-error>
@@ -33,7 +33,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Telefone</mat-label>
-        <input matInput type="tel" formControlName="phone" placeholder="44 9 9900-9900" />
+        <input type="tel" matInput formControlName="phone" placeholder="44 9 9900-9900">
         <mat-error *ngIf="f['phone'].hasError('required')">
           O Telefone é obrigatório.
         </mat-error>
@@ -44,7 +44,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Cpf</mat-label>
-        <input matInput formControlName="cpf" />
+        <input matInput formControlName="cpf">
         <mat-error *ngIf="f['cpf'].hasError('required')">
           O CPF é obrigatório.
         </mat-error>
@@ -55,8 +55,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Data de Nascimento</mat-label>
-        <input matInput type="text" formControlName="dateBirth" placeholder="dd/mm/aaaa" formControlName="dateBirth"
-          mask="00/00/0000" />
+        <input type="text" matInput formControlName="dateBirth" placeholder="dd/mm/aaaa" mask="00/00/0000">
         <mat-error *ngIf="f['dateBirth'].hasError('required')">
           Data de nascimento é obrigatório.
         </mat-error>
@@ -93,16 +92,19 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Repita sua senha</mat-label>
-        <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="passwordConfirmed" required>
+        <input name="confirmPassword" matInput [type]="hide2 ? 'password' : 'text'" formControlName="confirmPassword"
+          required>
         <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
-        <mat-error *ngIf="rf.hasError('passwordsDontMatch')">
+         @if (registerForm.get('confirmPassword')?.hasError('passwordsDoNotMatch')) {
+        <mat-error >
           As senhas não são iguais.
         </mat-error>
+      }
       </mat-form-field>
 
     </div>
     <div class="containerRegistrarRecuperar">
-      <button type="submit" mat-flat-button class="btn-primary">Registrar</button>
+      <button class="btn-primary" type="submit" mat-flat-button>Registrar</button>
     </div>
   </form>
 
