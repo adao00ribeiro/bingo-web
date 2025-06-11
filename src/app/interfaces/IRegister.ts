@@ -8,4 +8,5 @@ export interface IRegister {
   passwordConfirmed: string;
   dateBirth: string; // ou Date, dependendo do uso
   sellerId: string; // UUID format
+  indicateTag: string;
 }

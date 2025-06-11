@@ -11,6 +11,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SocketComponent } from './pages/socket/socket.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { IndiqueGanheComponent } from './pages/index/indique-ganhe/indique-ganhe.component';
 
 export const routes: Routes = [
   {
@@ -47,10 +48,14 @@ export const routes: Routes = [
         path: 'account',
         component: MyAccountComponent,
       },
-        {
-    path: 'socket',
-    component: ChatComponent,
-  },
+      {
+        path: 'socket',
+        component: ChatComponent,
+      },
+      {
+        path: 'indicacao',
+        component: IndiqueGanheComponent,
+      },
     ],
   },
   {
