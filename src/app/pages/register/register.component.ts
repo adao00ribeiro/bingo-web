@@ -169,7 +169,8 @@ export class RegisterComponent implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
   hide1 = true;
   hide2 = true;
-
+  constructor(private location: Location) {
+  }
   ngOnInit(): void {
      this.registerForm.get('password')?.valueChanges.subscribe(() => {
     this.registerForm.get('passwordConfirmed')?.updateValueAndValidity();
@@ -228,7 +229,7 @@ const registerData: IRegister = {
   }
 
   goBack(): void {
-   // this.location.back();
+    this.location.back();
   }
 
   convertToIso8601(inputDate: string): string {
