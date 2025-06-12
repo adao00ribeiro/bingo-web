@@ -1,48 +1,111 @@
+<div class="container bg-primary">
+  <button class="go_back" type="button" (click)="goBack()">
+    voltar
+  </button>
+  <h1>B1NGO PIX ON-LINE</h1>
+  <span>Registre-se agora mesmo e concorra a milhares de prêmios.</span>
+  <form [formGroup]="registerForm" (ngSubmit)="submitRegistrar()">
+    <div class="formgroup">
 
-  <div class="container bg-primary">
-    <h1>B1NGO PIX ON-LINE</h1>
-    <span>Registre-se agora mesmo e concorra a milhares de prêmios.</span>
-    <form [formGroup]="registerForm" (ngSubmit)="submitRegistrar()">
-      <div class="formgroup">
-        <mat-form-field class="example-full-width">
-          <mat-label>Nome</mat-label>
-          <input matInput type="text"  formControlName="name" />
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-          <mat-label>Email</mat-label>
-          <input matInput type="email"  formControlName="email" />
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-          <mat-label>Telefone</mat-label>
-          <input matInput type="tel" formControlName="phone" placeholder="44 9 9900-9900"/>
-        </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Nome</mat-label>
+        <input type="text" matInput formControlName="name">
+        <mat-error *ngIf="f['name'].hasError('required')">
+          O nome é obrigatório.
+        </mat-error>
+        <mat-error *ngIf="f['name'].hasError('minlength')">
+          O nome deve ter no mínimo 3 caracteres.
+        </mat-error>
+      </mat-form-field>
 
-        <mat-form-field class="example-full-width">
-          <mat-label>Cpf</mat-label>
-          <input matInput formControlName="cpf" />
-        </mat-form-field>
 
-        <mat-form-field class="example-full-width" >
-          <mat-label>Data de Nascimento</mat-label>
-          <input matInput type="date" formControlName="dateBirth" />
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-          <mat-label>Digite sua senha</mat-label>
-          <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="password" required>
-          <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-          <mat-label>Repita sua senha</mat-label>
-          <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="passwordConfirmed" required>
-          <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="email">
+        <mat-error *ngIf="f['email'].hasError('required')">
+          O E-mail é obrigatório.
+        </mat-error>
+        <mat-error *ngIf="f['email'].hasError('email')">
+          E-mail inválido.
+        </mat-error>
+      </mat-form-field>
 
-      </div>
-      <div class="containerRegistrarRecuperar">
-        <button type="submit" mat-flat-button class="btn-primary" >Registrar</button>
-        <a class="a-primary" routerLink="/login" >Login</a>
-      </div>
-    </form>
 
-  </div>
+      <mat-form-field class="example-full-width">
+        <mat-label>Telefone</mat-label>
+        <input type="tel" matInput formControlName="phone" placeholder="44 9 9900-9900">
+        <mat-error *ngIf="f['phone'].hasError('required')">
+          O Telefone é obrigatório.
+        </mat-error>
+        <mat-error *ngIf="f['phone'].hasError('pattern')">
+          Telefone inválido.
+        </mat-error>
+      </mat-form-field>
 
+      <mat-form-field class="example-full-width">
+        <mat-label>Cpf</mat-label>
+        <input matInput formControlName="cpf">
+        <mat-error *ngIf="f['cpf'].hasError('required')">
+          O CPF é obrigatório.
+        </mat-error>
+        <mat-error *ngIf="f['cpf'].hasError('cpfValidator')">
+          CPF inválido.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Data de Nascimento</mat-label>
+        <input type="text" matInput formControlName="dateBirth" placeholder="dd/mm/aaaa" mask="00/00/0000">
+        <mat-error *ngIf="f['dateBirth'].hasError('required')">
+          Data de nascimento é obrigatório.
+        </mat-error>
+        <mat-error *ngIf="f['dateBirth'].hasError('dataErro')">
+          Data de nascimento inválida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Digite sua senha</mat-label>
+        <input matInput [type]="hide1 ? 'password' : 'text'" formControlName="password" required>
+        <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+
+        <mat-error
+          [style.color]="f['password'].hasError('required') || f['password'].hasError('minlength') ? 'red' : 'green'">
+          A senha deve ter no mínimo 8 caracteres.
+        </mat-error>
+
+        <mat-error
+          [style.color]="f['password'].hasError('required') || f['password'].hasError('requiresUppercase') ? 'red' : 'green'">
+          Deve conter ao menos uma letra maiúscula.
+        </mat-error>
+
+        <mat-error
+          [style.color]="f['password'].hasError('required') || f['password'].hasError('requiresNumber') ? 'red' : 'green'">
+          Deve conter ao menos um número.
+        </mat-error>
+
+        <mat-error
+          [style.color]="f['password'].hasError('required') || f['password'].hasError('requiresSpecialChar') ? 'red' : 'green'">
+          Deve conter ao menos um caractere especial (ex: !&#64;#$).
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Repita sua senha</mat-label>
+        <input name="confirmPassword" matInput [type]="hide2 ? 'password' : 'text'" formControlName="confirmPassword"
+          required>
+        <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+         @if (registerForm.get('confirmPassword')?.hasError('passwordsDoNotMatch')) {
+        <mat-error >
+          As senhas não são iguais.
+        </mat-error>
+      }
+      </mat-form-field>
+
+    </div>
+    <div class="containerRegistrarRecuperar">
+      <button class="btn-primary" type="submit" mat-flat-button>Registrar</button>
+    </div>
+  </form>
+
+</div>

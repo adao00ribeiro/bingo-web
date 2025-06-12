@@ -5,13 +5,16 @@
     <span>Data: {{ round().startedDate | dateTime }}</span>
     <span>Cartelas: {{ round().cardsPurchased }}</span>
   </div>
-    <cdk-virtual-scroll-viewport itemSize="100" class="example-viewport" (scrolledIndexChange)="onScroll()">
-      <div class="grid-container">
-      <div *cdkVirtualFor="let item of cards" class="example-row">
-          <app-card [card]="item" ></app-card>
-      </div>
+
+    <div class="grid-container"
+     infinite-scroll
+     [infiniteScrollDistance]="scrollDistance"
+      [infiniteScrollThrottle]="scrollUpDistance"
+      (scrolled)="onScroll()" [scrollWindow]="false">
+      @for (item of cards; track $index) {
+      <app-card [card]="item" ></app-card>
+      }
     </div>
-    </cdk-virtual-scroll-viewport>
 
 </mat-dialog-content>
 
