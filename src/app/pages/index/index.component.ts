@@ -25,7 +25,7 @@ import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '../../constants/storage.se
 })
 export class IndexComponent implements OnInit {
   @ViewChild('snav') sidenav!: MatSidenav; // Referência ao MatSidenav
-  isSidenavOpen = true;
+  isSidenavOpen = false;
   showFiller = true;
   mobileQuery: MediaQueryList;
   private router: Router = inject(Router);
