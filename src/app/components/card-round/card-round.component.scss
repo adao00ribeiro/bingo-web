@@ -3,110 +3,208 @@
   flex-direction: column;
   justify-content: space-between;
   border-radius: 0.3rem;
-  padding:1rem;
+  padding: 1rem;
   gap: 0.3rem;
+
   main {
     display: flex;
     flex-direction: row;
     flex: 2;
     gap: 0.3rem;
   }
+
   footer {
     display: flex;
     flex-direction: row;
     gap: 2rem;
     margin-top: 1rem;
+
     button {
       width: 100%;
       color: white;
       display: flex;
       justify-content: center;
       padding: 0.5rem;
-      span{
+
+      span {
         font-size: 0.8rem;
       }
     }
   }
 }
+
 .container-image {
   display: flex;
+
   img {
     object-fit: scale-down;
     width: 150px;
-    height:  150px;
+    height: 150px;
   }
 }
+
 .container-info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
   color: white;
-  h2{
+
+  h2 {
     margin: 0;
     padding: 0;
     font-size: 1rem;
   }
 
-  span{
-
-  }
-  .info-group{
+  .info-group {
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 }
-.container-timer{
+
+.container-timer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  span{
+  span {
     padding: 0.3rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius:0.5rem;
+    border-radius: 0.5rem;
+    white-space: nowrap;
   }
-  .timer{
+
+  .timer {
     display: flex;
+    width: 100%;
     flex-direction: row;
     align-items: center;
     gap: 0.3rem;
-    span{
+
+    span {
       padding: 0.3rem;
-    display: inline-block; // Garante que fique em linha
-    align-items: center;
-    justify-content: center;
-    width: auto; // Permite ajuste automático ao conteúdo
-    min-width: 80px; // Mantém um tamanho mínimo
-    background-color: white;
-    color: rgb(0, 0, 0);
-    border-radius: 0.5rem;
-    white-space: nowrap; // Impede a quebra de linha
-    text-align: center;
+      display: inline-block; // Garante que fique em linha
+
+      align-items: center;
+      justify-content: center;
+      width: auto; // Permite ajuste automático ao conteúdo
+      min-width: 80px; // Mantém um tamanho mínimo
+      background-color: white;
+      color: rgb(0, 0, 0);
+      border-radius: 0.5rem;
+      white-space: nowrap; // Impede a quebra de linha
+      text-align: center;
     }
   }
 
 }
-.total-prize{
+
+.total-prize {
   display: flex;
   align-items: center;
   color: orange;
   gap: 0.2rem;
 
-  span{
+  span {
     color: orange;
   }
 }
-.group{
+
+.group {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 0.3rem;
 
-  span{
+  span {
     font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 725px) {
+  .card-round {
+
+    main {}
+
+    footer {
+
+      button {
+        span {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  .container-image {
+    display: flex;
+
+    img {
+      object-fit: scale-down;
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .container-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    color: white;
+
+    h2 {
+      margin: 0;
+      padding: 0;
+      font-size: 1rem;
+    }
+
+    span {}
+
+    .info-group {}
+  }
+
+  .container-timer {
+
+
+    span {
+      font-size: 0.7rem;
+      white-space: nowrap;
+    }
+
+    .timer {
+
+      span {
+        padding: 0.2rem;
+        font-size: 0.8rem;
+
+      }
+    }
+
+  }
+
+  .total-prize {
+    display: flex;
+    align-items: center;
+    color: orange;
+    gap: 0.2rem;
+
+    span {
+      color: orange;
+    }
+  }
+
+  .group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3rem;
+
+    span {
+      font-size: 0.8rem;
+    }
   }
 }
