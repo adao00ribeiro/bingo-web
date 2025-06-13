@@ -6,6 +6,7 @@ export interface ICardWinner {
   value :number,
   card: ICard,
   cardId :string,
-  prizeId : string
+  prizeId : string,
+  createdAt?: string
   prize : IPrize
 }
