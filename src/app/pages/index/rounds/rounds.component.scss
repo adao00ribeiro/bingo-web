@@ -1,26 +1,34 @@
-:host{
-  width:100%;
-  height:auto;
+:host {
+  width: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-.filters{
+
+.filters {
   height: 3rem;
 }
-.grid{
+
+.grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap:0.3rem;
+  gap: 0.3rem;
   overflow-y: scroll;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE e Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE e Edge */
 
 }
-.grid > *:only-child {
-  justify-self: start; /* Alinha o item à esquerda */
-  width: 370px; /* Define a largura como 400px */
+
+.grid>*:only-child {
+  justify-self: start;
+  /* Alinha o item à esquerda */
+  width: 370px;
+  /* Define a largura como 400px */
 }
+
 .container-menu {
   display: flex;
   justify-content: flex-start; // Alinha os botões à esquerda
@@ -28,13 +36,15 @@
   padding: 10px;
   background-color: var(--background-color-second);
 }
-.no-data{
+
+.no-data {
   text-align: center;
   padding: 20px;
-  font-weight:bold;
+  font-weight: bold;
   font-size: 1.7rem;
   color: #777;
 }
+
 button {
   background: none;
   border: none;
@@ -52,36 +62,62 @@ button {
     outline: none;
   }
 }
-h3{
-    color: #ffb400;
-    margin: 1.875rem 0 var(--site-spacer-l) 0;
-    --vn-menu-item-text-transform: none;
-    text-transform: var(--vn-menu-item-text-transform);
-    font-family: Knockout, Verdana, Arial, Helvetica, sans-serif;
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 36px;
+
+h3 {
+  color: #ffb400;
+  margin: 1.875rem 0 var(--site-spacer-l) 0;
+  --vn-menu-item-text-transform: none;
+  text-transform: var(--vn-menu-item-text-transform);
+  font-family: Knockout, Verdana, Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 36px;
 }
+
 .table {
   width: 50%;
   border-collapse: collapse;
 }
 
-.table th, .table td {
+.table th,
+.table td {
   padding: 12px;
   border: 1px solid #ccc;
   text-align: center;
 }
 
-.table th {
+.table th {}
 
-}
-.info{
+.info {
   margin-top: 2rem;
   margin: 0 auto;
   max-width: 1024px;
-  p,li,th,tr{
-color: rgb(167, 166, 166);
+
+  p,
+  li,
+  th,
+  tr {
+    color: rgb(167, 166, 166);
   }
 
+}
+
+@media (max-width: 375px) {
+  .container-menu {
+    display: flex;
+    justify-content: flex-start; // Alinha os botões à esquerda
+    gap: 10px; // Espaçamento entre os botões
+    padding: 10px;
+    background-color: var(--background-color-second);
+
+    button {
+      font-size: 0.7rem;
+    }
+  }
+
+  .grid {
+
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+  }
 }

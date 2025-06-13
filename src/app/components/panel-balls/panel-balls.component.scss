@@ -2,8 +2,10 @@
   width: 100%;
   height: 100%; // importante: o pai deve ter altura definida
   display: grid;
-   grid-template-columns: repeat(30, 1fr); /* 5 colunas fixas */
-  grid-auto-rows: minmax(50px, auto);   /* altura das linhas se adapta */
+  grid-template-columns: repeat(30, 1fr);
+  /* 5 colunas fixas */
+  grid-auto-rows: minmax(50px, auto);
+  /* altura das linhas se adapta */
   gap: 0.4rem;
   padding: 0.3rem;
   box-sizing: border-box;
@@ -39,10 +41,13 @@
 .ball-current {
   background-color: #f70000;
 }
+
 @media screen and (max-width: 1440px) {
   .container-balls {
-      grid-template-columns: repeat(30, 1fr); /* 5 colunas fixas */
-  grid-auto-rows: minmax(33px, auto);   /* altura das linhas se adapta */
+    grid-template-columns: repeat(30, 1fr);
+    /* 5 colunas fixas */
+    grid-auto-rows: minmax(33px, auto);
+    /* altura das linhas se adapta */
   }
 
   .ball,
@@ -52,10 +57,13 @@
     height: 30px;
   }
 }
+
 @media screen and (max-width: 1024px) {
   .container-balls {
-      grid-template-columns: repeat(30, 1fr); /* 5 colunas fixas */
-  grid-auto-rows: minmax(33px, auto);   /* altura das linhas se adapta */
+    grid-template-columns: repeat(30, 1fr);
+    /* 5 colunas fixas */
+    grid-auto-rows: minmax(33px, auto);
+    /* altura das linhas se adapta */
   }
 
   .ball,
@@ -65,10 +73,13 @@
     height: 25px;
   }
 }
+
 @media screen and (max-width: 768px) {
   .container-balls {
-     grid-template-columns: repeat(15, 1fr); /* 5 colunas fixas */
-    grid-auto-rows: minmax(33px, auto);   /* altura das linhas se adapta */
+    grid-template-columns: repeat(15, 1fr);
+    /* 5 colunas fixas */
+    grid-auto-rows: minmax(33px, auto);
+    /* altura das linhas se adapta */
   }
 
   .ball,
@@ -83,15 +94,14 @@
 // Media queries
 @media screen and (max-width: 425px) {
   .container-balls {
-   grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
   }
 
   .ball,
   .ball-marked,
   .ball-current {
     width: 25px;
-    height:25px;
+    height: 25px;
     font-size: 0.5rem;
   }
 }
-

@@ -150,26 +150,91 @@
     flex-direction: column;
     height: auto;
   }
+
+  .left {
+    flex: none;
+    width: 100%;
+    gap: 0.5rem;
+
+    .container-header {
+      gap: 0.5rem;
+
+      .info-round {
+
+        align-items: center;
+        gap: 0.5rem;
+
+        .group-info {
+
+          span {
+            font-size: 0.75rem;
+
+            white-space: nowrap;
+          }
+        }
+
+        .container-image {
+          width: 80px;
+          height: 80px;
+        }
+
+        span {
+          font-size: 0.75rem;
+        }
+      }
+
+      .container-timer,
+      .configuration {
+        justify-content: center;
+        margin-top: 0.5rem;
+      }
+    }
+
+    .container-balls {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      .container-balls-right,
+      .size-cards {
+
+      }
+
+      button {
+        width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+      }
+    }
+
+  }
+
+  .right {
+    flex: none;
+    width: 100%;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    padding: 0.5rem;
+    gap: 8px;
+  }
+
   .chat-button {
     display: flex;
     align-items: center;
     justify-content: center;
     position: fixed;
     top: 50%;
-    right: 0%;
+    right: 0;
     background-color: black;
+    padding: 0.5rem;
+    border-radius: 1rem 0 0 1rem;
     z-index: 3;
+
     .button-icon {
-      -webkit-filter: invert(100%);
+      width: 60%;
       filter: invert(100%);
-
-      &.chat {
-        width: 70%;
-      }
-
-      &.bot {
-        width: 75%;
-      }
     }
   }
 }

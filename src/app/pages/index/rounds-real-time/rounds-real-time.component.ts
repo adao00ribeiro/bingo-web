@@ -54,11 +54,11 @@ import { CommonModule } from '@angular/common';
     InfiniteScrollDirective,
     ChatComponent,
     CommonModule
-],
+  ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './rounds-real-time.component.html',
   styleUrl: './rounds-real-time.component.scss',
-   animations: [
+  animations: [
     trigger('rotateAnimation', [
       state('rotated', style({ transform: 'rotate(0deg)' })),
       state('default', style({ transform: 'rotate(-360deg)' })),
@@ -70,14 +70,14 @@ import { CommonModule } from '@angular/common';
         style({ opacity: 0 }),
         animate(
           "150ms ease-in-out",
-          style({ opacity: 1})
+          style({ opacity: 1 })
         )
       ]),
       transition(":leave", [
-        style({ opacity: 1}),
+        style({ opacity: 1 }),
         animate(
           "150ms ease-in-out",
-          style({ opacity: 0,})
+          style({ opacity: 0, })
         )
       ])
     ]),
@@ -239,6 +239,10 @@ export class RoundsRealTimeComponent implements OnInit {
   ngOnInit(): void {
     this.getRound();
     this.loadNextPage();
+
+    if (window.innerWidth < 768) {
+      this.isOpen = false;
+    }
   }
 
   chunkArray(arr: any[], size: number): any[][] {
@@ -350,7 +354,7 @@ export class RoundsRealTimeComponent implements OnInit {
     this.cardsByPunterResourceService.reload(this.id, this.page, this.pageSize);
     this.page++;
   }
-    public onChangeChatState(): void {
+  public onChangeChatState(): void {
     this.isOpen = !this.isOpen;
     this.iconState = (this.iconState === 'default' ? 'rotated' : 'default');
 

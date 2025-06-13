@@ -32,16 +32,8 @@ export class BallComponent {
     let size = this.size();
     let fontSize = this.fontSize();
 
-    if (window.innerWidth <= 480) {
-      size *= 0.4; // Reduz para 40% em telas muito pequenas
-      fontSize *= 0.4; // Reduz o font size em 40%
-    } else if (window.innerWidth <= 768) {
-      size *= 0.4; // Reduz para 60% em tablets
-      fontSize *= 0.4; // Reduz o font size em 60%
-    } else if (window.innerWidth <= 1200) {
       size *= 0.8; // Reduz para 80% em telas médias
       fontSize *= 0.8; // Reduz o font size em 80%
-    }
 
     this.ballStyles = {
       width: `${size}rem`,

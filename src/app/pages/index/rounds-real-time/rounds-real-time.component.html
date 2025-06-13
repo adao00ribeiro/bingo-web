@@ -19,12 +19,17 @@
           </span>
         </div>
       </div>
+      @if(false){
       <div class="container-timer">
       </div>
+      }@else {
       <div class="configuration">
         <app-prize-board [prizeResults]="roundMessage() ? roundMessage()?.results : []">
         </app-prize-board>
       </div>
+      }
+
+
     </div>
     <mat-accordion>
       <mat-expansion-panel class="expansion-panel">
@@ -60,11 +65,8 @@
 
       </mat-expansion-panel>
     </mat-accordion>
-    <div class="grid-container"
-     infinite-scroll
-     [infiniteScrollDistance]="scrollDistance"
-      [infiniteScrollThrottle]="scrollUpDistance"
-      (scrolled)="onScroll()" [scrollWindow]="false">
+    <div class="grid-container" infinite-scroll [infiniteScrollDistance]="scrollDistance"
+      [infiniteScrollThrottle]="scrollUpDistance" (scrolled)="onScroll()" [scrollWindow]="false">
       @for (item of top_cards(); track $index) {
       <app-card [card]="item" [balls]="roundMessage()?.numbers ?? []"></app-card>
       }
@@ -74,15 +76,10 @@
     <app-table-almost-there [toplist]="top_list()">
     </app-table-almost-there>
     @if(isOpen){
-    <app-chat [roomId]="round()?.roomId" ></app-chat>
+    <app-chat [roomId]="round()?.roomId"></app-chat>
     }
   </div>
-  <button
-    class="chat-button"
-    matSuffix
-    mat-fab
-    (click)="onChangeChatState()"
-    [disableRipple]="true">
-    <mat-icon [@rotateAnimation]="iconState" >chat</mat-icon>
-</button>
+  <button class="chat-button" matSuffix mat-fab (click)="onChangeChatState()" [disableRipple]="true">
+    <mat-icon [@rotateAnimation]="iconState">chat</mat-icon>
+  </button>
 </div>
