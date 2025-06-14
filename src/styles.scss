@@ -1,6 +1,20 @@
+@use '@angular/material' as mat;
 @use "theme.scss";
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
+
+
+:root{
+  --text-color:'';
+  --color-primary:'1E293B';
+  --background-color-primary:'#0F172B';
+  --background-color-second: '#1E293B';
+  --background-color-third:'#1E293B';
+  --button-color: '';
+  --button-text-color:'';
+  --button-hover-color: '';
+  --white-color:'';
+}
 
 html,
 body {
@@ -9,6 +23,8 @@ body {
   height: 100vh; /* Ajuste a altura conforme necessário */
   width: 100vw; /* Ajuste a largura conforme necessário */
   --mat-sys-corner-extra-large: 0.5rem;
+  background-color: var(--background-color-primary);
+   color: var(--color-primary);
 }
 
 * {
@@ -26,10 +42,6 @@ body {
   --mdc-snackbar-supporting-text-size: 2rem !important;
   --mdc-snackbar-supporting-text-weight: bold;
 
-
-  button{
-    background-color: rgb(5, 143, 5);
-  }
 }
 .warning-snackbar {
   --mdc-snackbar-container-color: rgb(251, 255, 0);
@@ -40,9 +52,7 @@ body {
   --mdc-snackbar-supporting-text-line-height: 2rem
   --mdc-snackbar-supporting-text-size: 2rem !important;
   --mdc-snackbar-supporting-text-weight: bold;
-  button{
-    background-color: blue;
-  }
+
 }
 .error-snackbar {
   --mdc-snackbar-container-color: rgb(243, 7, 7);
@@ -54,10 +64,8 @@ body {
   --mdc-snackbar-supporting-text-size: 2rem !important;
   --mdc-snackbar-supporting-text-weight: bold;
 
-font
-  button{
-    background-color: blue;
-  }
+
+
 }
 .mat-mdc-menu-panel {
   background-color: var(--background-color-second) !important;
@@ -70,3 +78,5 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+

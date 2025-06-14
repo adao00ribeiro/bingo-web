@@ -1,3 +1,4 @@
+
 :host{
   display: flex;
   flex-direction: column;
@@ -6,7 +7,7 @@
   height: 100vh;
 .container {
   border-radius: 5px;
-   max-width: 375px;
+  max-width: 375px;
   width: 100%; // Permite que ele seja responsivo
   display: flex;
   flex-direction: column;
@@ -14,7 +15,15 @@
   padding: 2rem;
   gap: 1rem;
   justify-content: space-between;
-
+  background-color: var(--background-color-second);
+  h1{
+    line-height: 0;
+    color:var(--text-color);
+  }
+  span{
+    color:var(--text-color);
+    margin-bottom: 0.5rem;
+  }
   form {
       width: 100%;
       display: flex;
@@ -30,27 +39,17 @@
 
       .containerRegistrarRecuperar {
           display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-around;
+          flex-direction: column;
           gap: 0.5rem;
 
-          button {
-              flex: 1;
-
-          }
-
-          a {
-              cursor: pointer;
-              white-space: nowrap;
-              font-size: 1rem;
-              flex: 1;
-          }
       }
   }
 }
 
 .container18pix {
+border-top: 1px solid color-mix(in srgb, var(--color-second) 45%, transparent);
+
+
   display: flex;
   flex-direction: row;
   align-items: center;

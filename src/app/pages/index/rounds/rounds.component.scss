@@ -35,6 +35,24 @@
   gap: 10px; // Espaçamento entre os botões
   padding: 10px;
   background-color: var(--background-color-second);
+button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 5px;
+
+  &:hover {
+    color: var(--color-primary); // Muda a cor ao passar o mouse
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
 }
 
 .no-data {
@@ -45,23 +63,7 @@
   color: #777;
 }
 
-button {
-  background: none;
-  border: none;
-  color: var(--text-primary);
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 5px;
 
-  &:hover {
-    color: #007bff; // Muda a cor ao passar o mouse
-  }
-
-  &:focus {
-    outline: none;
-  }
-}
 
 h3 {
   color: #ffb400;

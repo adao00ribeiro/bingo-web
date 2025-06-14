@@ -33,6 +33,7 @@ export class IndexComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   private _mobileQueryListener: () => void;
   isVisible: boolean = false;
+
   protected readonly PunterMeResourceService = inject(PunterMeResourceService);
 
   user = signal<IPunter | undefined>(undefined);
@@ -111,4 +112,6 @@ export class IndexComponent implements OnInit {
     this.isSidenavOpen = true;
     this.sidenav.open(); // Abre o sidenav
   }
+
+
 }
