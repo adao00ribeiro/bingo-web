@@ -1,17 +1,10 @@
 
   .button-link{
+    display: flex;
+    justify-content: flex-start !important;
    width: 100%;
-   display: flex;
-   align-items: center;
-   gap: 0.5rem;
-   background-color: transparent;
-   color: white;
-   &:hover{
-    color: blue;
-   }
-   span{
-    font-size: 1rem;
-   }
+   gap: 1rem;
+
   }
 
 @media (max-width: 725px) {

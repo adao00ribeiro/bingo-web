@@ -1,4 +1,4 @@
-<mat-dialog-content class="dialog bg-primary">
+<mat-dialog-content class="dialog">
   <h2>Cartelas Compradas</h2>
   <div class="article-title">
     <span>Rodada: {{ round().id  | guid }} </span>
@@ -18,6 +18,6 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions class="actions bg-primary" align="center">
-  <button mat-button color="primary" (click)="closeDialog()">Fechar</button>
+<mat-dialog-actions class="actions" align="center">
+  <button mat-button  (click)="closeDialog()">Fechar</button>
 </mat-dialog-actions>

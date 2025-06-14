@@ -1,12 +1,15 @@
 $bingo-light-map:(
-    name: "bingo-light",
-    text-color: rgb(255, 255, 255),
-    color-primary:rgb(182, 182, 182),
-    background-color-primary: #12d60b,//Indigo
-    background-color-second: 	#A020F0,//Purple
-    background-color-third: rgb(116, 116, 116),
-    button-color: rgb(247, 12, 12),
-    button-text-color: rgb(36, 0, 243),
-    button-hover-color: rgb(0, 0, 0) ,
-    white-color: white
+  name: "bingo-light",
+  color-primary: #7c4dff,        // Roxo equilibrado
+  color-primary-hover: #651fff,
+  color-second: #564683,         // Roxo secundário
+  color-second-hover: #493c6d,
+  background-color-primary: #faf8ff,  // Roxo muito claro
+  background-color-second: #f3e5f5,
+  background-color-third: #e1bee7,
+  color-ball: #ba68c8,
+  color-ball-marked: #7c4dff,
+  color-ball-current: #ce93d8,
+  color-panel-card: #ffffff,
+  text-color: #000000
 )

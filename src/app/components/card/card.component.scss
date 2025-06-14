@@ -7,11 +7,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-
+   background-color: var(--color-panel-card);
   .title{
     border-radius: 0.2rem;
-    background-color: rgb(97, 96, 96);
-    color: white !important;
+    background-color: var(--color-primary);
+    color: var(--text-color);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -44,15 +44,14 @@
   align-items: center;
   justify-content: center;
   font-size: 1rem;
-  background-color: #007bff;
-  color: white;
+  color: var(--text-color);
 }
 .ball-current {
-  background-color: red;
+  background-color:var(--color-ball-current);
 }
 .ball {
-  background-color: green;
+  background-color: var(--color-ball);
 }
 .ball-marked {
-  background-color:rgb(167, 167, 8);
+  background-color:var(--color-ball-marked);
 }

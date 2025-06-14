@@ -3,9 +3,10 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
-  color: rgb(255, 255, 255);
+  color: var(--text-color);
   border-radius: 1rem;
   padding: 0.5rem;
+  background-color: var(--background-color-second);
 }
 
 .buycardheader {
@@ -17,6 +18,7 @@
     font-weight: 400;
     letter-spacing: normal;
     text-align: center;
+    font-weight: bold;
   }
 }
 
@@ -98,15 +100,14 @@
         display: flex;
         gap: 0.5rem;
         flex: 2;
-        color: white;
+        color: var(--text-color);
 
         .text-center {
           text-align: center;
+
         }
 
-        .btnAddSub {
-          background-color: rgb(41, 2, 104);
-        }
+
       }
     }
 
@@ -132,7 +133,7 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
-  color: white;
+  color: var(--text-color);
 
   .container-button {
     display: flex;
@@ -140,12 +141,19 @@
     gap: 1rem;
 
     button {
-      color: white;
+      color: var(--text-color);
       flex: 1;
       padding: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      &:first-child {
+      background-color: var(--color-second);
+      }
+      &:first-child:hover {
+      background-color: var(--color-second-hover);
+      }
     }
+
   }
 }

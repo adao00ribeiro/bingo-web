@@ -1,105 +1,83 @@
-
 @use "global.scss" as *;
 
 @function map-get-value($map, $key) {
   @if map-has-key($map, $key) {
     @return map-get($map, $key);
-  } @else {
+  }
+
+  @else {
     @error "ERROR: Specified key #{$key} does not exist in the mapping #{map-get($map,name)}";
   }
 }
 
 @mixin set-theme($map) {
-  --text-color: #{map-get-value($map, text-color)};
+  --background-color-primary: #{map-get-value($map, background-color-primary)};
   --color-primary: #{map-get-value($map, color-primary)};
+  --color-primary-hover: #{map-get-value($map, color-primary-hover)};
+  --color-second: #{map-get-value($map, color-second)};
+  --color-second-hover: #{map-get-value($map, color-second-hover)};
   --background-color-primary: #{map-get-value($map, background-color-primary)};
   --background-color-second: #{map-get-value($map, background-color-second)};
   --background-color-third: #{map-get-value($map, background-color-third)};
-  --button-color: #{map-get-value($map, button-color)};
-  --button-text-color: #{map-get-value($map, button-text-color)};
-  --button-hover-color: #{map-get-value($map, button-hover-color)};
-  --white-color: #{map-get-value($map, white-color)};
-
-  background-color: map-get($map, background-color-third);
-  color: map-get($map, background-color-third);
-  h1{
-    color: map-get($map, text-color);
-  }
-  .bg-primary {
-    background-color: map-get-value($map, background-color-primary);
-  }
-  .bg-second {
-
-    background-color: map-get-value($map, background-color-second);
-  }
-
-  .text-black {
-    color: black
-  }
-
-  .text {
-    color: map-get-value($map, text-color);
-  }
+  --color-ball: #{map-get-value($map, color-ball)};
+  --color-ball-marked: #{map-get-value($map, color-ball-marked)};
+  --color-ball-current: #{map-get-value($map, color-ball-current)};
+  --color-panel-card: #{map-get-value($map, color-panel-card)};
+  --text-color: #{map-get-value($map, text-color)};
 
   button {
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem;
+    border-radius: 3rem;
     border: none;
-    border-radius: 0.3rem;
     font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s, opacity 0.3s;
+    transition:
+    background-color 0.3s,
+    color 0.3s,
+    opacity 0.3s;
+    background-color: var(--color-primary);
+    color: var(--text-color);
 
+    &:disabled {
+      background-color: #c5c5c5; // Cor para estado desabilitado
+      color: #6c757d; // Cor do texto no estado desabilitado
+      cursor: not-allowed; // Mostra que o botão não é clicável
+      opacity: 0.65; // Reduz a opacidade para indicar o estado
+    }
 
-      &:disabled {
-        background-color: #b0c4de; // Cor para estado desabilitado
-        color: #6c757d;           // Cor do texto no estado desabilitado
-        cursor: not-allowed;      // Mostra que o botão não é clicável
-        opacity: 0.65;            // Reduz a opacidade para indicar o estado
-      }
+    &:disabled:hover {
+      background-color: #c5c5c5; // Use a mesma cor para manter consistência
+    }
 
+    &:hover {
+      background-color: var(--color-primary-hover);
+    }
   }
-  a{
-    padding:  0.5rem;
+
+  a {
+    padding: 0.5rem;
     border-radius: 0.3rem;
     border: none;
     text-align: center;
     text-decoration: none;
-    color: black
-  }
-  .btn-primary {
-    background-color: map-get-value($map, button-color) !important;
-    color: map-get-value($map, button-text-color);
+    color: var(--text-color);
+    opacity: 0.65; // Reduz a opacidade para indicar o estado
 
     &:hover {
-      background-color: map-get-value($map, button-hover-color);
-      color: map-get-value($map, white-color);
+      color: var(--text-color);
+      opacity: 1; // Reduz a opacidade para indicar o estado
     }
   }
-  .a-primary {
-    color: map-get-value($map, button-text-color);
-    &:hover {
-      color: map-get-value($map, white-color);
-    }
-  }
-  .green{
-    background-color: rgb(2, 179, 2);
-  }
-  .red{
-    background-color: rgb(179, 2, 2);
-  }
-  .blue{
-    background-color: rgb(20, 2, 179);
-  }
-  span{
-   color:  map-get-value($map, white-color);
-  }
-
 }
 
 //set theme
 .bingo-light {
   @include set-theme($bingo-light-map);
 }
+
 .bingo-dark {
   @include set-theme($bingo-dark-map);
 }
@@ -107,6 +85,7 @@
 .natal-light {
   @include set-theme($natal-light-map);
 }
+
 .natal-dark {
   @include set-theme($natal-dark-map);
 }

@@ -46,10 +46,10 @@
       <span title="2.5 mBTC">{{this.moneytotal | currency}}</span>
   </div>
   <div class="container-button">
-    <button class="button red" *ngIf="!hiddenTittle" (click)="closeModal.emit()">
+    <button  *ngIf="!hiddenTittle" (click)="closeModal.emit()">
     Fechar
   </button>
-  <button class="button green" [disabled]="loading" (click)="changeBuy()">
+  <button [disabled]="loading" (click)="changeBuy()">
     Comprar
   </button>
   </div>

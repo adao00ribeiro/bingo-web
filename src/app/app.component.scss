@@ -1,0 +1,30 @@
+.theme-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 1rem; // afastamento do rodapé
+  right: 1rem;  // afastamento da lateral
+  background-color:var(--color-primary);
+  padding: 0.5rem;
+  border-radius: 1rem ;
+  z-index: 3;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ar(--color-primary-hover);
+  }
+
+  .button-icon {
+    width: 60%;
+    max-width: 100%;
+    height: auto;
+    filter: invert(100%);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .button-icon {
+    transform: scale(1.1);
+  }
+}

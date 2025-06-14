@@ -5,7 +5,7 @@
   border-radius: 0.3rem;
   padding: 1rem;
   gap: 0.3rem;
-
+  background-color: var(--background-color-second);
   main {
     display: flex;
     flex-direction: row;
@@ -21,7 +21,7 @@
 
     button {
       width: 100%;
-      color: white;
+      color: var(--text-color);
       display: flex;
       justify-content: center;
       padding: 0.5rem;
@@ -48,7 +48,7 @@
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
-  color: white;
+  color: var(--text-color);
 
   h2 {
     margin: 0;
@@ -87,19 +87,17 @@
     span {
       padding: 0.3rem;
       display: inline-block; // Garante que fique em linha
-
       align-items: center;
       justify-content: center;
       width: auto; // Permite ajuste automático ao conteúdo
       min-width: 80px; // Mantém um tamanho mínimo
-      background-color: white;
-      color: rgb(0, 0, 0);
+      background-color: var(--background-color-primary);
+        color: var(--text-color);
       border-radius: 0.5rem;
       white-space: nowrap; // Impede a quebra de linha
       text-align: center;
     }
   }
-
 }
 
 .total-prize {
@@ -126,11 +124,10 @@
 
 @media (max-width: 725px) {
   .card-round {
-
-    main {}
+    main {
+    }
 
     footer {
-
       button {
         span {
           font-size: 0.8rem;
@@ -162,28 +159,25 @@
       font-size: 1rem;
     }
 
-    span {}
+    span {
+    }
 
-    .info-group {}
+    .info-group {
+    }
   }
 
   .container-timer {
-
-
     span {
       font-size: 0.7rem;
       white-space: nowrap;
     }
 
     .timer {
-
       span {
         padding: 0.2rem;
         font-size: 0.8rem;
-
       }
     }
-
   }
 
   .total-prize {

@@ -1,12 +1,16 @@
 $natal-light-map:(
     name: "natal-light",
-    text-color: white,
-    color-primary:rgb(182, 182, 182),
-    background-color-primary: #fbfbfc,//Indigo
-    background-color-second: 	#5a0f88,//Purple
-    background-color-third: rgb(197, 8, 8),
-    button-color: rgb(8, 167, 69),
-    button-text-color: rgb(129, 54, 73),
-    button-hover-color: rgb(94, 1, 1) ,// Adicionando a cor do hover
-    white-color: white
-)
+  color-primary: #c62828, // vermelho natal
+  color-primary-hover: #b71c1c,
+  color-second: #2e7d32, // verde natal
+  color-second-hover: #1b5e20,
+  background-color-primary: #fff8e1, // dourado claro
+  background-color-second: #fffde7,
+  background-color-third: #fbe9e7,
+  color-ball: #4e342e,
+  color-ball-marked: #c62828,
+  color-ball-current: #2e7d32,
+  color-panel-card: #ffffff,
+  text-color:#ffffff,
+
+);
