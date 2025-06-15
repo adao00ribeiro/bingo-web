@@ -1,0 +1,17 @@
+<mat-dialog-content class="dialog">
+      <h2 >Novo Saque</h2>
+      <div class="info-saque">
+        <span>Saldo Disponivel Desenvolvimento</span>
+        <span>R$50.000,00</span>
+      </div>
+      <form class="form" [formGroup]="depositForm">
+          <mat-form-field class="example-full-width">
+            <mat-label>Valor</mat-label>
+            <input type="value" matInput formControlName="value">
+          </mat-form-field>
+      </form>
+</mat-dialog-content>
+<mat-card-actions >
+  <button  (click)="onNoClick()">Cancelar</button>
+  <button  (click)="handleDepositClick()">Sacar</button>
+</mat-card-actions>

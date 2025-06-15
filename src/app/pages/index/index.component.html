@@ -7,8 +7,8 @@
       <img src="/images/Icone.png" alt>
     </div>
     <div class="toolbar-right">
-        <button class="theme-mode"   (click)="themeService.onChangeChatState()" >
-          <mat-icon>{{themeService.iconState}}</mat-icon>
+        <button class="theme-mode"   (click)="themeService.toggleTheme()" >
+          <mat-icon>{{themeService.iconState()}}</mat-icon>
         </button>
 
       <button class="btn-visibility" (click)="handleVisibity()">

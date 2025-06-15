@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
 
   constructor() {
 
-    this.themeService.onChangeChatState();
+
     //document.documentElement.style.setProperty('--background-color-primary', `#fff`);
 
     effect(() => {
