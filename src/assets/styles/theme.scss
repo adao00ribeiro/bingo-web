@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @use "global.scss" as *;
 
 @function map-get-value($map, $key) {
@@ -24,6 +25,9 @@
   --color-ball-current: #{map-get-value($map, color-ball-current)};
   --color-panel-card: #{map-get-value($map, color-panel-card)};
   --text-color: #{map-get-value($map, text-color)};
+  --text-color-hover: #{map-get-value($map, text-color-hover)};
+
+
 
   button {
     display: flex;

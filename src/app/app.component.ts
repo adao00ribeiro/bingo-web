@@ -8,22 +8,24 @@ import { DialogNumberSelectionComponent } from './components/dialogs/dialog-numb
 import { DialogRouletteComponent } from './components/dialogs/dialog-roulette/dialog-roulette.component';
 import { TimerService } from './services/timer.service';
 import { MatIcon } from '@angular/material/icon';
+import { ThemeService } from './services/theme.service';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatIcon],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   title = 'bingo-web';
-  theme = 'bingo-dark';
+
   readonly dialog = inject(MatDialog);
   readonly audioDataBaseService = inject(AudioDataBaseService);
+  readonly themeService = inject(ThemeService);
   readonly timerService = inject(TimerService);
-  public iconState = 'dark_light';
-  constructor() {
-    this.onChangeChatState();
 
+  constructor() {
+
+    this.themeService.onChangeChatState();
     //document.documentElement.style.setProperty('--background-color-primary', `#fff`);
 
     effect(() => {
@@ -297,16 +299,6 @@ export class AppComponent implements OnInit {
 
 
   }
-public onChangeChatState(): void {
-  // Remove o tema atual
-  document.body.classList.remove(this.theme);
 
-  // Alterna o tema
-  this.theme = this.theme === 'bingo-dark' ? 'bingo-light' : 'bingo-dark';
-  this.iconState = this.iconState === 'dark_mode' ? 'light_mode' : 'dark_mode';
-
-  // Adiciona o novo tema
-  document.body.classList.add(this.theme);
-}
 
 }

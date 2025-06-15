@@ -1,20 +1,10 @@
-@use '@angular/material' as mat;
+
 @use "theme.scss";
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
 
 
-:root{
-  --text-color:'';
-  --color-primary:'1E293B';
-  --background-color-primary:'#0F172B';
-  --background-color-second: '#1E293B';
-  --background-color-third:'#1E293B';
-  --button-color: '';
-  --button-text-color:'';
-  --button-hover-color: '';
-  --white-color:'';
-}
+
 
 html,
 body {
@@ -73,6 +63,9 @@ body {
     color: var(--text-color) !important ; // Texto do menu
   }
 }
+ .mat-mdc-select{
+    color: var(--text-color) !important;
+  }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
