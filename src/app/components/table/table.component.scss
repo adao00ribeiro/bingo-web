@@ -53,25 +53,29 @@
   .mat-mdc-header-row {
 
     background-color: var(--background-color-second) !important;
-    color: #ffffff !important;
+     color: var(--text-color) ;
     text-align: left;
   }
 
   .mat-mdc-row {
     background-color: var(--background-color-primary) !important;
-    border-bottom: 1px dashed #e0e0e050;
-    color: #ffffff !important;
+    border-bottom: 1px dashed var(--color-primary)!important;
+    color: var(--text-color) ;
     cursor: pointer;
+
   }
 
   .mat-mdc-row:hover .mat-mdc-cell {
-    background: rgba(73, 1, 133, 0.253) !important;
+   background: var(--color-primary) ;
+   color: var(--text-color-hover) ;
   }
 }
 
  .mat-mdc-paginator {
-  color: #ffffff !important;
+   color: var(--text-color) ;
   background-color: var(--background-color-second) !important;
+
+
 }
 
  .input-filter {

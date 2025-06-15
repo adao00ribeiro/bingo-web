@@ -7,6 +7,10 @@
       <img src="/images/Icone.png" alt>
     </div>
     <div class="toolbar-right">
+        <button class="theme-mode"   (click)="themeService.onChangeChatState()" >
+          <mat-icon>{{themeService.iconState}}</mat-icon>
+        </button>
+
       <button class="btn-visibility" (click)="handleVisibity()">
         <mat-icon>{{ isVisible ? 'visibility' : 'visibility_off' }}</mat-icon>
       </button>
@@ -15,9 +19,7 @@
         <mat-icon>arrow_drop_down</mat-icon>
       </button>
 
-      <button class="btn-deposit" (click)="deposit()">
-        Depositar
-      </button>
+
       <mat-menu class="mat-menu-item" #belowMenuDeposit="matMenu" yPosition="below">
         <div class="container-balances">
           <span>Crédito: {{ isVisible ? (user()?.balance | currency) : 'R$#####' }}</span>

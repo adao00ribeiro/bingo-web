@@ -15,6 +15,7 @@ import { DialogDepositComponent } from '../../components/dialogs/dialog-deposit/
 import { SocketService } from '../../services/socket/socket.service';
 import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
 import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '../../constants/storage.service.constants';
+import { ThemeService } from '../../services/theme.service';
 @Component({
   selector: 'app-index',
   standalone: true,
@@ -30,6 +31,8 @@ export class IndexComponent implements OnInit {
   mobileQuery: MediaQueryList;
   private router: Router = inject(Router);
   private socketService: SocketService = inject(SocketService)
+   protected readonly themeService = inject(ThemeService);
+
   readonly dialog = inject(MatDialog);
   private _mobileQueryListener: () => void;
   isVisible: boolean = false;
