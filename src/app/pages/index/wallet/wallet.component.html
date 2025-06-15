@@ -1,8 +1,8 @@
 <div class="container-wallet">
   <h1>Resumo Carteira</h1>
     <div class="container-button">
-    <button>DEPOSITAR</button>
-    <button>SACAR</button>
+    <button>Depositar</button>
+    <button (click)="openDialogCashout()">Sacar</button>
   </div>
   <app-table
   [columnMappings]="columnConfigs"
