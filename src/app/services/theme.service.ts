@@ -12,8 +12,8 @@ export class ThemeService {
   private readonly storageService = inject(StorageService);
 
   // Usando Angular Signals para reatividade
-  private readonly _theme = signal<Theme>('bingo-light');
-  private readonly _iconState = signal<IconState>('dark_mode');
+  private readonly _theme = signal<Theme>('bingo-dark');
+  private readonly _iconState = signal<IconState>('light_mode');
 
   // Signals públicos somente leitura
   public readonly theme: Signal<Theme> = this._theme.asReadonly();
