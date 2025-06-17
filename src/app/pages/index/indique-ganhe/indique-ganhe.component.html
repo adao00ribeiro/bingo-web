@@ -38,10 +38,7 @@
           </div>
 
           <div class="action-buttons">
-            <button
-              class="btn btn-copy"
-              (click)="copyCode()"
-              [class.success]="isCopied">
+            <button class="btn btn-copy" (click)="copyCode()" [class.success]="isCopied">
               <span class="btn-icon">📋</span>
               {{ isCopied ? 'Copiado!' : 'Copiar' }}
               <div class="btn-ripple" *ngIf="isCopied"></div>
@@ -62,14 +59,19 @@
           </h3>
 
           <div class="steps-container">
-            <div class="step" *ngFor="let step of steps; let i = index">
-              <div class="step-number">{{ i + 1 }}</div>
+            @for (step of steps; track $index) {
+            <div class="step">
+              <div class="step-number">{{ $index+ 1 }}</div>
               <div class="step-content">
                 <div class="step-icon">{{ step.icon }}</div>
                 <p>{{ step.text }}</p>
               </div>
-              <div class="step-connector" *ngIf="i < steps.length - 1"></div>
+              @if($index < steps.length - 1){
+  <div class="step-connector"></div>
+              }
+
             </div>
+          }
           </div>
         </div>
 
