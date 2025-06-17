@@ -1,12 +1,16 @@
 $natal-dark-map:(
     name: "natal-dark",
-    text-color: black,
-    color-primary:rgb(182, 182, 182),
-    background-color-primary: #4B0082,//Indigo
-    background-color-second: 	#A020F0,//Purple
-    background-color-third: rgb(116, 116, 116),
-    button-color: rgb(139, 88, 88),
-    button-text-color: rgb(36, 0, 243),
-    button-hover-color: rgb(0, 0, 0) ,
-    white-color: white
-)
+  color-primary: #ef5350, // vermelho suave
+  color-primary-hover: #e53935,
+  color-second: #81c784, // verde suave
+  color-second-hover: #66bb6a,
+  background-color-primary: #263238, // azul acinzentado profundo
+  background-color-second: #1b1f23,
+  background-color-third: #121416,
+  color-ball: #a1887f,
+  color-ball-marked: #ef5350,
+  color-ball-current: #81c784,
+  color-panel-card: #1c1c1c,
+  text-color: #000000,
+  text-color-hover:#fff
+);

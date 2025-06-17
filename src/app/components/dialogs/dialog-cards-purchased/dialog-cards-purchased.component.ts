@@ -1,4 +1,4 @@
-import { Component, computed, effect, EventEmitter, inject, input, Input, model, Output, ViewChild } from '@angular/core';
+import { Component, computed, effect, EventEmitter, inject, input, Input, model, OnInit, Output, ViewChild } from '@angular/core';
 import { ICard } from '../../../interfaces/ICard';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -9,17 +9,18 @@ import { IRound } from '../../../interfaces/IRound';
 import { GuidPipe } from '../../../pipes/guid.pipe';
 import { DatePipe } from '@angular/common';
 import { DateTimePipe } from '../../../pipes/date-time.pipe';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 export interface DialogCardsPurchasedProps {
   round: IRound;
 }
 @Component({
   selector: 'app-dialog-cards-purchased',
   standalone: true,
-  imports: [ScrollingModule, MatDialogModule, MatProgressSpinnerModule, CardComponent, GuidPipe,DateTimePipe],
+  imports: [ScrollingModule,InfiniteScrollDirective, MatDialogModule, MatProgressSpinnerModule, CardComponent, GuidPipe,DateTimePipe],
   templateUrl: './dialog-cards-purchased.component.html',
   styleUrl: './dialog-cards-purchased.component.scss'
 })
-export class DialogCardsPurchasedComponent {
+export class DialogCardsPurchasedComponent implements OnInit{
   readonly dialogRef = inject(MatDialogRef<DialogCardsPurchasedComponent>);
   readonly data = inject<DialogCardsPurchasedProps>(MAT_DIALOG_DATA);
 
@@ -31,9 +32,13 @@ export class DialogCardsPurchasedComponent {
 
   cards: ICard[] = [];
   page = 1;
-  perPage = 100;
+  pageSize = 100;
   isLoading = false;
+  loading = false;
   hasMore = true;
+  throttle = 300;
+  scrollDistance = 1;
+  scrollUpDistance = 2;
 
   constructor(  ) {
     effect(() => {
@@ -52,7 +57,9 @@ export class DialogCardsPurchasedComponent {
       this.isLoading = false;
     })
   }
-
+  ngOnInit(): void {
+    this.loadNextPage();
+  }
   closeDialog(): void {
     this.cards = []
     this.ok.emit();
@@ -66,7 +73,7 @@ export class DialogCardsPurchasedComponent {
       return;
     }
     this.isLoading = true;
-    this.cardsByPunterResourceService.reload(round.id, this.page, this.perPage);
+    this.cardsByPunterResourceService.reload(round.id, this.page, this.pageSize);
 
   }
   onScroll() {
@@ -74,5 +81,10 @@ export class DialogCardsPurchasedComponent {
     if (end < 200 && !this.isLoading) {
       this.loadMore();
     }
+  }
+    loadNextPage() {
+    this.loading = true;
+    this.cardsByPunterResourceService.reload(this.round().id, this.page, this.pageSize);
+    this.page++;
   }
 }

@@ -14,7 +14,7 @@
             <td class="text-left">{{ row.cupom }}</td>
             <td class="text-left">{{ row.doador }}</td>
             <td>
-              <div class="almostballs bg-primary">
+              <div class="almostballs">
                 <div *ngFor="let num of row.faltam; let j = index" [attr.key]="j">
                   {{ formatNumber(num) }}
                 </div>

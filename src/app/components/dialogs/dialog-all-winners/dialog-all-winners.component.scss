@@ -18,7 +18,6 @@
     grid-gap: 0.5rem;
     overflow-y: auto; /* Main scroll for all prizes */
     max-height: calc(100vh - 4rem); /* Adjust based on header size */
-    overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
   }

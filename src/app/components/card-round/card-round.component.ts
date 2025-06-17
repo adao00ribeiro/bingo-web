@@ -45,7 +45,7 @@ export class CardRoundComponent implements OnInit, OnDestroy {
   });
 
   constructor() {
-    effect(() => {});
+    effect(() => { });
   }
 
   ngOnInit(): void {
@@ -70,6 +70,9 @@ export class CardRoundComponent implements OnInit, OnDestroy {
     if (round && round.cardsPurchased > 0) {
       this.dialog.open(DialogCardsPurchasedComponent, {
         data: { round },
+        width: '90vw',
+        height: '90vh',  // Defina a altura explicitamente aqui
+        maxHeight: '100vh',
         enterAnimationDuration: '500ms',
         exitAnimationDuration: '250ms'
       });

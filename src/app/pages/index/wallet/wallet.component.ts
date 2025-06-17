@@ -1,6 +1,8 @@
 import { Component, computed, inject } from '@angular/core';
 import { TableComponent } from '../../../components/table/table.component';
 import { TransactionHistorysResourceService } from '../../../resource/transaction-history/transaction-historys-resource.service';
+import { DialogCashoutComponent } from '../../../components/dialogs/dialog-cashout/dialog-cashout.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-wallet',
@@ -11,7 +13,7 @@ import { TransactionHistorysResourceService } from '../../../resource/transactio
 })
 export class WalletComponent {
   protected readonly transactionHistorysResourceService: TransactionHistorysResourceService = inject(TransactionHistorysResourceService);
-
+  readonly dialog = inject(MatDialog);
   columnConfigs = [
     { key: 'id', displayName: 'Id', pipe: "guid" },
     { key: 'amount', displayName: 'Valor', pipe: "currency" },
@@ -26,6 +28,11 @@ export class WalletComponent {
     totalItems = computed(() =>
        this.transactionHistorysResourceService.resource.value()?.totalCount || 0
     );
+    openDialogCashout() {
+        this.dialog.open(DialogCashoutComponent, {
+          data: {  },
+        });
+      }
 
     loadData(page: number, size: number) {
       this.transactionHistorysResourceService.reload(page, size)

@@ -68,9 +68,8 @@
         font-weight: 500;
         white-space: nowrap;
       }
-
       &.bg-primary div {
-        background-color: #3b82f6;
+        background-color:var(--background-color-primary);
       }
     }
   }

@@ -3,9 +3,9 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
-  color: rgb(255, 255, 255);
+  color: var(--text-color);
   border-radius: 1rem;
-  padding: 0.5rem;
+  background-color: var(--background-color-second);
 }
 
 .buycardheader {
@@ -13,11 +13,11 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.298);
 
   h3 {
-
     font-size: 1.5rem;
     font-weight: 400;
     letter-spacing: normal;
     text-align: center;
+    font-weight: bold;
   }
 }
 
@@ -29,6 +29,7 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
   gap: 1rem;
+
   ::-webkit-scrollbar {
     width: 0;
     height: 0;
@@ -39,19 +40,21 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-
   }
 
   .buycardcontainerBuy {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
+     gap: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 
-    input{
+
+    input {
       height: 50px;
       text-align: right;
     }
+
     .containerQtds {
       display: flex;
       flex-direction: row;
@@ -66,44 +69,22 @@
         height: 40px;
         padding: 1rem;
         border-radius: 10rem;
-
       }
-    }
 
-    .containerComprar {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      gap: 0.5rem;
 
-      .quadroQtds {
-        display: flex;
-        gap: 0.5rem;
-        flex: 2;
-        color: white;
-
-        .text-center {
-          text-align: center;
-        }
-
-        .btnAddSub {
-          background-color: rgb(41, 2, 104);
+       @media (max-width: 325px) {
+        .btnBtnQtds {
+          width: 30px;
+          height: 30px;
+          padding: 0.5rem;
         }
       }
     }
 
-    .containerCards {
-      display: flex;
-      flex-direction: column;
-    }
+
   }
 
-  .modalBody {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-  }
+
 }
 
 .buycardfooter {
@@ -113,20 +94,25 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap:1rem;
-  color: white;
-  .container-button{
+  gap: 1rem;
+  color: var(--text-color);
+
+  .container-button {
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    button{
-      color: white;
-      flex: 1;
-      padding: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-}
 
+    button {
+
+      flex: 1;
+
+      &:first-child {
+      background-color: var(--color-second);
+      }
+      &:first-child:hover {
+      background-color: var(--color-second-hover);
+      }
+    }
+
+  }
 }

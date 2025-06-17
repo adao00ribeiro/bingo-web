@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -94,7 +94,13 @@ export function idadeValidator(idadeMinima: number) {
     return null;
   };
 }
-
+ export function confirmPasswordValidator (control: AbstractControl): ValidationErrors | null {
+  const password = control.parent?.get('password');
+  const confirmPassword = control.parent?.get('confirmPassword');
+   return password && confirmPassword && password.value !== confirmPassword.value
+    ? { 'passwordsDoNotMatch': true }
+    : null;
+};
 // --- Validador Customizado para Força da Senha ---
 export function passwordValidator(control: AbstractControl): ValidationErrors | null {
   const value: string = control.value || '';
@@ -155,8 +161,17 @@ export function passwordsMatchValidator(form: FormGroup): ValidationErrors | nul
   styleUrl: './register.component.scss',
 
 })
-export class RegisterComponent {
-  registerForm: FormGroup;
+export class RegisterComponent implements OnInit {
+   registerForm = new FormGroup({
+    name: new FormControl('', [Validators.pattern(/\s/), Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    phone: new FormControl('', [Validators.required ]),
+    cpf: new FormControl('', [Validators.required]),
+    dateBirth: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required,Validators.minLength(8),passwordValidator]),
+    confirmPassword: new FormControl('', [Validators.required ,confirmPasswordValidator])
+  }, );
+
   private registerService: RegisterService = inject(RegisterService);
   private snackBar: MatSnackBar = inject(MatSnackBar);
   private router: Router = inject(Router);
@@ -166,22 +181,14 @@ export class RegisterComponent {
   hide1 = true;
   hide2 = true;
   constructor(private location: Location) {
-    this.registerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern('^[- +()0-9]+$')]],
-      cpf: ['', [Validators.required, cpfValidator]],
-      dateBirth: ['', [Validators.required, idadeValidator(18)]],
-      password: ['', [Validators.required, Validators.minLength(8), passwordValidator]],
-      passwordConfirmed: ['', [Validators.required]]
-    }, { validators: this.passwordsMatchValidator });
+  }
+  ngOnInit(): void {
+     this.registerForm.get('password')?.valueChanges.subscribe(() => {
+    this.registerForm.get('passwordConfirmed')?.updateValueAndValidity();
+  });
   }
 
-  private passwordsMatchValidator(form: FormGroup): null | object {
-    const senha = form.get('password')?.value;
-    const repetirsenha = form.get('passwordConfirmed')?.value;
-    return senha === repetirsenha ? null : { passwordsDontMatch: true };
-  }
+
 
   async submitRegistrar(): Promise<void> {
     if (this.registerForm.invalid) {
@@ -201,14 +208,14 @@ export class RegisterComponent {
     }
 
     const registerData: IRegister = {
-      name: this.registerForm.value.name,
-      userName: this.registerForm.value.email,
-      email: this.registerForm.value.email,
-      phone: this.registerForm.value.phone,
-      cpf: this.registerForm.value.cpf,
-      password: this.registerForm.value.password,
-      passwordConfirmed: this.registerForm.value.passwordConfirmed,
-      dateBirth: this.convertToIso8601(this.registerForm.value.dateBirth),
+      name: this.registerForm.value.name ?? '',
+      userName: this.registerForm.value.email?? '',
+      email: this.registerForm.value.email?? '',
+      phone: this.registerForm.value.phone?? '',
+      cpf: this.registerForm.value.cpf?? '',
+      password: this.registerForm.value.password ?? "",
+      passwordConfirmed: this.registerForm.value.confirmPassword ?? '',
+      dateBirth:  this.registerForm.value.dateBirth? this.convertToIso8601(this.registerForm.value.dateBirth) : '',
       sellerId: 'b9c2d2b5-eeae-486c-85ea-06dd5cfe0c06',
       indicateTag: tag,
     };

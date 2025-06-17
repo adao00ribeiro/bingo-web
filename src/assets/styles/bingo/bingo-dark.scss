@@ -1,12 +1,16 @@
 $bingo-dark-map:(
-    name: "bingo-dark",
-    text-color: rgb(255, 255, 255),
-    color-primary:rgb(255, 20, 20),
-    background-color-primary: #332E56,
-    background-color-second: #2E2B4A,
-    background-color-third: #272940,
-    button-color: #7358E2,
-    button-text-color: rgb(245, 245, 245),
-    button-hover-color: #674fc9,
-    white-color: white
+  name: "bingo-dark",
+  color-primary: #a259ff,     // cor principal para botões, links e textos importantes.
+  color-primary-hover: #8644d1,// estado hover para botões e links principais.
+  color-second: #c7b8ff,         // cor secundária, usada em botões secundários e textos menos importantes.
+  color-second-hover: #b19cd9,// hover para botões e elementos secundários.
+  background-color-primary: #2c234d,  // fundo geral do body.
+  background-color-second: #372c63,//fundo para header, footer, ou áreas secundárias.
+  background-color-third: #1a1530,//fundo para cards, painéis ou áreas que precisam de destaque sem chamar mais atenção
+  color-ball: #a394d3,
+  color-ball-marked: #a259ff,
+  color-ball-current: #d1b3ff,
+  color-panel-card: #110d1f,
+  text-color: #ffffff,
+  text-color-hover:#000
 )
