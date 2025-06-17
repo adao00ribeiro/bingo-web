@@ -1,39 +1,91 @@
-<div class="container">
-  <p class="title">INDIQUE E GANHE</p>
-  <div class="cupom_area">
-    <p>
-      Convide seus amigos para a plataforma e ganhem vantagens juntos.
-    </p>
+<div class="indique-container">
+      <div class="hero-section">
+        <div class="floating-icons">
+          <div class="icon-float icon-1">💰</div>
+          <div class="icon-float icon-2">🎁</div>
+          <div class="icon-float icon-3">🚀</div>
+        </div>
 
-    <p>
-      Você já faz parte da nossa comunidade, que tal trazer seus amigos para a diversão? Usando seu código de indicação
-      pessoal, você não apenas compartilha a experiência, mas também é recompensado por isso!
-    </p>
+        <h1 class="main-title">
+          <span class="gradient-text">INDIQUE</span> &
+          <span class="gradient-text-alt">GANHE</span>
+        </h1>
 
-    <div>
-      {{indicateTag}}
+        <div class="subtitle-container">
+          <p class="subtitle">
+            Convide seus amigos para a plataforma e ganhem vantagens juntos
+          </p>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <div class="welcome-section">
+          <div class="welcome-icon">👥</div>
+          <p class="welcome-text">
+            Você já faz parte da nossa comunidade, que tal trazer seus amigos para a diversão?
+            Usando seu código de indicação pessoal, você não apenas compartilha a experiência,
+            mas também é <strong>recompensado</strong> por isso!
+          </p>
+        </div>
+
+        <div class="code-section">
+          <div class="code-container">
+            <div class="code-label">Seu código de indicação</div>
+            <div class="code-display" [class.copied]="isCopied">
+              <span class="code-text">{{ indicateTag }}</span>
+              <div class="code-glow"></div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button
+              class="btn btn-copy"
+              (click)="copyCode()"
+              [class.success]="isCopied">
+              <span class="btn-icon">📋</span>
+              {{ isCopied ? 'Copiado!' : 'Copiar' }}
+              <div class="btn-ripple" *ngIf="isCopied"></div>
+            </button>
+
+            <button class="btn btn-whatsapp" (click)="sendWhatsApp()">
+              <span class="btn-icon">📱</span>
+              Enviar no ZAP
+              <div class="whatsapp-pulse"></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="how-it-works">
+          <h3 class="section-title">
+            <span class="title-icon">⚡</span>
+            Como funciona? É fácil!
+          </h3>
+
+          <div class="steps-container">
+            <div class="step" *ngFor="let step of steps; let i = index">
+              <div class="step-number">{{ i + 1 }}</div>
+              <div class="step-content">
+                <div class="step-icon">{{ step.icon }}</div>
+                <p>{{ step.text }}</p>
+              </div>
+              <div class="step-connector" *ngIf="i < steps.length - 1"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cta-section">
+          <div class="cta-content">
+            <h4 class="cta-title">Não espere mais!</h4>
+            <p class="cta-text">
+              Comece a convidar agora e veja sua rede de amigos se transformar em
+              <span class="highlight">recompensas</span>.
+            </p>
+          </div>
+          <div class="rewards-visual">
+            <div class="coin coin-1">🪙</div>
+            <div class="coin coin-2">🪙</div>
+            <div class="coin coin-3">🪙</div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div>
-      <button>Copiar</button>
-      <button>Enviar no ZAP</button>
-    </div>
-  </div>
-
-  <div>
-    <p>
-      Como funciona? É fácil!
-    </p>
-
-    <p>
-      Copie seu código acima.
-      Envie para seus amigos por onde preferir: WhatsApp, Telegram, redes sociais...
-      Peça para eles inserirem o código no momento do cadastro.
-      Pronto! Assim que seu amigo completar o cadastro, os bônus serão ativados para ambos.
-    </p>
-
-    <p>
-      Não espere mais! Comece a convidar agora e veja sua rede de amigos se transformar em recompensas.
-    </p>
-  </div>
-</div>
