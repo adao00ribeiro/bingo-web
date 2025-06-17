@@ -2,10 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 500px;
-  max-width: 100%;
-  height: 90vh;
-  max-height: 95vh;
   gap: 1rem;
   background-color: var(--background-color-second);
   color: var(--text-color);
@@ -78,6 +74,8 @@
 
   }
 }
-
+.mat-mdc-dialog-content{
+  max-height: none;
+}
 
 @media (max-width: 725px) {}
