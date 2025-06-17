@@ -23,11 +23,28 @@ export class IndiqueGanheComponent implements OnInit {
   ];
   constructor() { }
  copyCode() {
+  /*
     navigator.clipboard.writeText(this.indicateTag);
     this.isCopied = true;
     setTimeout(() => {
       this.isCopied = false;
     }, 2000);
+    */
+
+  const textarea = document.createElement('textarea');
+  textarea.value = this.indicateTag;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'absolute';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand('copy');
+  document.body.removeChild(textarea);
+  this.isCopied = copied;
+  setTimeout(() => {
+    this.isCopied = false;
+  }, 2000);
+
   }
   ngOnInit(): void {
     this.punterService.GetIndicateTag().subscribe({
