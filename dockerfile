@@ -1,10 +1,15 @@
 # Etapa 1: Build do web
 FROM node:23-alpine AS build-bingo-web
+ARG api=${api}
+ENV api=${api}
+ARG API_WS=${API_WS}
+ENV API_WS=${API_WS}
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm \
     && pnpm install --frozen-lockfile
 COPY . .
+RUN pnpm run prebuild
 RUN pnpm run build
 
 # Etapa de produção com Nginx

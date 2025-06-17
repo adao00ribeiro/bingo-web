@@ -1,5 +1,7 @@
+const newLocal = '${api}';
+const newLocal_1 = '${API_WS}';
 export const environment = {
   production: false,
-     api: 'http://srv695438.hstgr.cloud',
-     API_WS: 'ws://srv695438.hstgr.cloud/ws'
+    api: newLocal || 'http://localhost',
+    API_WS: newLocal_1 || 'ws://localhost/ws'
 };
