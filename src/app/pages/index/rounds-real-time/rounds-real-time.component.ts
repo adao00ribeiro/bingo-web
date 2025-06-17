@@ -355,6 +355,7 @@ export class RoundsRealTimeComponent implements OnInit {
     this.page++;
   }
   public onChangeChatState(): void {
+     this.isOpen = !this.isOpen;
     this.iconState = (this.iconState === 'default' ? 'rotated' : 'default');
   }
 }
