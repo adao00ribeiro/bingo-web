@@ -12,6 +12,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { SocketComponent } from './pages/socket/socket.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { IndiqueGanheComponent } from './pages/index/indique-ganhe/indique-ganhe.component';
+import { unauthenticateGuard } from './guard/unauthenticate.guard';
 
 export const routes: Routes = [
   {
@@ -61,10 +62,12 @@ export const routes: Routes = [
   {
     path: 'cadastro',
     component: RegisterComponent,
+    canActivate: [unauthenticateGuard],
   },
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [unauthenticateGuard],
   },
 
 ];

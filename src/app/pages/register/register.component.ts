@@ -5,13 +5,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IRegister } from '../../interfaces/IRegister';
 import { RegisterService } from '../../services/auth/register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { IRegisterResponse } from '../../interfaces/response/IRegisterResponse';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { Location } from '@angular/common';
 
@@ -61,7 +61,6 @@ export function cpfValidator(control: AbstractControl): ValidationErrors | null 
 export function idadeValidator(idadeMinima: number) {
   return (control: AbstractControl): ValidationErrors | null => {
 
-    console.log(">> control.value: ", control.value)
     // Se o campo estiver vazio, deixa o validador 'required' cuidar disso
     if (!control.value) {
       return null;
@@ -70,19 +69,19 @@ export function idadeValidator(idadeMinima: number) {
     // O valor do input type="date" vem como uma string 'YYYY-MM-DD'
     let [dia, mes, ano] = [control.value.substr(0, 2), control.value.substr(2, 2), control.value.substr(4, 4)]
     const dataNascimento = new Date(`${ano}-${mes}-${dia}`);
-    
+
     // Checa se a data é válida (ex: evita datas como 31/02/2023)
     if (isNaN(dataNascimento.getTime())) {
       return { dataErro: true };
     }
 
     const hoje = new Date();
-    
+
     // Checa se a data de nascimento não é no futuro
     if (dataNascimento > hoje) {
       return { dataErro: true };
     }
-    
+
     // Calcula a data limite para ter a idade mínima
     const dataMinima = new Date(hoje.getFullYear() - idadeMinima, hoje.getMonth(), hoje.getDate());
 
@@ -98,35 +97,35 @@ export function idadeValidator(idadeMinima: number) {
 
 // --- Validador Customizado para Força da Senha ---
 export function passwordValidator(control: AbstractControl): ValidationErrors | null {
-    const value: string = control.value || '';
-    const errors: ValidationErrors = {};
+  const value: string = control.value || '';
+  const errors: ValidationErrors = {};
 
-    if (!value) {
-        return null;
-    }
+  if (!value) {
+    return null;
+  }
 
-    // Regex para verificar cada requisito
-    const hasUpperCase = /[A-Z]+/.test(value);
-    const hasNumber = /[0-9]+/.test(value);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]+/.test(value);
+  // Regex para verificar cada requisito
+  const hasUpperCase = /[A-Z]+/.test(value);
+  const hasNumber = /[0-9]+/.test(value);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]+/.test(value);
 
-    // Adiciona um erro específico para cada regra não cumprida
-    if (!hasUpperCase) {
-        errors['requiresUppercase'] = true;
-    }
-    if (!hasNumber) {
-        errors['requiresNumber'] = true;
-    }
-    if (!hasSpecialChar) {
-        errors['requiresSpecialChar'] = true;
-    }
+  // Adiciona um erro específico para cada regra não cumprida
+  if (!hasUpperCase) {
+    errors['requiresUppercase'] = true;
+  }
+  if (!hasNumber) {
+    errors['requiresNumber'] = true;
+  }
+  if (!hasSpecialChar) {
+    errors['requiresSpecialChar'] = true;
+  }
 
-    // Retorna o objeto de erros se houver algum, ou null se a senha for válida
-    return Object.keys(errors).length ? errors : null;
+  // Retorna o objeto de erros se houver algum, ou null se a senha for válida
+  return Object.keys(errors).length ? errors : null;
 }
 
 // Esta função recebe o FormGroup inteiro como argumento
-export function  passwordsMatchValidator(form: FormGroup): ValidationErrors | null {
+export function passwordsMatchValidator(form: FormGroup): ValidationErrors | null {
   // 1. Pega o valor do controle 'password'
   const senha = form.get('password')?.value;
   // 2. Pega o valor do controle 'passwordConfirmed'
@@ -162,6 +161,8 @@ export class RegisterComponent {
   private snackBar: MatSnackBar = inject(MatSnackBar);
   private router: Router = inject(Router);
   private fb: FormBuilder = inject(FormBuilder);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+
   hide1 = true;
   hide2 = true;
   constructor(private location: Location) {
@@ -193,6 +194,12 @@ export class RegisterComponent {
       return;
     }
 
+    let tag: string = '';
+
+    if (this.route.snapshot.queryParamMap.get('tag')) {
+      tag = this.route.snapshot.queryParamMap.get('tag')!;
+    }
+
     const registerData: IRegister = {
       name: this.registerForm.value.name,
       userName: this.registerForm.value.email,
@@ -203,7 +210,9 @@ export class RegisterComponent {
       passwordConfirmed: this.registerForm.value.passwordConfirmed,
       dateBirth: this.convertToIso8601(this.registerForm.value.dateBirth),
       sellerId: 'b9c2d2b5-eeae-486c-85ea-06dd5cfe0c06',
+      indicateTag: tag,
     };
+
     this.registerService.Register(registerData).subscribe({
       next: (data) => {
 
@@ -237,6 +246,10 @@ export class RegisterComponent {
 
   convertToIso8601(inputDate: string): string {
     try {
+      // O valor do input type="date" vem como uma string 'YYYY-MM-DD'
+      let [dia, mes, ano] = [inputDate.substr(0, 2), inputDate.substr(2, 2), inputDate.substr(4, 4)]
+      inputDate = `${ano}-${mes}-${dia}`;
+
       let date: Date;
       // Verifica o formato da data
       if (/^\d{2}-\d{2}-\d{4}$/.test(inputDate)) {
