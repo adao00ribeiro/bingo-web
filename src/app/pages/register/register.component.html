@@ -33,7 +33,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Telefone</mat-label>
-        <input type="tel" matInput formControlName="phone" placeholder="44 9 9900-9900">
+        <input matInput type="tel" formControlName="phone" placeholder="44 9 9900-9900" mask="(00) 0000-0000 || (00) 0 0000-0000" />
         <mat-error *ngIf="f['phone'].hasError('required')">
           O Telefone é obrigatório.
         </mat-error>
@@ -44,11 +44,11 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Cpf</mat-label>
-        <input matInput formControlName="cpf">
+        <input matInput formControlName="cpf" mask="000.000.000-00"/>
         <mat-error *ngIf="f['cpf'].hasError('required')">
           O CPF é obrigatório.
         </mat-error>
-        <mat-error *ngIf="f['cpf'].hasError('cpfValidator')">
+        <mat-error *ngIf="f['cpf'].hasError('cpfInvalido')">
           CPF inválido.
         </mat-error>
       </mat-form-field>
