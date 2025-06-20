@@ -37,6 +37,19 @@ export class DialogQrcodeComponent {
   }
 
   copyPixKey(){
-      navigator.clipboard.writeText(this.data.recharge.qrcode);
+  navigator.clipboard.writeText(this.data.recharge.qrcode);
+  const textarea = document.createElement('textarea');
+  textarea.value = this.data.recharge.qrcode;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'absolute';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand('copy');
+  document.body.removeChild(textarea);
+  //this.isCopied = copied;
+  //setTimeout(() => {
+  //  this.isCopied = false;
+  //}, 2000);
   }
 }

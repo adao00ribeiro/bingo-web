@@ -15,19 +15,35 @@ export class IndiqueGanheComponent implements OnInit {
   isCopied = false;
   private punterService: PunterService = inject(PunterService);
   indicateTag: string = '';
- steps = [
+  steps = [
     { icon: '📋', text: 'Copie seu código acima' },
     { icon: '📤', text: 'Envie para seus amigos por onde preferir: WhatsApp, Telegram, redes sociais...' },
     { icon: '✍️', text: 'Peça para eles inserirem o código no momento do cadastro' },
     { icon: '🎉', text: 'Pronto! Assim que seu amigo completar o cadastro, os bônus serão ativados para ambos' }
   ];
   constructor() { }
- copyCode() {
+  copyCode() {
+    /*
     navigator.clipboard.writeText(this.indicateTag);
     this.isCopied = true;
     setTimeout(() => {
       this.isCopied = false;
     }, 2000);
+    */
+    const textarea = document.createElement('textarea');
+    textarea.value = this.indicateTag;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'absolute';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    const copied = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    this.isCopied = copied;
+    setTimeout(() => {
+      this.isCopied = false;
+    }, 2000);
+
   }
   ngOnInit(): void {
     this.punterService.GetIndicateTag().subscribe({
