@@ -1,0 +1,183 @@
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color-second);
+  color: var(--text-color);
+  padding: 0;
+  overflow: hidden;
+}
+.dialog-header {
+  background: linear-gradient(135deg, #32d0aa 0%, #00c9ff 100%);
+  padding: 1rem;
+  text-align: center;
+}
+
+.dialog-title {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.dialog-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+}
+
+.dialog-content {
+  padding: 32px 24px;
+}
+
+.amount-display {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+   margin-bottom: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.amount-label {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.amount-value {
+  color: #0f172a;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.qr-section {
+  text-align: center;
+
+}
+
+.qr-container {
+  background: white;
+  border-radius: 20px;
+  padding: 1rem;
+  display: inline-block;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-bottom: 16px;
+}
+
+.qr-placeholder {
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(45deg, #f1f5f9, #e2e8f0);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #64748b;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.copy-button {
+  background: linear-gradient(135deg, #32d0aa 0%, #00c9ff 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(50, 208, 170, 0.4);
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.copy-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(50, 208, 170, 0.5);
+}
+
+.copy-button:active {
+  transform: translateY(0);
+}
+
+.steps {
+  space-y: 16px;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.step:last-child {
+  border-bottom: none;
+}
+
+.step-number {
+  background: linear-gradient(135deg, #32d0aa 0%, #00c9ff 100%);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.step-content {
+  color:white;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.footer-note {
+  background: rgba(50, 208, 170, 0.1);
+  border: 1px solid rgba(50, 208, 170, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+
+  text-align: center;
+}
+
+.footer-note-text {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.mat-mdc-dialog-content{
+  max-height: none;
+}
+
