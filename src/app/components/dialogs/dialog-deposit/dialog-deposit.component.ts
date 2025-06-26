@@ -2,16 +2,16 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MAT_DIALOG_DATA, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
 import { DepositService } from '../../../services/deposit/deposit.service';
 import { IDepositRequest } from '../../../interfaces/IDepositRequest';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../../services/auth/user.service';
+import { DialogQrcodeComponent } from '../dialog-qrcode/dialog-qrcode.component';
 export interface DialogDeposit {
 
 }
@@ -38,7 +38,7 @@ export class DialogDepositComponent {
   readonly depositService = inject(DepositService);
   private readonly userService = inject(UserService);
   readonly snackBar = inject(MatSnackBar);
-
+  readonly dialog = inject(MatDialog);
   constructor(private fb: FormBuilder) {
     this.depositForm = this.fb.group({
       value: ['', [Validators.required]],
@@ -48,15 +48,22 @@ export class DialogDepositComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
   handleDepositClick() {
     const depositRequest: IDepositRequest = {
       value: this.depositForm.value.value,
     };
     this.depositService.Deposit(depositRequest).subscribe({
       next: (data) => {
-       if(data){
-        this.userService.loadUser();
-       }
+        if (data) {
+          this.dialog.open(DialogQrcodeComponent, {
+            disableClose: true,
+            data: {
+              recharge: data
+            },
+          });
+          this.userService.loadUser();
+        }
       },
       error: (err) => {
         this.snackBar.open(err.error.detail, 'Ok', {

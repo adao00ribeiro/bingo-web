@@ -16,6 +16,7 @@ import { SocketService } from '../../services/socket/socket.service';
 import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
 import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '../../constants/storage.service.constants';
 import { ThemeService } from '../../services/theme.service';
+import { DialogQrcodeComponent } from '../../components/dialogs/dialog-qrcode/dialog-qrcode.component';
 @Component({
   selector: 'app-index',
   standalone: true,
@@ -78,6 +79,14 @@ export class IndexComponent implements OnInit {
   }
   deposit() {
     this.dialog.open(DialogDepositComponent, {
+      disableClose: true,
+      data: {
+
+      },
+    });
+  }
+  dialogQrCode(){
+      this.dialog.open(DialogQrcodeComponent, {
       disableClose: true,
       data: {
 
