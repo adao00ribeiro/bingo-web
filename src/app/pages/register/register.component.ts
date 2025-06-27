@@ -217,7 +217,7 @@ export class RegisterComponent implements OnInit {
       passwordConfirmed: this.registerForm.value.confirmPassword ?? '',
       dateBirth:  this.registerForm.value.dateBirth? this.convertToIso8601(this.registerForm.value.dateBirth) : '',
       sellerId: 'b9c2d2b5-eeae-486c-85ea-06dd5cfe0c06',
-      indicateTag: tag,
+      registeredWithTag: tag,
     };
 
     this.registerService.Register(registerData).subscribe({
