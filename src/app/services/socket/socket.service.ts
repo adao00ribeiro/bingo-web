@@ -4,6 +4,7 @@ import { IRoundMessage } from '../../interfaces/IRoundMessage';
 import { environment } from '../../../environments/environment';
 import { ChatMessage } from '../../components/chat/chat.component';
 import { EMessageType } from '../../enums/EMessageType';
+import { ICashBoxMessage } from '../../interfaces/ICashBoxMessage';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,13 @@ export class SocketService {
   private isConnected = signal<boolean>(false);
   private lastMessage = signal<ISocketMessage | null>(null);
   private chatLastMessage = signal<ChatMessage | null>(null);
+  private cashBoxLastMessage = signal<ICashBoxMessage | null>(null);
   public socketErrors = signal<string>('');
 
   public readonly IsConnected = this.isConnected.asReadonly();
   public readonly LastMessage = this.lastMessage.asReadonly();
   public readonly ChatLastMessage = this.chatLastMessage.asReadonly();
+  public readonly CashBoxLastMessage = this.cashBoxLastMessage.asReadonly();
 
   private setupSocketListeners(): void {
     if (this.socket) {
@@ -35,13 +38,19 @@ export class SocketService {
       this.socket.onmessage = (event: MessageEvent) => {
         try {
           const message: ISocketMessage = JSON.parse(event.data);
+
           if (this.IsJson(message.message)) {
             const chatMessage: ChatMessage = JSON.parse(message.message)
+            const cashBoxMessage: ICashBoxMessage = JSON.parse(message.message)
 
             if (this.isChatMessage(chatMessage)) {
               this.chatLastMessage.set(chatMessage)
 
-            } else {
+            } else if(this.isCashBoxMessage(cashBoxMessage))
+            {
+              this.cashBoxLastMessage.set(cashBoxMessage)
+            }
+            else {
               this.lastMessage.set(message);
             }
           }
@@ -122,6 +131,13 @@ export class SocketService {
       (typeof obj.id === 'string' || typeof obj.id === 'undefined') &&
       (typeof obj.text === 'string' || typeof obj.text === 'undefined') &&
       Object.values(EMessageType).includes(obj.type)
+    );
+  }
+  isCashBoxMessage(obj: any): obj is ICashBoxMessage {
+    return (
+      typeof obj === 'object' &&
+      (typeof obj.punterId === 'string' || typeof obj.id === 'undefined') &&
+      (typeof obj.balance === 'number' || typeof obj.text === 'undefined')
     );
   }
 }

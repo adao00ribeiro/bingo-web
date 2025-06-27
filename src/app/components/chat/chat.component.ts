@@ -53,15 +53,14 @@ export class ChatComponent implements AfterViewChecked {
 
     effect(() => {
       const message = this.socketService.ChatLastMessage();
-      console.log(message)
       this.user.set(this.PunterMeResourceService.resource.value());
       if (message && message.id != this.user()?.id) {
 
         const received = { ...message, type: EMessageType.RECEIVED };
-    this.messages.update(current => {
-      const updated = [...current, received];
-      return updated.length > 20 ? updated.slice(-20) : updated;
-    });
+        this.messages.update(current => {
+          const updated = [...current, received];
+          return updated.length > 20 ? updated.slice(-20) : updated;
+        });
       }
 
     });
@@ -78,10 +77,10 @@ export class ChatComponent implements AfterViewChecked {
     const text = this.messageText.trim();
     if (!text) return;
     const userMessage: ChatMessage = { id: this.user()?.id, text: text, type: EMessageType.SENT, time: new Date() };
-  this.messages.update(current => {
-    const updated = [...current, userMessage];
-    return updated.length > 20 ? updated.slice(-20) : updated;
-  });
+    this.messages.update(current => {
+      const updated = [...current, userMessage];
+      return updated.length > 20 ? updated.slice(-20) : updated;
+    });
     this.messageText = '';
     this.socketService.sendMessage("message", `chat_room_11e96bc2-6a2f-48b2-9199-05b89bd249a4`, JSON.stringify(userMessage));
     this.shouldScrollToBottom = true;
