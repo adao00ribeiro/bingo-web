@@ -32,7 +32,7 @@ export class IndexComponent implements OnInit {
   mobileQuery: MediaQueryList;
   private router: Router = inject(Router);
   private socketService: SocketService = inject(SocketService)
-   protected readonly themeService = inject(ThemeService);
+  protected readonly themeService = inject(ThemeService);
 
   readonly dialog = inject(MatDialog);
   private _mobileQueryListener: () => void;
@@ -41,6 +41,7 @@ export class IndexComponent implements OnInit {
   protected readonly PunterMeResourceService = inject(PunterMeResourceService);
 
   user = signal<IPunter | undefined>(undefined);
+  lastBalance: number | null = null;
 
   total_credit = computed(() => {
     const userData = this.user(); // Supondo que user seja um `ref` ou `computed`
@@ -58,8 +59,22 @@ export class IndexComponent implements OnInit {
         console.log(this.user()?.seller.rooms[0].id)
         this.socketService.subscribeToChannel(`room_${this.user()?.seller.rooms[0].id}`);
         this.socketService.subscribeToChannel(`chat_room_${this.user()?.seller.rooms[0].id}`);
+        this.socketService.subscribeToChannel(`cash_box_${this.user()?.id}`);
       }
     })
+
+    effect(() => {
+      const cashBoxmessage = this.socketService.CashBoxLastMessage();
+
+      if (!cashBoxmessage || !this.user() || cashBoxmessage.punterId !== this.user()?.id) return;
+      // Só recarrega se o saldo mudou
+      if (cashBoxmessage.balance !== this.lastBalance) {
+        this.lastBalance = cashBoxmessage.balance;
+        this.PunterMeResourceService.reload();
+      }
+    })
+
+
   }
   ngOnInit(): void {
     this.PunterMeResourceService.reload();
@@ -67,26 +82,18 @@ export class IndexComponent implements OnInit {
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-  handleClick(route: string,sidenav?: MatSidenav) {
+  handleClick(route: string, sidenav?: MatSidenav) {
     this.router.navigate([route]);
 
-     if (this.mobileQuery.matches && sidenav) {
-    this.toggleSidenav()
-  }
+    if (this.mobileQuery.matches && sidenav) {
+      this.toggleSidenav()
+    }
   }
   handleVisibity() {
     this.isVisible = !this.isVisible;
   }
   deposit() {
     this.dialog.open(DialogDepositComponent, {
-      disableClose: true,
-      data: {
-
-      },
-    });
-  }
-  dialogQrCode(){
-      this.dialog.open(DialogQrcodeComponent, {
       disableClose: true,
       data: {
 
