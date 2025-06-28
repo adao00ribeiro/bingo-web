@@ -12,6 +12,7 @@ import { IDepositRequest } from '../../../interfaces/IDepositRequest';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../../services/auth/user.service';
 import { DialogQrcodeComponent } from '../dialog-qrcode/dialog-qrcode.component';
+import { NgxCurrencyDirective } from "ngx-currency";
 export interface DialogDeposit {
 
 }
@@ -27,7 +28,8 @@ export interface DialogDeposit {
     MatDividerModule,
     MatDialogContent,
     MatCardModule,
-    MatButtonModule],
+    MatButtonModule,
+    NgxCurrencyDirective],
   templateUrl: './dialog-deposit.component.html',
   styleUrl: './dialog-deposit.component.scss'
 })
@@ -42,7 +44,6 @@ export class DialogDepositComponent {
   constructor(private fb: FormBuilder) {
     this.depositForm = this.fb.group({
       value: ['', [Validators.required]],
-
     });
   }
   onNoClick(): void {
