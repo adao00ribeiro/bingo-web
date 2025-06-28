@@ -12,7 +12,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import {  RouterLink, Router } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { LoginService } from '../../services/auth/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ILoginRequest } from '../../interfaces/ILoginRequest';
@@ -39,8 +39,8 @@ import { StorageService } from '../../services/storage.service';
 export class LoginComponent {
   loginForm: FormGroup;
   private loginService: LoginService = inject(LoginService);
-  private snackBar: MatSnackBar= inject(MatSnackBar);
-  private router: Router= inject(Router);
+  private snackBar: MatSnackBar = inject(MatSnackBar);
+  private router: Router = inject(Router);
   private storageService = inject(StorageService);
 
   hide = true;
@@ -56,29 +56,33 @@ export class LoginComponent {
     if (this.loginForm.invalid) {
       this.snackBar.open("Campo Invalidos", 'Ok', {
         duration: 150000, // Set the duration in milliseconds
-       horizontalPosition: 'center', // Options: 'start', 'center', 'end'
+        horizontalPosition: 'center', // Options: 'start', 'center', 'end'
         verticalPosition: 'bottom', // Options: 'top', 'bottom'
         panelClass: ['warning-snackbar'],
       });
       return;
     }
-  const loginRequest: ILoginRequest = {
+    const loginRequest: ILoginRequest = {
       Email: this.loginForm.value.email,
       Password: this.loginForm.value.password,
     };
     this.loginService.Login(loginRequest).subscribe({
       next: (data) => {
         console.log(data)
-        if(data.accessToken && data.refreshToken){
-          this.storageService.setSessionItem(STORAGE_TOKEN,data.accessToken)
-          this.storageService.setSessionItem(STORAGE_REFRESH_TOKEN,data.refreshToken)
+        if (data.accessToken && data.refreshToken) {
+          this.storageService.setSessionItem(STORAGE_TOKEN, data.accessToken)
+          this.storageService.setSessionItem(STORAGE_REFRESH_TOKEN, data.refreshToken)
         }
       },
       error: (err) => {
-
-        this.snackBar.open(err.error.detail, 'Ok', {
+        const errorMessage =
+          err?.error?.detail ||
+          err?.error?.erros ||
+          err?.message ||
+          'Erro desconhecido.';
+        this.snackBar.open(errorMessage, 'Ok', {
           duration: 5000, // Set the duration in milliseconds
-         horizontalPosition: 'center', // Options: 'start', 'center', 'end'
+          horizontalPosition: 'center', // Options: 'start', 'center', 'end'
           verticalPosition: 'bottom', // Options: 'top', 'bottom'
           panelClass: 'error-snackbar',
         });
@@ -87,11 +91,11 @@ export class LoginComponent {
       complete: () => {
         this.snackBar.open("Logado com sucesso", 'Ok', {
           duration: 5000, // Set the duration in milliseconds
-         horizontalPosition: 'center', // Options: 'start', 'center', 'end'
+          horizontalPosition: 'center', // Options: 'start', 'center', 'end'
           verticalPosition: 'bottom', // Options: 'top', 'bottom'
           panelClass: ['sucess-snackbar'],
         });
-          this.router.navigate(['/']); // Redireciona para a página inicial após 5 segundos
+        this.router.navigate(['/']); // Redireciona para a página inicial após 5 segundos
       }
     });
 

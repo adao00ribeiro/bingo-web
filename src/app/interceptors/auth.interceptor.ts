@@ -7,10 +7,11 @@ import { StorageService } from '../services/storage.service';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 const REFRESH_URL =`${environment.api}/api/v1/identity/refresh-login`
+const LOGIN_URL = `${environment.api}/api/v1/identity/login`;
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
 
-  if (req.url === REFRESH_URL) {
-    return next(req);
+  if (req.url === REFRESH_URL || req.url === LOGIN_URL) {
+  return next(req);
   }
   const refreshTokenService = inject(RefreshTokenService);
   const storageService = inject(StorageService);

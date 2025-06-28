@@ -10,7 +10,6 @@ import { IRegister } from '../../interfaces/IRegister';
 import { RegisterService } from '../../services/auth/register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { IRegisterResponse } from '../../interfaces/response/IRegisterResponse';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { Location } from '@angular/common';
@@ -94,10 +93,10 @@ export function idadeValidator(idadeMinima: number) {
     return null;
   };
 }
- export function confirmPasswordValidator (control: AbstractControl): ValidationErrors | null {
+export function confirmPasswordValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.parent?.get('password');
   const confirmPassword = control.parent?.get('confirmPassword');
-   return password && confirmPassword && password.value !== confirmPassword.value
+  return password && confirmPassword && password.value !== confirmPassword.value
     ? { 'passwordsDoNotMatch': true }
     : null;
 };
@@ -113,7 +112,7 @@ export function passwordValidator(control: AbstractControl): ValidationErrors | 
   // Regex para verificar cada requisito
   const hasUpperCase = /[A-Z]+/.test(value);
   const hasNumber = /[0-9]+/.test(value);
-  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]+/.test(value);
+  const hasSpecialChar = /[!+@#$%^&*(),.?":{}|<>]+/.test(value);
 
   // Adiciona um erro específico para cada regra não cumprida
   if (!hasUpperCase) {
@@ -162,15 +161,15 @@ export function passwordsMatchValidator(form: FormGroup): ValidationErrors | nul
 
 })
 export class RegisterComponent implements OnInit {
-   registerForm = new FormGroup({
+  registerForm = new FormGroup({
     name: new FormControl('', [Validators.pattern(/\s/), Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [Validators.required ]),
+    phone: new FormControl('', [Validators.required]),
     cpf: new FormControl('', [Validators.required]),
     dateBirth: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required,Validators.minLength(8),passwordValidator]),
-    confirmPassword: new FormControl('', [Validators.required ,confirmPasswordValidator])
-  }, );
+    password: new FormControl('', [Validators.required, Validators.minLength(8), passwordValidator]),
+    confirmPassword: new FormControl('', [Validators.required, confirmPasswordValidator])
+  },);
 
   private registerService: RegisterService = inject(RegisterService);
   private snackBar: MatSnackBar = inject(MatSnackBar);
@@ -183,12 +182,10 @@ export class RegisterComponent implements OnInit {
   constructor(private location: Location) {
   }
   ngOnInit(): void {
-     this.registerForm.get('password')?.valueChanges.subscribe(() => {
-    this.registerForm.get('passwordConfirmed')?.updateValueAndValidity();
-  });
+    this.registerForm.get('password')?.valueChanges.subscribe(() => {
+      this.registerForm.get('passwordConfirmed')?.updateValueAndValidity();
+    });
   }
-
-
 
   async submitRegistrar(): Promise<void> {
     if (this.registerForm.invalid) {
@@ -209,13 +206,13 @@ export class RegisterComponent implements OnInit {
 
     const registerData: IRegister = {
       name: this.registerForm.value.name ?? '',
-      userName: this.registerForm.value.email?? '',
-      email: this.registerForm.value.email?? '',
-      phone: this.registerForm.value.phone?? '',
-      cpf: this.registerForm.value.cpf?? '',
+      userName: this.registerForm.value.email ?? '',
+      email: this.registerForm.value.email ?? '',
+      phone: this.registerForm.value.phone ?? '',
+      cpf: this.registerForm.value.cpf ?? '',
       password: this.registerForm.value.password ?? "",
       passwordConfirmed: this.registerForm.value.confirmPassword ?? '',
-      dateBirth:  this.registerForm.value.dateBirth? this.convertToIso8601(this.registerForm.value.dateBirth) : '',
+      dateBirth: this.registerForm.value.dateBirth ? this.convertToIso8601(this.registerForm.value.dateBirth) : '',
       sellerId: 'b9c2d2b5-eeae-486c-85ea-06dd5cfe0c06',
       registeredWithTag: tag,
     };
@@ -225,7 +222,23 @@ export class RegisterComponent implements OnInit {
 
       },
       error: (err) => {
-        this.snackBar.open(err.error.detail, 'Ok', {
+        const validationErrors = err.error.errors;
+        let errorMessage = err?.error?.detail || err?.error?.erros || '';
+        if (validationErrors) {
+          errorMessage = ''; // sobrescreve para concatenar as mensagens
+          for (const field in validationErrors) {
+            if (validationErrors.hasOwnProperty(field)) {
+              const messages = validationErrors[field];
+              errorMessage += `${messages.join(', ')}\n`;
+            }
+          }
+        }
+
+        // fallback para erro desconhecido
+        if (!errorMessage) {
+          errorMessage = 'Erro desconhecido.';
+        }
+        this.snackBar.open(errorMessage, 'Ok', {
           duration: 10 * 1000, // Set the duration in milliseconds
           horizontalPosition: 'center', // Options: 'start', 'center', 'end'
           verticalPosition: 'bottom', // Options: 'top', 'bottom'
