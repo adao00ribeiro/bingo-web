@@ -24,7 +24,7 @@
       </div>
       }@else {
       <div class="configuration">
-        <app-prize-board [prizeResults]="roundMessage() ? roundMessage()?.results : []">
+        <app-prize-board [prizeResults]="getPrizes()">
         </app-prize-board>
       </div>
       }

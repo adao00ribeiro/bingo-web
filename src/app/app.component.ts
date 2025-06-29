@@ -28,11 +28,7 @@ export class AppComponent implements OnInit {
 
     //document.documentElement.style.setProperty('--background-color-primary', `#fff`);
 
-    effect(() => {
-      const currentTime = this.timerService.AdjustedTime(); // <- acesso ao signal aqui
-      console.log(currentTime); // agora ele vai reagir toda vez que mudar
 
-    })
   }
   ngOnInit(): void {
     //this.openDialogRoulete();

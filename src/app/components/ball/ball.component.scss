@@ -1,4 +1,4 @@
-:host {
+:root {
   --bg-color: #f0f0f0; /* Cor de fundo */
   --ball-color1: ''; /* Primeira cor da bola */
   --ball-color2: ''; /* Segunda cor da bola */
@@ -8,6 +8,8 @@
 }
 
 .bingo-ball {
+  width: 100%;
+  height: 100%;
   border: 2px solid black;
   background: radial-gradient(
     circle at 30% 30%,
