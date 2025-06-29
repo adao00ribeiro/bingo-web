@@ -9,14 +9,16 @@ import { DialogCardBuyComponent } from '../dialogs/dialog-card-buy/dialog-card-b
 import { GuidPipe } from '../../pipes/guid.pipe';
 import { IRoundMessage } from '../../interfaces/IRoundMessage';
 import { interval, Subscription } from 'rxjs';
-import { DateTimePipe } from '../../pipes/date-time.pipe';
 import { DialogCardsPurchasedComponent } from '../dialogs/dialog-cards-purchased/dialog-cards-purchased.component';
 import { TimerService } from '../../services/timer.service';
+import { TimePipe } from '../../pipes/time.pipe';
+import { DatePipe } from '../../pipes/date.pipe';
+
 
 @Component({
   selector: 'app-card-round',
   standalone: true,
-  imports: [DateTimePipe, MatIcon, MatTooltipModule, CurrencyPipe, GuidPipe],
+  imports: [DatePipe,TimePipe, MatIcon, MatTooltipModule, CurrencyPipe, GuidPipe],
   templateUrl: './card-round.component.html',
   styleUrl: './card-round.component.scss'
 })
@@ -28,8 +30,6 @@ export class CardRoundComponent implements OnInit, OnDestroy {
   readonly dialog = inject(MatDialog);
   readonly timerService = inject(TimerService);
   private intervalId: Subscription = new Subscription();
-
-
 
   days: string = '00';
   hours: string = '00';
