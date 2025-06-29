@@ -1,15 +1,86 @@
+
+
 :host {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap:1rem;
+  gap:0.5rem;
   color: white;
   border-radius: 0.5rem;
-  .container{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    color: white;
-    gap: 0.5rem;
+}
+
+
+.container-balls {
+  --main-size: 100px;
+  --second-scale: 0.8;
+  --third-scale: 0.6;
+  --forth-scale: 0.4;
+  flex: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  .main-ball {
+    width: var(--main-size);
+    height: var(--main-size);
+    font-size: 1.5rem;
   }
+
+  .second-ball {
+    width: calc(var(--main-size) * var(--second-scale));
+    height: calc(var(--main-size) * var(--second-scale));
+     font-size: 1.2rem;
+  }
+
+  .third-ball {
+    width: calc(var(--main-size) * var(--third-scale));
+    height: calc(var(--main-size) * var(--third-scale));
+    font-size: 1rem;
+  }
+
+  .forth-ball {
+    width: calc(var(--main-size) * var(--forth-scale));
+    height: calc(var(--main-size) * var(--forth-scale));
+    font-size: 0.7rem;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .container-balls {
+  --main-size: 100px;
+}
+}
+@media screen and (max-width: 375px) {
+  .container-balls {
+  --main-size: 80px;
+}
+}
+@media screen and (max-width: 320px) {
+  .container-balls {
+  --main-size: 80px;
+   .main-ball {
+
+    font-size: 1.2rem;
+  }
+
+  .second-ball {
+
+     font-size: 1rem;
+  }
+
+  .third-ball {
+
+    font-size: 0.7rem;
+  }
+
+  .forth-ball {
+
+    font-size: 0.7rem;
+  }
+}
+span{
+  font-size: 0.7rem;
+}
 }

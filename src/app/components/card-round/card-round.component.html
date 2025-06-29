@@ -54,7 +54,7 @@
     <button class="button blue" (click)="goViewRound()" [disabled]="roundSocket() == null">
       <span>Ver</span>
     </button>
-    <button class="button green" (click)="openDialog()">
+    <button class="button green" (click)="openDialog()" [disabled]="roundSocket() != null">
       <span>Comprar</span>
     </button>
   </footer>

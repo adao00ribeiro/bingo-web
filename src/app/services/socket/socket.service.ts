@@ -40,22 +40,18 @@ export class SocketService {
           const message: ISocketMessage = JSON.parse(event.data);
 
           if (this.IsJson(message.message)) {
-            const chatMessage: ChatMessage = JSON.parse(message.message)
-            const cashBoxMessage: ICashBoxMessage = JSON.parse(message.message)
+            const parsed = JSON.parse(message.message);
 
-            if (this.isChatMessage(chatMessage)) {
-              this.chatLastMessage.set(chatMessage)
-
-            } else if(this.isCashBoxMessage(cashBoxMessage))
-            {
-              this.cashBoxLastMessage.set(cashBoxMessage)
-            }
-            else {
+            if (this.isChatMessage(parsed)) {
+              this.chatLastMessage.set(parsed);
+            } else if (this.isCashBoxMessage(parsed)) {
+              console.log("cashbox", parsed);
+              this.cashBoxLastMessage.set(parsed);
+            } else {
+              console.log("Outro tipo de mensagem recebida:", parsed);
               this.lastMessage.set(message);
             }
           }
-
-
         } catch (error) {
           console.error("Erro ao processar mensagem do WebSocket", error);
         }
@@ -136,8 +132,9 @@ export class SocketService {
   isCashBoxMessage(obj: any): obj is ICashBoxMessage {
     return (
       typeof obj === 'object' &&
-      (typeof obj.punterId === 'string' || typeof obj.id === 'undefined') &&
-      (typeof obj.balance === 'number' || typeof obj.text === 'undefined')
+      obj !== null &&
+      typeof obj.punterId === 'string' &&
+      typeof obj.balance === 'number'
     );
   }
 }

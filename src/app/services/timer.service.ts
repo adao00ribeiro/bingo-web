@@ -31,6 +31,7 @@ export class TimerService {
   private timer: any;
 
   constructor() {
+     this.startClock(Date.now());
     effect(() => {
       const message = this.socketService.LastMessage();
       if (this.isJson(message?.message)) {

@@ -111,7 +111,34 @@ export class RoundsRealTimeComponent implements OnInit {
 
   public isOpen = true;
   public iconState = 'default';
-
+  getPrizes = computed(() => {
+    return this.roundMessage() ? this.roundMessage()?.results : [
+      {
+        prizeId: '338d08c4-4449-421d-a467-96a71547b2fc',
+        roundId: 'a419f7ee-3232-4ca1-bc66-cfec4fbd263f',
+        prizeType: EPrizeType.FourInLine,
+        value: 100,
+        winningCards: [],
+        listTopCards: [],
+      },
+      {
+        prizeId: 'e349053d-0685-4d8e-889f-8faa490cc603',
+        roundId: 'a419f7ee-3232-4ca1-bc66-cfec4fbd263f',
+        prizeType: EPrizeType.SingleLine,
+        value: 200,
+        winningCards: [],
+        listTopCards: [],
+      },
+      {
+        prizeId: 'f897dabe-031a-4a58-ba1d-b2fa33566ca1',
+        roundId: 'a419f7ee-3232-4ca1-bc66-cfec4fbd263f',
+        prizeType: EPrizeType.FullCard,
+        value: 300,
+        winningCards: [],
+        listTopCards: [],
+      }
+    ]
+  })
   getImage = computed(() => {
     const maxBalls = this.round()?.maxBalls;
     return maxBalls ? `/images/${maxBalls}.png` : '/images/90.png';
@@ -355,7 +382,7 @@ export class RoundsRealTimeComponent implements OnInit {
     this.page++;
   }
   public onChangeChatState(): void {
-     this.isOpen = !this.isOpen;
+    this.isOpen = !this.isOpen;
     this.iconState = (this.iconState === 'default' ? 'rotated' : 'default');
   }
 }

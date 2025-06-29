@@ -11,6 +11,7 @@ import { IRoundMessage } from '../../interfaces/IRoundMessage';
 import { interval, Subscription } from 'rxjs';
 import { DateTimePipe } from '../../pipes/date-time.pipe';
 import { DialogCardsPurchasedComponent } from '../dialogs/dialog-cards-purchased/dialog-cards-purchased.component';
+import { TimerService } from '../../services/timer.service';
 
 @Component({
   selector: 'app-card-round',
@@ -23,10 +24,13 @@ export class CardRoundComponent implements OnInit, OnDestroy {
 
   round = input.required<IRound>();
   roundSocket = input.required<IRoundMessage | undefined>();
-
   private router: Router = inject(Router);
   readonly dialog = inject(MatDialog);
+  readonly timerService = inject(TimerService);
   private intervalId: Subscription = new Subscription();
+
+
+
   days: string = '00';
   hours: string = '00';
   minutes: string = '00';
@@ -85,8 +89,11 @@ export class CardRoundComponent implements OnInit, OnDestroy {
 
   updateTimeRemaining(): void {
     if (!this.round) return;
-
-    const currentTimestamp = new Date(this.round().startedDate).getTime() - new Date().getTime();
+    const serverTime = this.timerService.AdjustedTime();
+    if (serverTime == null) {
+      return;
+    }
+    const currentTimestamp = new Date(this.round().startedDate).getTime() - serverTime.getTime();
     if (currentTimestamp <= 0) {
       this.days = this.hours = this.minutes = this.seconds = '00';
       return;
