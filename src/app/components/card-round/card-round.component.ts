@@ -47,7 +47,25 @@ export class CardRoundComponent implements OnInit, OnDestroy {
     const maxBalls = this.round().maxBalls;
     return maxBalls ? `/images/${maxBalls}.png` : '';
   });
+  updateTimeRemaining = computed(()=> {
+    if (!this.round) return;
+    const serverTime = this.timerService.AdjustedTime();
+    if (serverTime == null) {
+      return;
+    }
+    const currentTimestamp = new Date(this.round().startedDate).getTime() - serverTime.getTime();
+    if (currentTimestamp <= 0) {
+      this.days = this.hours = this.minutes = this.seconds = '00';
+      return;
+    }
 
+    this.days = Math.floor(currentTimestamp / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+    this.hours = Math.floor((currentTimestamp % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+    this.minutes = Math.floor((currentTimestamp % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+    this.seconds = Math.floor((currentTimestamp % (1000 * 60)) / 1000).toString().padStart(2, '0');
+
+    this.checkTimeAlerts();
+  })
   constructor() {
     effect(() => { });
   }
@@ -87,25 +105,7 @@ export class CardRoundComponent implements OnInit, OnDestroy {
     this.router.navigate(['/sorteio', this.round().id]);
   }
 
-  updateTimeRemaining(): void {
-    if (!this.round) return;
-    const serverTime = this.timerService.AdjustedTime();
-    if (serverTime == null) {
-      return;
-    }
-    const currentTimestamp = new Date(this.round().startedDate).getTime() - serverTime.getTime();
-    if (currentTimestamp <= 0) {
-      this.days = this.hours = this.minutes = this.seconds = '00';
-      return;
-    }
 
-    this.days = Math.floor(currentTimestamp / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-    this.hours = Math.floor((currentTimestamp % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-    this.minutes = Math.floor((currentTimestamp % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-    this.seconds = Math.floor((currentTimestamp % (1000 * 60)) / 1000).toString().padStart(2, '0');
-
-    this.checkTimeAlerts();
-  }
 
   checkTimeAlerts(): void {
     const alertTimes: Record<string, () => void> = {
