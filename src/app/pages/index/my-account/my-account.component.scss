@@ -2,6 +2,7 @@
 
 
 .minha-conta-container {
+
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -166,6 +167,14 @@
   }
 }
 
+.container-edit-check-close{
+  position: absolute;
+  top: 5px;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
 /* Efeitos de transição */
 .campo, .acao-btn {
   transition: all 0.3s ease;

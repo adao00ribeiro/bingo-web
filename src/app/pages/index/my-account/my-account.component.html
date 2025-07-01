@@ -1,19 +1,29 @@
 <form class="minha-conta-container" [formGroup]="form">
   <h1>Minha Conta</h1>
   <h2>Dados principais</h2>
+
   <!-- Nome -->
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field class="full-width" appearance="outline">
     <mat-label>Seu nome</mat-label>
-    <input matInput formControlName="name" [readonly]="!isEditing.name">
+    <input matInput  formControlName="name" [readonly]="!isEditing.name" >
+    <div class="container-edit-check-close">
       @if (!isEditing.name) {
-    <button mat-icon-button  matSuffix (click)="editarCampo('name')">
-      <mat-icon>edit</mat-icon>
-    </button>
-  }
+      <button mat-icon-button matSuffix (click)="editarCampo('name')">
+        <mat-icon>edit</mat-icon>
+      </button>
+      } @else {
+      <button mat-icon-button matSuffix (click)="salvarCampo('name')">
+        <mat-icon>check</mat-icon>
+      </button>
+      <button mat-icon-button matSuffix (click)="cancelarEdicao('name')">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </div>
   </mat-form-field>
 
   <!-- E-mail -->
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field class="full-width" appearance="outline">
     <mat-label>E-mail para contato</mat-label>
     <input matInput formControlName="email" readonly>
   </mat-form-field>
@@ -21,32 +31,50 @@
   <h2>Dados pessoais</h2>
 
   <!-- CPF -->
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field class="full-width" appearance="outline">
     <mat-label>CPF</mat-label>
-    <input matInput formControlName="cpf" readonly>
+    <input matInput formControlName="cpf" [readonly]="!isEditing.cpf">
+    <div class="container-edit-check-close">
+      @if (!isEditing.cpf) {
+      <button mat-icon-button matSuffix (click)="editarCampo('cpf')">
+        <mat-icon>edit</mat-icon>
+      </button>
+      } @else {
+      <button mat-icon-button matSuffix (click)="salvarCampo('cpf')">
+        <mat-icon>check</mat-icon>
+      </button>
+      <button mat-icon-button matSuffix (click)="cancelarEdicao('cpf')">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </div>
   </mat-form-field>
 
   <!-- Telefone -->
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field class="full-width" appearance="outline">
     <mat-label>Telefone para contato</mat-label>
-    <input matInput formControlName="phoneNumber" [readonly]="!isEditing.phoneNumber">
-      @if (!isEditing.phoneNumber) {
-    <button mat-icon-button matSuffix (click)="editarCampo('phoneNumber')">
-      <mat-icon>edit</mat-icon>
-    </button>
-  }
+    <input matInput formControlName="phone" [readonly]="!isEditing.phone">
+    <div class="container-edit-check-close">
+      @if (!isEditing.phone) {
+      <button mat-icon-button matSuffix (click)="editarCampo('phone')">
+        <mat-icon>edit</mat-icon>
+      </button>
+      } @else {
+      <button mat-icon-button matSuffix (click)="salvarCampo('phone')">
+        <mat-icon>check</mat-icon>
+      </button>
+      <button mat-icon-button matSuffix (click)="cancelarEdicao('phone')">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </div>
   </mat-form-field>
 
   <!-- Chave PIX -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Chave PIX para pagamento</mat-label>
-    <input matInput formControlName="chavePix" [readonly]="!isEditing.chavePix">
-    @if (!isEditing.chavePix) {
-    <button mat-icon-button  matSuffix (click)="editarCampo('chavePix')">
-      <mat-icon>edit</mat-icon>
-    </button>
-    }
 
+  <mat-form-field class="full-width" appearance="outline">
+    <mat-label>Chave PIX para pagamento</mat-label>
+    <input matInput formControlName="chavePix" readonly>
   </mat-form-field>
 
   <div class="acoes">
@@ -63,7 +91,5 @@
     <button mat-raised-button color="warn" (click)="inativarConta()">
       Inativar minha conta
     </button>
-
   </div>
-
 </form>
