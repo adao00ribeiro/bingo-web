@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Inativar Conta</h2>
+<mat-dialog-content class="dialog-content">
+  Tem certeza que deseja inativar sua conta? Você ficará impossibilitado de utilizá-la por 30 dias.
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions" align="end">
+  <button matButton mat-dialog-close>Cancelar</button>
+  <button matButton  cdkFocusInitial (click)="handleInactivateClick()">Inativar</button>
+</mat-dialog-actions>
