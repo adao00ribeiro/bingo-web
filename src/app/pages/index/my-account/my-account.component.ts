@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { PunterService } from '../../../services/punter/punter.service';
 import { IPunterPatchRequestDto } from '../../../interfaces/request/IPunterPatchRequestDto';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogInactivateAccountComponent } from '../../../components/dialogs/dialog-inactivate-account/dialog-inactivate-account.component';
 
 
 
@@ -35,7 +37,7 @@ export class MyAccountComponent implements OnInit {
     cpf: false,
     phone: false,
   };
-
+ readonly dialog = inject(MatDialog);
   private router: Router = inject(Router);
   private snackBar: MatSnackBar = inject(MatSnackBar);
   private punterService: PunterService = inject(PunterService);
@@ -147,7 +149,11 @@ export class MyAccountComponent implements OnInit {
   }
 
   inativarConta(): void {
-    console.log('Inativando conta');
+   this.dialog.open(DialogInactivateAccountComponent, {
+      data: { },
+      enterAnimationDuration: '500ms',
+      exitAnimationDuration: '250ms'
+    });
   }
 
   logout(): void {
