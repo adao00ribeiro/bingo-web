@@ -1,0 +1,34 @@
+<div class="game-container" #gameContainer>
+  <h1 class="title">BEAST SCRATCH</h1>
+  <div class="subtitle">Raspadinha dos Bichos</div>
+
+  <div class="instructions">
+    🎮 Encontre 3 bichos iguais para ganhar!<br>
+    Clique nos quadrados para revelar os animais
+  </div>
+
+  <div class="scratch-area-wrapper">
+    <div class="scratch-area">
+      @for ( animal of gameState(); track $index) {
+      <div  class="scratch-box" [class.winning-box]="isWinningBox($index)">
+        <div class="scratch-content">
+          <span class="animal-emoji" [class.winning-animal]="isWinningAnimal($index)">
+            {{ animal }}
+          </span>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Canvas único por cima da área 3x3 -->
+    <canvas #scratchCanvas class="scratch-canvas"  (mousedown)="startScratching($event)"
+      (mouseup)="stopScratching()" (mousemove)="scratchMove($event)" (touchstart)="startScratching($event)"
+      (touchend)="stopScratching()" (touchmove)="scratchMove($event)"></canvas>
+  </div>
+
+  <div class="result" [class.win-animation]="gameWon()" [class.rainbow-text]="gameWon()">
+    {{ resultMessage() }}
+  </div>
+
+  <button class="reset-btn" (click)="resetGame()">🔄 Novo Jogo</button>
+</div>
