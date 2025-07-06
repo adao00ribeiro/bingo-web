@@ -1,0 +1,56 @@
+<div class="game-container" #gameContainer>
+  <h1 class="title">Raspadinha dos Bichos</h1>
+  <div class="instructions">
+    🎮 Encontre 3 bichos iguais para ganhar!<br>
+
+  </div>
+  <div class="scratch-area-wrapper">
+    <div class="scratch-area">
+      @for (animal of animals; track $index) {
+        <div class="scratch-box"
+             [class.scratched]="scratchedBoxes.includes($index)"
+             [class.winning-box]="isWinningBox($index)"
+             (click)="scratchBox($index)">
+          <div class="scratch-content">
+            <span class="animal-emoji"
+                  [class.winning-animal]="isWinningBox($index)"
+                  [class.revealed]="scratchedBoxes.includes($index)">
+              {{ animal }}
+            </span>
+          </div>
+        </div>
+      }
+    </div>
+    <!-- Canvas único por cima da área 3x3 -->
+    <canvas #scratchCanvas
+            class="scratch-canvas"
+            [class.disabled]="isGameEnded"
+            (mousedown)="startScratching($event)"
+            (mouseup)="stopScratching()"
+            (mousemove)="scratchMove($event)"
+            (touchstart)="startScratching($event)"
+            (touchend)="stopScratching()"
+            (touchmove)="scratchMove($event)">
+    </canvas>
+  </div>
+  <!-- Mensagem de resultado -->
+  <div class="result"
+       [class.win-animation]="isGameWon"
+       [class.rainbow-text]="isGameWon">
+    {{ resultMessage() }}
+  </div>
+
+  <!-- Mensagem de prêmio -->
+  @if (prizeMessage()) {
+    <div class="prize-message">
+      {{ prizeMessage() }}
+    </div>
+  }
+  <div class="game-controls">
+    <button class="reset-btn"
+            (click)="play()"
+         >
+      🔄 Novo Jogo
+    </button>
+  </div>
+</div>

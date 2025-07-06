@@ -17,6 +17,7 @@ import { PunterMeResourceService } from '../../resource/punter/punter-me-resourc
 import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '../../constants/storage.service.constants';
 import { ThemeService } from '../../services/theme.service';
 import { DialogQrcodeComponent } from '../../components/dialogs/dialog-qrcode/dialog-qrcode.component';
+import { ScratchGameResourceService } from '../../resource/scratch/scratch-game-resource.service';
 @Component({
   selector: 'app-index',
   standalone: true,
@@ -32,6 +33,8 @@ export class IndexComponent implements OnInit {
   mobileQuery: MediaQueryList;
   private router: Router = inject(Router);
   private socketService: SocketService = inject(SocketService)
+  protected scratchGameResourceService: ScratchGameResourceService = inject(ScratchGameResourceService)
+
   protected readonly themeService = inject(ThemeService);
 
   readonly dialog = inject(MatDialog);
@@ -78,6 +81,7 @@ export class IndexComponent implements OnInit {
   }
   ngOnInit(): void {
     this.PunterMeResourceService.reload();
+    this.scratchGameResourceService.reload();
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
