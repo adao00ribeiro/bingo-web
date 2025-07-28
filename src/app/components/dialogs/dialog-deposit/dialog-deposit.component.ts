@@ -43,7 +43,7 @@ export class DialogDepositComponent {
   readonly dialog = inject(MatDialog);
   constructor(private fb: FormBuilder) {
     this.depositForm = this.fb.group({
-      value: ['', [Validators.required]],
+      value: ['0', [Validators.required]],
     });
   }
   onNoClick(): void {
