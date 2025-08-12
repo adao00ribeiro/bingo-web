@@ -7,6 +7,10 @@
       <img src="/images/Icone.png" alt>
     </div>
     <div class="toolbar-right">
+
+      <app-crypto-wallet/>
+
+
         <button class="theme-mode"   (click)="themeService.toggleTheme()" >
           <mat-icon>{{themeService.iconState()}}</mat-icon>
         </button>

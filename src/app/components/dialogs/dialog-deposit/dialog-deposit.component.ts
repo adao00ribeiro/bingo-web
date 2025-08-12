@@ -13,6 +13,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../../services/auth/user.service';
 import { DialogQrcodeComponent } from '../dialog-qrcode/dialog-qrcode.component';
 import { NgxCurrencyDirective } from "ngx-currency";
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
+import { MatRadioModule } from '@angular/material/radio';
+import { WalletService } from '../../../services/wallet/wallet.service';
+
 export interface DialogDeposit {
 
 }
@@ -29,7 +35,11 @@ export interface DialogDeposit {
     MatDialogContent,
     MatCardModule,
     MatButtonModule,
-    NgxCurrencyDirective],
+    NgxCurrencyDirective,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatSlideToggleModule
+  ],
   templateUrl: './dialog-deposit.component.html',
   styleUrl: './dialog-deposit.component.scss'
 })
@@ -39,21 +49,79 @@ export class DialogDepositComponent {
   readonly data = inject<DialogDeposit>(MAT_DIALOG_DATA);
   readonly depositService = inject(DepositService);
   private readonly userService = inject(UserService);
+  private readonly walletService = inject(WalletService);
+
   readonly snackBar = inject(MatSnackBar);
   readonly dialog = inject(MatDialog);
   constructor(private fb: FormBuilder) {
     this.depositForm = this.fb.group({
       value: ['0', [Validators.required]],
+      useCrypto: [false],
+      token: ['BNB'],
+
+
     });
   }
+
+  address: string | null = null;
+  balance: string | null = null;
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  handleDepositClick() {
-    const depositRequest: IDepositRequest = {
+  async handleDepositClick() {
+ let depositRequest: IDepositRequest | undefined = undefined;
+  if (this.depositForm.value.useCrypto) {
+
+    this.address = await this.walletService.connectWallet();
+    if (!this.address) {
+      this.snackBar.open("Conexão com a carteira cancelada ou falhou", 'Ok', { duration: 5000 });
+      return;
+    }
+
+    const valor = Number(this.depositForm.value.value);
+    const destino = "0x621428AFD56F5A2F3AD241FfAc9Fb3Fc4C1A9d22";
+
+    if (this.depositForm.value.token === "USDT") {
+      const usdtAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'; // Ethereum mainnet (ou troque para testnet se quiser)
+
+      this.balance = await this.walletService.getUSDTBalance(this.address, usdtAddress);
+      console.log("Saldo USDT:", this.balance);
+
+      const txHash = await this.walletService.depositUSDT(destino, valor, usdtAddress);
+      console.log("Tx USDT enviada:", txHash);
+
+      depositRequest = {
+        value: valor,
+        network: "Ethereum",
+        token: "USDT",
+        transactionHash: txHash,
+        address: this.address
+      };
+    } else if (this.depositForm.value.token === "BNB") {
+      // Envia BNB nativo
+      const txHash = await this.walletService.SendBNB(destino, valor);
+      console.log("Tx BNB enviada:", txHash);
+
+      depositRequest = {
+        value: valor,
+        network: "BSC",
+        token: "BNB",
+        transactionHash: txHash,
+        address: this.address
+      };
+    }
+
+  } else {
+    depositRequest = {
       value: this.depositForm.value.value,
     };
+  }
+    console.log(depositRequest)
+  if(!depositRequest){
+    return;
+  }
+
     this.depositService.Deposit(depositRequest).subscribe({
       next: (data) => {
         if (data) {
@@ -84,5 +152,14 @@ export class DialogDepositComponent {
         this.onNoClick();
       }
     });
+  }
+
+  async connect() {
+    this.address = await this.walletService.connectWallet();
+    if (this.address) {
+      const usdtAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'; // contrato USDT na Ethereum
+      this.balance = await this.walletService.getUSDTBalance(this.address, usdtAddress);
+      console.log(this.balance)
+    }
   }
 }

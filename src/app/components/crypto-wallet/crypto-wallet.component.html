@@ -1,0 +1,8 @@
+   <button (click)="connect()">Conectar MetaMask</button>
+   @if (address) {
+    <span >Carteira: {{ address }}</span>
+   }
+ @if (balance) {
+     <span>Saldo USDT: {{ balance }}</span>
+   }
+

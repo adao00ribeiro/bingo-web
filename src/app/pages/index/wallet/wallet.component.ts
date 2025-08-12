@@ -1,8 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
 import { TableComponent } from '../../../components/table/table.component';
 import { TransactionHistorysResourceService } from '../../../resource/transaction-history/transaction-historys-resource.service';
-import { DialogCashoutComponent } from '../../../components/dialogs/dialog-cashout/dialog-cashout.component';
+
 import { MatDialog } from '@angular/material/dialog';
+import { DialogCashoutComponent } from '../../../components/dialogs/dialog-cashout/dialog-cashout.component';
 
 @Component({
   selector: 'app-wallet',
