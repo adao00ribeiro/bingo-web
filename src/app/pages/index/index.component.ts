@@ -95,6 +95,7 @@ export class IndexComponent implements OnInit {
   }
   deposit() {
     this.dialog.open(DialogDepositComponent, {
+
       disableClose: true,
       data: {
 

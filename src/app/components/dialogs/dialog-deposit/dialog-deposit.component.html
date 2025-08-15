@@ -1,19 +1,19 @@
-<mat-dialog-content class="dialog">
-
-  <h2 class="text-white">Novo Deposito</h2>
-
-  <form class="form" [formGroup]="depositForm">
-    <mat-checkbox class="example-margin" formControlName="useCrypto">
-      Usar Criptomoeda
-    </mat-checkbox>
-    <mat-form-field class="example-full-width">
-      <mat-label>Valor</mat-label>
-      <input matInput formControlName="value" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align: 'right' }">
-    </mat-form-field>
-  </form>
-
+<h2 mat-dialog-title>Novo Depósito</h2>
+<mat-dialog-content class="dialog-content">
+ <mat-tab-group class="custom-tabs" animationDuration="300ms" dynamicHeight="false" (selectedTabChange)="onTabChange($event)">
+    <mat-tab label="Pagamento Normal">
+      <app-normal-deposit  #normalDeposit (depositChange)="depositRequest = $event"></app-normal-deposit>
+    </mat-tab>
+    <mat-tab label="Criptomoeda">
+      <app-crypto-deposit  #criptoDeposit (depositChange)="depositRequest = $event" ></app-crypto-deposit>
+    </mat-tab>
+  </mat-tab-group>
 </mat-dialog-content>
-<mat-card-actions>
+<mat-card-actions align="end">
   <button class="btn-second" (click)="onNoClick()">CANCELAR</button>
-  <button class="btn-primary" (click)="handleDepositClick()">DEPOSITAR</button>
+  <button class="btn-primary" color="primary" (click)="handleDepositClick()">
+     <mat-icon>payment</mat-icon>
+     <mat-icon>currency_bitcoin</mat-icon>
+     DEPOSITAR
+    </button>
 </mat-card-actions>
