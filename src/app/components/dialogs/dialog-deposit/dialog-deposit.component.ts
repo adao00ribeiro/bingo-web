@@ -120,7 +120,7 @@ export class DialogDepositComponent {
       return;
     }
     return;
-   this.depositService.Deposit({value:0}).subscribe({
+   this.depositService.Deposit({value:0, amount:0}).subscribe({
       next: (data) => {
         if (data) {
           this.dialog.open(DialogQrcodeComponent, {

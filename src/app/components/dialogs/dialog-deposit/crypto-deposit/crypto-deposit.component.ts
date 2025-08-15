@@ -9,32 +9,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { IDepositRequest } from '../../../../interfaces/IDepositRequest';
-import { NetworkService } from '../../../../services/blockchain/network.service';
 import { NetworksResourceService } from '../../../../resource/blockchain-network/networks-resource.service';
 import { INetwork } from '../../../../interfaces/blockchain/INetwork';
+import { IToken } from '../../../../interfaces/blockchain/IToken';
 
-interface Token {
-  symbol: string;
-  name: string;
-  price: number;
-}
 @Component({
   selector: 'app-crypto-deposit',
-  imports: [MatFormFieldModule, MatIconModule, MatSelectModule, CommonModule, MatCardModule, MatCardContent, ReactiveFormsModule,
-      CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-
+  imports: [
     MatFormFieldModule,
-    MatInputModule,
     MatIconModule,
     MatSelectModule,
-    MatOptionModule,
+    CommonModule,
     MatCardModule,
+    MatCardContent,
+    ReactiveFormsModule,
+    FormsModule,
+    MatInputModule,
+    MatOptionModule,
     MatButtonModule
-
-
-
   ],
   templateUrl: './crypto-deposit.component.html',
   styleUrl: './crypto-deposit.component.scss'
@@ -44,37 +36,8 @@ export class CryptoDepositComponent {
   private readonly netwrokResourceService = inject(NetworksResourceService);
 
   cryptoForm: FormGroup;
-  networks = signal<INetwork[]>([])
-
-  tokens: { [key: string]: Token[] } = {
-    bitcoin: [
-      { symbol: 'BTC', name: 'Bitcoin', price: 150000 }
-    ],
-    ethereum: [
-      { symbol: 'ETH', name: 'Ethereum', price: 12000 },
-      { symbol: 'USDT', name: 'Tether', price: 5.20 },
-      { symbol: 'USDC', name: 'USD Coin', price: 5.20 }
-    ],
-    bsc: [
-      { symbol: 'BNB', name: 'Binance Coin', price: 1200 },
-      { symbol: 'BUSD', name: 'Binance USD', price: 5.20 },
-      { symbol: 'USDT', name: 'Tether', price: 5.20 }
-    ],
-    polygon: [
-      { symbol: 'MATIC', name: 'Polygon', price: 4.50 },
-      { symbol: 'USDT', name: 'Tether', price: 5.20 }
-    ],
-    avalanche: [
-      { symbol: 'AVAX', name: 'Avalanche', price: 180 },
-      { symbol: 'USDT', name: 'Tether', price: 5.20 }
-    ],
-    solana: [
-      { symbol: 'SOL', name: 'Solana', price: 450 },
-      { symbol: 'USDT', name: 'Tether', price: 5.20 }
-    ]
-  };
-
-  availableTokens: Token[] = [];
+  networks = signal<INetwork[]>([]);
+  availableTokens: IToken[] = [];
   realValue: number = 0;
 
   constructor(private fb: FormBuilder) {
@@ -84,21 +47,26 @@ export class CryptoDepositComponent {
       amount: ['', [Validators.required, Validators.min(0.00000001)]]
     });
 
-    effect(()=>{
-      const networks1=  this.netwrokResourceService.resource.value()?.items
-
-      if(networks1){
-          this.networks.set(networks1);
+    effect(() => {
+      const networks1 = this.netwrokResourceService.resource.value()?.items;
+      if (networks1) {
+        this.networks.set(networks1);
       }
-    })
+    });
   }
+
   get selectedNetworkLabel(): string | undefined {
     const networkValue = this.cryptoForm.get('network')?.value;
-    return this.networks().find(n => n.name === networkValue)?.name;
+    return this.networks().find(n => n.id === networkValue)?.name;
   }
+
   ngOnInit(): void {
-    this.cryptoForm.get('network')?.valueChanges.subscribe(networkValue => {
-      this.availableTokens = this.tokens[networkValue] || [];
+    this.cryptoForm.get('network')?.valueChanges.subscribe(networkId => {
+      // Find the selected network and get its tokens
+      const selectedNetwork = this.networks().find(n => n.id === networkId);
+      this.availableTokens = selectedNetwork?.tokenAddresses?.map(ta => ta.token) || [];
+
+      // Reset token and amount when network changes
       this.cryptoForm.patchValue({ token: '', amount: '' });
       this.realValue = 0;
     });
@@ -110,16 +78,29 @@ export class CryptoDepositComponent {
 
   calculateRealValue(): void {
     const { network, token, amount } = this.cryptoForm.value;
+    console.log('Calculating real value:', { network, token, amount, availableTokens: this.availableTokens });
+
     if (network && token && amount && this.availableTokens.length) {
       const selectedToken = this.availableTokens.find(t => t.symbol === token);
+      console.log('Selected token:', selectedToken);
+
       if (selectedToken) {
-        this.realValue = amount * selectedToken.price;
+        // Se o token tem preço, calcula o valor real
+        if (selectedToken.price && selectedToken.price > 0) {
+          this.realValue = amount * selectedToken.price;
+        } else {
+          // Se não tem preço, assume valor 1 para mostrar o resumo
+          // Você pode ajustar esta lógica conforme necessário
+          this.realValue = amount;
+        }
+        console.log('Real value calculated:', this.realValue);
+      } else {
+        this.realValue = 0;
       }
     } else {
       this.realValue = 0;
     }
   }
-
 
   formatCurrency(value: number): string {
     return value.toLocaleString('pt-BR', {
@@ -128,10 +109,19 @@ export class CryptoDepositComponent {
     });
   }
 
-   emitDeposit() {
+  emitDeposit() {
     if (this.cryptoForm.valid) {
+      const { network, token, amount } = this.cryptoForm.value;
+      const selectedNetwork = this.networks().find(n => n.id === network);
+      const selectedToken = this.availableTokens.find(t => t.symbol === token);
+      const tokenAddress = selectedNetwork?.tokenAddresses?.find(ta => ta.token.symbol === token);
+
       this.depositChange.emit({
-        value: Number(this.cryptoForm.value.value),
+        network: network,
+        token: selectedToken?.id,
+        address: tokenAddress?.contractAddress,
+        amount: Number(amount),
+        value: this.realValue
       });
     }
   }

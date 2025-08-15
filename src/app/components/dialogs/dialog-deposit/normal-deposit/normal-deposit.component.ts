@@ -45,6 +45,7 @@ export class NormalDepositComponent {
     if (this.depositForm.valid) {
       this.depositChange.emit({
         value: Number(this.depositForm.value.value),
+        amount:0
       });
     }
   }

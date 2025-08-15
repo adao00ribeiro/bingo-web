@@ -1,10 +1,9 @@
 <div class="deposit-content">
   <form [formGroup]="cryptoForm" (ngSubmit)="emitDeposit()">
-
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Rede Blockchain</mat-label>
       <mat-select formControlName="network">
-        <mat-option *ngFor="let network of networks()" [value]="network.name">
+        <mat-option *ngFor="let network of networks()" [value]="network.id">
           <span class="network-option">
             {{ network.name }}
           </span>
@@ -23,7 +22,7 @@
           <span class="token-option">
             <span class="token-symbol">{{ token.symbol }}</span>
             <span class="token-name">{{ token.name }}</span>
-            <span class="token-price">{{ formatCurrency(token.price) }}</span>
+            <span class="token-price" *ngIf="token.price">{{ formatCurrency(token.price) }}</span>
           </span>
         </mat-option>
       </mat-select>
@@ -49,7 +48,7 @@
       </mat-error>
     </mat-form-field>
 
-    <div class="crypto-info" *ngIf="realValue > 0">
+    <div class="crypto-info" *ngIf="cryptoForm.get('amount')?.value && cryptoForm.get('token')?.value">
       <mat-card class="info-card">
         <mat-card-content>
           <div class="info-header">
@@ -64,13 +63,16 @@
             <span class="label">Rede:</span>
             <span class="value">{{ selectedNetworkLabel }}</span>
           </div>
-          <div class="info-row total">
+          <div class="info-row total" *ngIf="realValue > 0">
             <span class="label">Valor Total:</span>
             <span class="value">{{ formatCurrency(realValue) }}</span>
+          </div>
+          <div class="info-row" *ngIf="realValue === 0">
+            <span class="label">Status:</span>
+            <span class="value">Preço não disponível</span>
           </div>
         </mat-card-content>
       </mat-card>
     </div>
-
   </form>
 </div>
