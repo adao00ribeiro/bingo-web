@@ -4,10 +4,9 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Rede Blockchain</mat-label>
       <mat-select formControlName="network">
-        <mat-option *ngFor="let network of networks" [value]="network.value">
+        <mat-option *ngFor="let network of networks()" [value]="network.name">
           <span class="network-option">
-            <span class="network-icon">{{ network.icon }}</span>
-            {{ network.label }}
+            {{ network.name }}
           </span>
         </mat-option>
       </mat-select>

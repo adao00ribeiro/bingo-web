@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardContent, MatCardModule } from '@angular/material/card';
@@ -9,12 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { IDepositRequest } from '../../../../interfaces/IDepositRequest';
-
-interface Network {
-  value: string;
-  label: string;
-  icon: string;
-}
+import { NetworkService } from '../../../../services/blockchain/network.service';
+import { NetworksResourceService } from '../../../../resource/blockchain-network/networks-resource.service';
+import { INetwork } from '../../../../interfaces/blockchain/INetwork';
 
 interface Token {
   symbol: string;
@@ -44,16 +41,10 @@ interface Token {
 })
 export class CryptoDepositComponent {
   @Output() depositChange = new EventEmitter<IDepositRequest>();
+  private readonly netwrokResourceService = inject(NetworksResourceService);
 
   cryptoForm: FormGroup;
-  networks: Network[] = [
-    { value: 'bitcoin', label: 'Bitcoin', icon: '₿' },
-    { value: 'ethereum', label: 'Ethereum', icon: 'Ξ' },
-    { value: 'bsc', label: 'Binance Smart Chain', icon: '🔶' },
-    { value: 'polygon', label: 'Polygon', icon: '🔺' },
-    { value: 'avalanche', label: 'Avalanche', icon: '🔺' },
-    { value: 'solana', label: 'Solana', icon: '◎' }
-  ];
+  networks = signal<INetwork[]>([])
 
   tokens: { [key: string]: Token[] } = {
     bitcoin: [
@@ -92,10 +83,18 @@ export class CryptoDepositComponent {
       token: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(0.00000001)]]
     });
+
+    effect(()=>{
+      const networks1=  this.netwrokResourceService.resource.value()?.items
+
+      if(networks1){
+          this.networks.set(networks1);
+      }
+    })
   }
   get selectedNetworkLabel(): string | undefined {
     const networkValue = this.cryptoForm.get('network')?.value;
-    return this.networks.find(n => n.value === networkValue)?.label;
+    return this.networks().find(n => n.name === networkValue)?.name;
   }
   ngOnInit(): void {
     this.cryptoForm.get('network')?.valueChanges.subscribe(networkValue => {
