@@ -1,8 +1,6 @@
-import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { ethers, parseEther } from 'ethers';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,72 +8,148 @@ import { ethers, parseEther } from 'ethers';
 export class WalletService {
   private provider!: ethers.BrowserProvider;
   private signer!: ethers.Signer;
-  private url = `${environment.api}/api/v1/punter`
-  private httpClient: HttpClient = inject(HttpClient);
 
-  public async connectWallet(): Promise<string | null> {
+  /** Conecta à carteira do usuário (MetaMask) */
+  public async connectWallet(): Promise<void> {
     if (!window.ethereum) {
+      console.warn('MetaMask não encontrada!');
       alert('MetaMask não encontrada!');
-      return null;
+      return ;
     }
 
     this.provider = new ethers.BrowserProvider(window.ethereum);
-    const accounts = await this.provider.send("eth_requestAccounts", []);
-    this.signer = await this.provider.getSigner();
-    return accounts[0]; // endereço da carteira
+
+    try {
+      let accounts: string[] = await this.provider.send('eth_accounts', []);
+
+      if (!accounts.length) {
+        accounts = await this.provider.send('eth_requestAccounts', []);
+      }
+
+      if (!accounts.length) return ;
+
+      this.signer = await this.provider.getSigner();
+
+    } catch (error) {
+      console.error('Erro ao conectar carteira:', error);
+
+    }
   }
 
-  public async getUSDTBalance(address: string, usdtContractAddress: string): Promise<string> {
+  /** Retorna o saldo nativo ou de token ERC20 */
+  public async getBalance(address: string, tokenAddress?: string): Promise<string> {
+    if (!this.provider) throw new Error('Carteira não conectada');
+
+    if (!tokenAddress) {
+      const balance = await this.provider.getBalance(address);
+      return ethers.formatEther(balance);
+    }
+
     const abi = [
-      "function balanceOf(address owner) view returns (uint256)",
-      "function decimals() view returns (uint8)"
+      'function balanceOf(address owner) view returns (uint256)',
+      'function decimals() view returns (uint8)'
     ];
-    const contract = new ethers.Contract(usdtContractAddress, abi, this.provider);
-    console.log(contract)
+
+    const contract = new ethers.Contract(tokenAddress, abi, this.provider);
     const balance = await contract['balanceOf'](address);
     const decimals = await contract['decimals']();
     return ethers.formatUnits(balance, decimals);
   }
 
-  public async depositUSDT(destino: string, valor: number, usdtContractAddress: string): Promise<string> {
-    if (!this.signer) {
-      throw new Error("Carteira não conectada. Chame connectWallet() primeiro.");
+  /** Retorna saldo específico de USDT */
+  public async getUSDTBalance(address: string, usdtContractAddress: string): Promise<string> {
+    return this.getBalance(address, usdtContractAddress);
+  }
+
+  /** Calcula a taxa de gas estimada para transações nativas ou ERC20 */
+  public async getNetworkFee(tokenAddress: string | null,Address:string, amount: number): Promise<number> {
+    if (!this.provider) throw new Error('Carteira não conectada');
+
+    try {
+      const feeData = await this.provider.getFeeData();
+      const gasPrice = feeData.gasPrice || BigInt(0);
+      let gasEstimate: bigint;
+
+      if (!tokenAddress) {
+        gasEstimate = await this.provider.estimateGas({
+          to: Address,
+          value: parseEther(amount.toString())
+        });
+      } else {
+        const abi = ['function transfer(address to, uint amount) returns (bool)', 'function decimals() view returns (uint8)'];
+        const contract = new ethers.Contract(tokenAddress, abi, this.provider);
+        const decimals = await contract['decimals']();
+        const amountBigInt = ethers.parseUnits(amount.toString(), decimals);
+        gasEstimate = await contract['transfer'].estimateGas(Address, amountBigInt);
+      }
+
+      const totalCostWei = gasEstimate * gasPrice;
+      return parseFloat(ethers.formatEther(totalCostWei));
+    } catch (error) {
+      console.warn('Erro ao estimar taxa de gas, retornando valor padrão.', error);
+      return tokenAddress ? 0.001 : 0.0005;
     }
+  }
 
-    // ABI mínima para transferências ERC20
-    const abi = [
-      "function transfer(address to, uint amount) returns (bool)",
-      "function decimals() view returns (uint8)"
-    ];
+  /** Verifica se a carteira está conectada */
+  public isWalletConnected(): boolean {
+    return !!this.provider && !!this.signer;
+  }
 
+  /** Retorna o endereço conectado */
+  public async getCurrentAddress(): Promise<string | null> {
+    if (!this.isWalletConnected()) return null;
+    try {
+      return await this.signer.getAddress();
+    } catch (error) {
+      console.error('Erro ao obter endereço:', error);
+      return '';
+    }
+  }
+
+  /** Troca de rede na carteira */
+  public async switchNetwork(chainId: string): Promise<boolean> {
+    if (!window.ethereum) return false;
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId }]
+      });
+      return true;
+    } catch (error) {
+      console.error('Erro ao trocar rede:', error);
+      return false;
+    }
+  }
+
+  /** Deposita USDT */
+  public async depositUSDT(destino: string, valor: number, usdtContractAddress: string): Promise<string> {
+    if (!this.signer) throw new Error('Carteira não conectada');
+
+    const abi = ['function transfer(address to, uint amount) returns (bool)', 'function decimals() view returns (uint8)'];
     const contract = new ethers.Contract(usdtContractAddress, abi, this.signer);
 
-    // Descobre quantas casas decimais o token tem
     const decimals = await contract['decimals']();
     const amount = ethers.parseUnits(valor.toString(), decimals);
 
-    // Cria a transação
     const tx = await contract['transfer'](destino, amount);
+    await tx.wait();
 
-    console.log("Transação enviada:", tx.hash);
-
-    // Aguarda confirmação
-    const receipt = await tx.wait();
-    console.log("Transação confirmada:", receipt);
-
-    return tx.hash; // retorna o TXID para salvar no backend
+    console.log('Transação USDT confirmada:', tx.hash);
+    return tx.hash;
   }
 
-  public async SendBNB(destino: string, valor: number) {
-    if (!this.signer) {
-      throw new Error("Carteira não conectada. Chame connectWallet() primeiro.");
-    }
+  /** Envia BNB ou ETH */
+  public async sendNative(destino: string, valor: number): Promise<string> {
+    if (!this.signer) throw new Error('Carteira não conectada');
+
     const tx = await this.signer.sendTransaction({
       to: destino,
-      value: parseEther(valor.toString()),  // converte BNB para wei
+      value: parseEther(valor.toString())
     });
 
     await tx.wait();
+    console.log('Transação nativa confirmada:', tx.hash);
     return tx.hash;
   }
 }
