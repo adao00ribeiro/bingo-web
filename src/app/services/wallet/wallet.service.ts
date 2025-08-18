@@ -1,22 +1,58 @@
-import { Injectable, NgZone, signal, effect } from '@angular/core';
-import { BrowserProvider, ethers, parseEther, Signer } from 'ethers';
+import { Injectable, NgZone, signal, effect, computed } from '@angular/core';
+import { BrowserProvider, ethers, parseEther, Signer, TransactionResponse } from 'ethers';
+
+interface WalletState {
+  isConnected: boolean;
+  address: string | null;
+  network: string | undefined;
+  error: string | undefined;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class WalletService {
   private provider: BrowserProvider | undefined;
+
+  // State signals
   public signer = signal<Signer | undefined>(undefined);
   public network = signal<string | undefined>(undefined);
   public connectionError = signal<string | undefined>(undefined);
+  private address = signal<string | null>(null);
+
+  // Computed state
+  public walletState = computed<WalletState>(() => ({
+    isConnected: this.isWalletConnected(),
+    address: this.address(),
+    network: this.network(),
+    error: this.connectionError()
+  }));
 
   constructor(private ngZone: NgZone) {
-    // Initialize wallet connection automatically if wallet is available
+    this.initializeEventListeners();
+  }
+
+  private initializeEventListeners(): void {
     effect(() => {
-      if (this.signer()) {
-        console.log('Wallet connected:', this.signer());
+      const signer = this.signer();
+      if (signer) {
+        console.log('Wallet connected:', signer);
+        this.updateAddress();
       }
     });
+  }
+
+  private async updateAddress(): Promise<void> {
+    try {
+      const signerInstance = this.signer();
+      if (signerInstance) {
+        const addr = await signerInstance.getAddress();
+        this.address.set(addr);
+      }
+    } catch (error) {
+      console.error('Error getting address:', error);
+      this.address.set(null);
+    }
   }
 
   private async initializeWalletConnection(): Promise<void> {
@@ -26,50 +62,81 @@ export class WalletService {
     }
 
     try {
-      this.setProviderAndSigner();
-
-      // Listen for account changes
-      window.ethereum.on('accountsChanged', (accounts: string[]) => {
-        this.ngZone.run(() => {
-          if (accounts.length === 0) {
-            this.handleWalletDisconnect();
-          } else {
-            this.handleWalletAccountsChanged();
-          }
-        });
-      });
-
-      // Listen for network changes
-      window.ethereum.on('chainChanged', () => {
-        this.ngZone.run(() => {
-          this.setProviderAndSigner();
-        });
-      });
+      await this.setProviderAndSigner();
+      this.setupEventListeners();
     } catch (error) {
       this.handleError(error, 'Failed to initialize wallet connection');
     }
   }
 
+  private setupEventListeners(): void {
+    if (!window.ethereum) return;
+
+    // Remove existing listeners to prevent duplicates
+    this.removeEventListeners();
+
+    // Listen for account changes
+    window.ethereum.on('accountsChanged', this.handleAccountsChanged.bind(this));
+
+    // Listen for network changes
+    window.ethereum.on('chainChanged', this.handleChainChanged.bind(this));
+
+    // Listen for disconnection
+    window.ethereum.on('disconnect', this.handleDisconnect.bind(this));
+  }
+
+  private removeEventListeners(): void {
+    if (!window.ethereum) return;
+
+    window.ethereum.removeListener('accountsChanged', this.handleAccountsChanged);
+    window.ethereum.removeListener('chainChanged', this.handleChainChanged);
+    window.ethereum.removeListener('disconnect', this.handleDisconnect);
+  }
+
+  private handleAccountsChanged = (accounts: string[]): void => {
+    this.ngZone.run(() => {
+      if (accounts.length === 0) {
+        this.handleWalletDisconnect();
+      } else {
+        this.setProviderAndSigner();
+      }
+    });
+  };
+
+  private handleChainChanged = (): void => {
+    this.ngZone.run(() => {
+      this.setProviderAndSigner();
+    });
+  };
+
+  private handleDisconnect = (): void => {
+    this.ngZone.run(() => {
+      this.handleWalletDisconnect();
+    });
+  };
+
   private isWalletAvailable(): boolean {
-    return typeof window.ethereum !== 'undefined';
+    return typeof window !== 'undefined' && typeof window.ethereum !== 'undefined';
   }
 
   private handleWalletDisconnect(): void {
     this.provider = undefined;
     this.signer.set(undefined);
     this.network.set(undefined);
+    this.address.set(null);
     this.connectionError.set('Wallet disconnected.');
-  }
-
-  private async handleWalletAccountsChanged(): Promise<void> {
-    await this.setProviderAndSigner();
   }
 
   private async setProviderAndSigner(): Promise<void> {
     try {
+      if (!this.isWalletAvailable()) {
+        throw new Error('Wallet not available');
+      }
+
       this.provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await this.provider.getSigner();
       const network = await this.provider.getNetwork();
+
       this.ngZone.run(() => {
         this.signer.set(signer);
         this.network.set(network.name);
@@ -88,7 +155,9 @@ export class WalletService {
     });
   }
 
-  async connectToWallet(): Promise<void> {
+  // Public API Methods
+
+  public async connectToWallet(): Promise<void> {
     if (!this.isWalletAvailable()) {
       this.connectionError.set('Wallet is not installed. Please install MetaMask or another compatible wallet.');
       return;
@@ -102,14 +171,44 @@ export class WalletService {
       this.handleError(error, 'Failed to connect to wallet');
     }
   }
-    /** Retorna o saldo nativo ou de token ERC20 */
-  public async getBalance(address: string, tokenAddress?: string): Promise<string> {
-    if (!this.provider) throw new Error('Carteira não conectada');
 
-    if (!tokenAddress) {
-      const balance = await this.provider.getBalance(address);
-      return ethers.formatEther(balance);
+  public async disconnectWallet(): Promise<void> {
+    this.removeEventListeners();
+    this.handleWalletDisconnect();
+  }
+
+  public isWalletConnected(): boolean {
+    return !!this.provider && !!this.signer();
+  }
+
+  public getCurrentAddress(): string | null {
+    return this.address();
+  }
+
+  // Balance Methods
+
+  public async getBalance(address: string, tokenAddress?: string): Promise<string> {
+    if (!this.provider) {
+      throw new Error('Wallet not connected');
     }
+
+    try {
+      if (!tokenAddress) {
+        // Native token balance (e.g., ETH, BNB)
+        const balance = await this.provider.getBalance(address);
+        return ethers.formatEther(balance);
+      }
+
+      // ERC20 token balance
+      return await this.getERC20Balance(address, tokenAddress);
+    } catch (error) {
+      console.error('Error getting balance:', error);
+      throw new Error(`Failed to get balance: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  private async getERC20Balance(address: string, tokenAddress: string): Promise<string> {
+    if (!this.provider) throw new Error('Provider not available');
 
     const abi = [
       'function balanceOf(address owner) view returns (uint256)',
@@ -117,66 +216,146 @@ export class WalletService {
     ];
 
     const contract = new ethers.Contract(tokenAddress, abi, this.provider);
-    const balance = await contract['balanceOf'](address);
-    const decimals = await contract['decimals']();
+    const [balance, decimals] = await Promise.all([
+      contract['balanceOf'](address),
+      contract['decimals']()
+    ]);
+
     return ethers.formatUnits(balance, decimals);
   }
 
-  /** Retorna saldo específico de USDT */
   public async getUSDTBalance(address: string, usdtContractAddress: string): Promise<string> {
     return this.getBalance(address, usdtContractAddress);
   }
-    public async getNetworkFee(tokenAddress: string | null,Address:string, amount: number): Promise<number> {
-    if (!this.provider) throw new Error('Carteira não conectada');
+
+  // Transaction Methods
+
+  public async getNetworkFee(
+    tokenAddress: string | null,
+    toAddress: string,
+    amount: number
+  ): Promise<number> {
+    if (!this.provider) {
+      throw new Error('Wallet not connected');
+    }
 
     try {
       const feeData = await this.provider.getFeeData();
       const gasPrice = feeData.gasPrice || BigInt(0);
+
       let gasEstimate: bigint;
 
       if (!tokenAddress) {
+        // Native token transfer
         gasEstimate = await this.provider.estimateGas({
-          to: Address,
+          to: toAddress,
           value: parseEther(amount.toString())
         });
       } else {
-        const abi = ['function transfer(address to, uint amount) returns (bool)', 'function decimals() view returns (uint8)'];
-        const contract = new ethers.Contract(tokenAddress, abi, this.provider);
-        const decimals = await contract['decimals']();
-        const amountBigInt = ethers.parseUnits(amount.toString(), decimals);
-        gasEstimate = await contract['transfer'].estimateGas(Address, amountBigInt);
+        // ERC20 token transfer
+        gasEstimate = await this.estimateERC20Gas(tokenAddress, toAddress, amount);
       }
 
       const totalCostWei = gasEstimate * gasPrice;
       return parseFloat(ethers.formatEther(totalCostWei));
     } catch (error) {
-      console.warn('Erro ao estimar taxa de gas, retornando valor padrão.', error);
-      return tokenAddress ? 0.001 : 0.0005;
+      console.warn('Error estimating gas fee, returning default value:', error);
+      return tokenAddress ? 0.001 : 0.0005; // Default fallback values
     }
   }
-    /** Verifica se a carteira está conectada */
-  public isWalletConnected(): boolean {
-    return !!this.provider && !!this.signer();
+
+  private async estimateERC20Gas(
+    tokenAddress: string,
+    toAddress: string,
+    amount: number
+  ): Promise<bigint> {
+    if (!this.signer()) throw new Error('Signer not available');
+
+    const abi = [
+      'function transfer(address to, uint amount) returns (bool)',
+      'function decimals() view returns (uint8)'
+    ];
+
+    const contract = new ethers.Contract(tokenAddress, abi, this.signer());
+    const decimals = await contract['decimals']();
+    const amountBigInt = ethers.parseUnits(amount.toString(), decimals);
+
+    return contract['transfer'].estimateGas(toAddress, amountBigInt);
   }
 
-  /** Retorna o endereço conectado */
-  public async getCurrentAddress(): Promise<string | null> {
-    if (!this.isWalletConnected()) return null;
-     const signerInstance = this.signer();
-
-
+  public async sendERC20Token(
+    tokenAddress: string,
+    toAddress: string,
+    amount: number
+  ): Promise<string> {
+    const signerInstance = this.signer();
     if (!signerInstance) {
-      throw new Error("Carteira não conectada. Chame connectWallet() primeiro.");
+      throw new Error("Wallet not connected. Call connectToWallet() first.");
     }
+
     try {
-      return await signerInstance.getAddress();
+      const abi = [
+        "function transfer(address to, uint amount) returns (bool)",
+        "function decimals() view returns (uint8)"
+      ];
+
+      const contract = new ethers.Contract(tokenAddress, abi, signerInstance);
+      const decimals = await contract['decimals']();
+      const amountBigInt = ethers.parseUnits(amount.toString(), decimals);
+
+      const tx: TransactionResponse = await contract['transfer'](toAddress, amountBigInt);
+      console.log("Transaction sent:", tx.hash);
+
+      const receipt = await tx.wait();
+      console.log("Transaction confirmed:", receipt);
+
+      return tx.hash;
     } catch (error) {
-      console.error('Erro ao obter endereço:', error);
-      return '';
+      console.error('Error sending ERC20 token:', error);
+      throw new Error(`Failed to send token: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
+
+  public async depositUSDT(
+    destination: string,
+    amount: number,
+    usdtContractAddress: string
+  ): Promise<string> {
+    return this.sendERC20Token(usdtContractAddress, destination, amount);
+  }
+
+  public async sendNativeToken(toAddress: string, amount: number): Promise<string> {
+    const signerInstance = this.signer();
+    if (!signerInstance) {
+      throw new Error("Wallet not connected. Call connectToWallet() first.");
+    }
+
+    try {
+      const tx: TransactionResponse = await signerInstance.sendTransaction({
+        to: toAddress,
+        value: parseEther(amount.toString())
+      });
+
+      console.log("Transaction sent:", tx.hash);
+      const receipt = await tx.wait();
+      console.log("Transaction confirmed:", receipt);
+
+      return tx.hash;
+    } catch (error) {
+      console.error('Error sending native token:', error);
+      throw new Error(`Failed to send native token: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  public async sendBNB(destination: string, amount: number): Promise<string> {
+    return this.sendNativeToken(destination, amount);
+  }
+
+  // Network Methods
+
   public async switchNetwork(chainId: string): Promise<boolean> {
-    if (!window.ethereum) return false;
+    if (!this.isWalletAvailable()) return false;
+
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
@@ -184,61 +363,33 @@ export class WalletService {
       });
       return true;
     } catch (error) {
-      console.error('Erro ao trocar rede:', error);
+      console.error('Error switching network:', error);
       return false;
     }
   }
- public async depositUSDT(destino: string, valor: number, usdtContractAddress: string): Promise<string> {
-    const signerInstance = this.signer();
 
+  public async addNetwork(networkConfig: {
+    chainId: string;
+    chainName: string;
+    rpcUrls: string[];
+    nativeCurrency: {
+      name: string;
+      symbol: string;
+      decimals: number;
+    };
+    blockExplorerUrls?: string[];
+  }): Promise<boolean> {
+    if (!this.isWalletAvailable()) return false;
 
-    if (!signerInstance) {
-      throw new Error("Carteira não conectada. Chame connectWallet() primeiro.");
-    }
-
-    // ABI mínima para transferências ERC20
-    const abi = [
-      "function transfer(address to, uint amount) returns (bool)",
-      "function decimals() view returns (uint8)"
-    ];
-
-    const contract = new ethers.Contract(usdtContractAddress, abi, signerInstance);
-
-    // Descobre quantas casas decimais o token tem
-    const decimals = await contract['decimals']();
-    const amount = ethers.parseUnits(valor.toString(), decimals);
-
-    // Cria a transação
-    const tx = await contract['transfer'](destino, amount);
-
-    console.log("Transação enviada:", tx.hash);
-
-    // Aguarda confirmação
-    const receipt = await tx.wait();
-    console.log("Transação confirmada:", receipt);
-
-    return tx.hash; // retorna o TXID para salvar no backend
-  }
-
-  public async SendBNB(destino: string, valor: number) {
-    const signerInstance = this.signer();
-    if (!signerInstance) {
-      throw new Error("Carteira não conectada. Chame connectWallet() primeiro.");
-    }
-    const tx = await signerInstance.sendTransaction({
-      to: destino,
-      value: parseEther(valor.toString()),  // converte BNB para wei
-    });
-
-    await tx.wait();
-    return tx.hash;
-  }
-  async disconnectWallet(): Promise<void> {
-    if (this.provider) {
-      // Remove event listeners to prevent memory leaks
-      window.ethereum.removeAllListeners('accountsChanged');
-      window.ethereum.removeAllListeners('chainChanged');
-      this.handleWalletDisconnect();
+    try {
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [networkConfig]
+      });
+      return true;
+    } catch (error) {
+      console.error('Error adding network:', error);
+      return false;
     }
   }
 }
