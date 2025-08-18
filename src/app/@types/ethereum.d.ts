@@ -1,4 +1,3 @@
-
 interface EthereumProvider {
   isMetaMask?: boolean;
   request: (args: { method: string; params?: any[] }) => Promise<any>;
@@ -6,5 +5,5 @@ interface EthereumProvider {
 }
 
 interface Window {
-  ethereum?: EthereumProvider;
+   ethereum: any;
 }

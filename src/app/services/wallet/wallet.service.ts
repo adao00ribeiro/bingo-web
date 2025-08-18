@@ -1,4 +1,5 @@
-import { Injectable, NgZone, signal, effect, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, NgZone, signal, effect, computed, inject } from '@angular/core';
 import { BrowserProvider, ethers, parseEther, Signer, TransactionResponse } from 'ethers';
 
 interface WalletState {
@@ -19,7 +20,7 @@ export class WalletService {
   public network = signal<string | undefined>(undefined);
   public connectionError = signal<string | undefined>(undefined);
   private address = signal<string | null>(null);
-
+  private httpClient: HttpClient= inject(HttpClient);
   // Computed state
   public walletState = computed<WalletState>(() => ({
     isConnected: this.isWalletConnected(),
@@ -186,7 +187,10 @@ export class WalletService {
   }
 
   // Balance Methods
-
+public getBNBPriceBRL() {
+  const url = 'https://api.binance.com/api/v3/ticker/price?symbol=BNBBRL';
+  return this.httpClient.get<{ symbol: string; price: string }>(url);
+}
   public async getBalance(address: string, tokenAddress?: string): Promise<string> {
     if (!this.provider) {
       throw new Error('Wallet not connected');
