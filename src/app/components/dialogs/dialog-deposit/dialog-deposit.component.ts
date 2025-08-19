@@ -58,29 +58,30 @@ export class DialogDepositComponent {
   readonly snackBar = inject(MatSnackBar);
   readonly dialog = inject(MatDialog);
   isNormalDeposit = true;
-
+isDepositing = false;
   depositRequest?: IDepositRequest;
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   async handleDepositClick() {
-
+     this.isDepositing = true;
+     console.log(this.isNormalDeposit)
     if (!this.isNormalDeposit) {
       this.criptoDepositComponent.emitDeposit();
 
-      const valor = Number(this.depositRequest?.amount);
+      const amount = Number(this.depositRequest?.amount);
+      const value = Number(this.depositRequest?.value);
       const destino = "0x621428AFD56F5A2F3AD241FfAc9Fb3Fc4C1A9d22";
 
 
-      const txHash = await this.walletService.sendBNB(destino, valor);
+      const txHash = await this.walletService.sendBNB(destino, amount);
       console.log("Tx USDT enviada:", txHash);
 
       this.depositRequest = {
         ...this.depositRequest,
-        value: valor,
-        network: "BSC",
-        token: "BNB",
+        value:value,
+        amount:amount,
         transactionHash: txHash,
         destinationAddress: destino
       };
@@ -88,12 +89,12 @@ export class DialogDepositComponent {
     } else {
       this.normalDepositComponent.emitDeposit();
     }
-    console.log(this.depositRequest)
+
     if (!this.depositRequest) {
       return;
     }
-    return;
-    this.depositService.Deposit({ value: 0, amount: 0 }).subscribe({
+    console.log(this.depositRequest);
+    this.depositService.Deposit(this.depositRequest).subscribe({
       next: (data) => {
         if (data) {
           this.dialog.open(DialogQrcodeComponent, {
@@ -103,6 +104,7 @@ export class DialogDepositComponent {
             },
           });
           this.userService.loadUser();
+          this.isDepositing = false;
         }
       },
       error: (err) => {
@@ -112,6 +114,8 @@ export class DialogDepositComponent {
           verticalPosition: 'bottom',
           panelClass: 'error-snackbar',
         });
+
+        this.isDepositing = false;
       },
       complete: () => {
         this.snackBar.open("Depositado com Sucesso", 'Ok', {

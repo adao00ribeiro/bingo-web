@@ -167,8 +167,7 @@ export class CryptoDepositComponent {
     if (this.cryptoForm.valid) {
 
       const selectedNetwork = this.networks().find(n => n.id === network);
-      const selectedToken = this.availableTokens.find(t => t.symbol === token);
-      const tokenAddress = selectedNetwork?.tokenAddresses?.find(ta => ta.token.symbol === token);
+      const selectedToken = this.availableTokens.find(t => t.id === token);
 
       this.depositChange.emit({
         network: selectedNetwork?.name,

@@ -11,9 +11,15 @@
 </mat-dialog-content>
 <mat-card-actions align="end">
   <button class="btn-second" (click)="onNoClick()">CANCELAR</button>
-  <button class="btn-primary" color="primary" (click)="handleDepositClick()">
+  <button class="btn-primary" color="primary" (click)="handleDepositClick()"[disabled]="isDepositing">
      <mat-icon>payment</mat-icon>
      <mat-icon>currency_bitcoin</mat-icon>
-     DEPOSITAR
+     @if(!isDepositing){
+   <span >DEPOSITAR</span>
+     }@else{
+ <span >PROCESSANDO...</span>
+     }
+
+
     </button>
 </mat-card-actions>
