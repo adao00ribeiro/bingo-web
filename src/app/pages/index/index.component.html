@@ -1,17 +1,14 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar class="example-toolbar">
     <div class="toolbar-left">
-      <button  (click)="toggleSidenav()">
+      <button (click)="toggleSidenav()">
         <mat-icon class="text">menu</mat-icon>
       </button>
       <img src="/images/Icone.png" alt>
     </div>
     <div class="toolbar-right">
 
-      <app-crypto-wallet/>
-
-
-        <button class="theme-mode"   (click)="themeService.toggleTheme()" >
+        <button class="theme-mode" (click)="themeService.toggleTheme()">
           <mat-icon>{{themeService.iconState()}}</mat-icon>
         </button>
 
@@ -38,15 +35,15 @@
             Carteira</button>
         </div>
       </mat-menu>
-      <button  [matMenuTriggerFor]="belowMenu">
+      <button [matMenuTriggerFor]="belowMenu">
         <mat-icon>person</mat-icon>
       </button>
       <mat-menu class="mat-menu-item" #belowMenu="matMenu" yPosition="below">
-        <button  (click)="myAccount()">
+        <button (click)="myAccount()">
           <mat-icon>person</mat-icon>
           Minha Conta
         </button>
-        <button  (click)="logout()">
+        <button (click)="logout()">
           <mat-icon>logout</mat-icon>
           Sair
         </button>
@@ -54,7 +51,7 @@
     </div>
   </mat-toolbar>
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav  [opened]="isSidenavOpen" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+    <mat-sidenav [opened]="isSidenavOpen" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
         <app-button-menu descricao="Rodadas" (onClick)="handleClick('/',snav)">
           <mat-icon>list_alt</mat-icon>

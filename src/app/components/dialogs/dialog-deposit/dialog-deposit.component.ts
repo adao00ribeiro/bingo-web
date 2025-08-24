@@ -19,6 +19,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { NormalDepositComponent } from "./normal-deposit/normal-deposit.component";
 import { CryptoDepositComponent } from "./crypto-deposit/crypto-deposit.component";
 import { WalletService } from '../../../services/wallet/wallet.service';
+import { PunterMeResourceService } from '../../../resource/punter/punter-me-resource.service';
 
 export interface DialogDeposit {
 
@@ -52,13 +53,14 @@ export class DialogDepositComponent {
   readonly dialogRef = inject(MatDialogRef<DialogDepositComponent>);
   readonly data = inject<DialogDeposit>(MAT_DIALOG_DATA);
   readonly depositService = inject(DepositService);
-  private readonly userService = inject(UserService);
+  private readonly punterMeResourceService = inject(PunterMeResourceService);
   protected readonly walletService = inject(WalletService);
 
   readonly snackBar = inject(MatSnackBar);
   readonly dialog = inject(MatDialog);
+  isCryptoEnabled = true;
   isNormalDeposit = true;
-isDepositing = false;
+  isDepositing = false;
   depositRequest?: IDepositRequest;
   onNoClick(): void {
     this.dialogRef.close();
@@ -103,7 +105,7 @@ isDepositing = false;
               recharge: data
             },
           });
-          this.userService.loadUser();
+          this.punterMeResourceService.reload();
           this.isDepositing = false;
         }
       },

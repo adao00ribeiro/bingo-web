@@ -16,12 +16,11 @@ import { SocketService } from '../../services/socket/socket.service';
 import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
 import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '../../constants/storage.service.constants';
 import { ThemeService } from '../../services/theme.service';
-import { CryptoWalletComponent } from "../../components/crypto-wallet/crypto-wallet.component";
 
 @Component({
   selector: 'app-index',
   standalone: true,
-  imports: [MatButtonModule, MatMenuModule, ButtonMenuComponent, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule, CurrencyPipe, CryptoWalletComponent],
+  imports: [MatButtonModule, MatMenuModule, ButtonMenuComponent, RouterOutlet, MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule, CurrencyPipe],
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss',
 

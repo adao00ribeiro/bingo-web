@@ -4,7 +4,7 @@
     <mat-tab label="Pagamento Normal">
       <app-normal-deposit  #normalDeposit (depositChange)="depositRequest = $event"></app-normal-deposit>
     </mat-tab>
-    <mat-tab label="Criptomoeda">
+    <mat-tab label="Criptomoeda" [disabled]="isCryptoEnabled">
       <app-crypto-deposit  #criptoDeposit (depositChange)="depositRequest = $event" ></app-crypto-deposit>
     </mat-tab>
   </mat-tab-group>
