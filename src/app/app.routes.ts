@@ -13,6 +13,8 @@ import { SocketComponent } from './pages/socket/socket.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { IndiqueGanheComponent } from './pages/index/indique-ganhe/indique-ganhe.component';
 import { unauthenticateGuard } from './guard/unauthenticate.guard';
+import { ForgotPasswordComponent } from './pages/account/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/account/reset-password/reset-password.component';
 
 export const routes: Routes = [
   {
@@ -67,6 +69,16 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [unauthenticateGuard],
+  },
+    {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    canActivate: [unauthenticateGuard],
+  },
+    {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
     canActivate: [unauthenticateGuard],
   },
 
