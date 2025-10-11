@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -8,13 +8,15 @@ import { environment } from '../../environments/environment';
 })
 export class AccountService {
   private baseUrl = `${environment.api}/api/v1/identity`;
- constructor(private http: HttpClient) { }
+     private httpClient: HttpClient = inject(HttpClient);
 
-  forgotPassword(email: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/forgot-password`, { email });
+
+
+  forgotPassword(email: string): Observable<boolean> {
+    return this.httpClient.post<boolean>(`${this.baseUrl}/forgot-password`, { email });
   }
 
-  resetPassword(email: string, token: string, newPassword: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/reset-password`, { email, token, newPassword });
+  resetPassword(email: string, token: string, newPassword: string): Observable<boolean> {
+    return this.httpClient.post<boolean>(`${this.baseUrl}/reset-password`, { email, token, newPassword });
   }
 }
