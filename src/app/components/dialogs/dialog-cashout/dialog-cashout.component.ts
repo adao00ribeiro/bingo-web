@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,10 +7,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { DepositService } from '../../../services/deposit/deposit.service';
-import { IDepositRequest } from '../../../interfaces/IDepositRequest';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserService } from '../../../services/auth/user.service';
+import { WithdrawalService } from '../../../services/withdrawal/withdrawal.service';
+import { IWithdrawalRequest } from '../../../interfaces/IWithdrawalRequest';
+import { PunterMeResourceService } from '../../../resource/punter/punter-me-resource.service';
+import { CurrencyPipe } from '../../../pipes/currency.pipe';
+import { NgxCurrencyDirective } from 'ngx-currency';
 export interface DialogCashout {
 
 }
@@ -18,6 +20,7 @@ export interface DialogCashout {
   selector: 'app-dialog-cashout',
   standalone: true,
   imports: [
+    CurrencyPipe,
     ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule,
@@ -26,7 +29,8 @@ export interface DialogCashout {
     MatDividerModule,
     MatDialogContent,
     MatCardModule,
-    MatButtonModule],
+    MatButtonModule,
+  NgxCurrencyDirective],
   templateUrl: './dialog-cashout.component.html',
   styleUrl: './dialog-cashout.component.scss'
 })
@@ -34,28 +38,36 @@ export class DialogCashoutComponent {
   depositForm: FormGroup;
   readonly dialogRef = inject(MatDialogRef<DialogCashoutComponent>);
   readonly data = inject<DialogCashout>(MAT_DIALOG_DATA);
-  readonly depositService = inject(DepositService);
-  private readonly userService = inject(UserService);
+  readonly withdrawalService = inject(WithdrawalService);
+  protected readonly punterMeResourceService = inject(PunterMeResourceService);
   readonly snackBar = inject(MatSnackBar);
 
   constructor(private fb: FormBuilder) {
     this.depositForm = this.fb.group({
-      value: ['', [Validators.required]],
+      value: [0, [Validators.required]],
 
     });
+
+    effect(()=>{
+         const user =  this.punterMeResourceService.resource.value();
+
+    })
   }
   onNoClick(): void {
     this.dialogRef.close();
   }
-  handleDepositClick() {
-    const depositRequest: IDepositRequest = {
-      value: this.depositForm.value.value,
+  handleWithdrawalClick() {
+    const id = this.punterMeResourceService.resource.value()?.id
+    if(!id){
+      return;
+    }
+    const withdrawalRequest: IWithdrawalRequest = {
+      amount: this.depositForm.value.value,
+       entityId : id
     };
-    this.depositService.Deposit(depositRequest).subscribe({
+    this.withdrawalService.Create(withdrawalRequest).subscribe({
       next: (data) => {
-       if(data){
-        this.userService.loadUser();
-       }
+       console.log(data)
       },
       error: (err) => {
         this.snackBar.open(err.error.detail, 'Ok', {
@@ -66,7 +78,7 @@ export class DialogCashoutComponent {
         });
       },
       complete: () => {
-        this.snackBar.open("Depositado com Sucesso", 'Ok', {
+        this.snackBar.open("Pedido de saque em Processamento", 'Ok', {
           duration: 5000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom',

@@ -9,11 +9,12 @@ import { WalletComponent } from './pages/index/wallet/wallet.component';
 import { MyAccountComponent } from './pages/index/my-account/my-account.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
-import { SocketComponent } from './pages/socket/socket.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { IndiqueGanheComponent } from './pages/index/indique-ganhe/indique-ganhe.component';
 import { unauthenticateGuard } from './guard/unauthenticate.guard';
 import { ScratchComponent } from './page/index/scratch/scratch.component';
+import { ForgotPasswordComponent } from './pages/account/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/account/reset-password/reset-password.component';
 
 export const routes: Routes = [
   {
@@ -72,6 +73,16 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [unauthenticateGuard],
+  },
+    {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    canActivate: [unauthenticateGuard],
+  },
+    {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
     canActivate: [unauthenticateGuard],
   },
 
