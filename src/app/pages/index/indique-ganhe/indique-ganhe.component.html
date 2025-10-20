@@ -41,7 +41,9 @@
             <button class="btn btn-copy" (click)="copyCode()" [class.success]="isCopied">
               <span class="btn-icon">📋</span>
               {{ isCopied ? 'Copiado!' : 'Copiar' }}
-              <div class="btn-ripple" *ngIf="isCopied"></div>
+              @if(isCopied){
+              <div class="btn-ripple" ></div>
+              }
             </button>
 
             <button class="btn btn-whatsapp" (click)="sendWhatsApp()">

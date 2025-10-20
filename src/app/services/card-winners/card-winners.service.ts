@@ -1,8 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { ICardWinner } from '../interfaces/ICardWinner';
+import { ICardWinner } from '../../interfaces/ICardWinner';
 import { Observable } from 'rxjs';
+import { IPaged } from '../../interfaces/IPaged';
 
 @Injectable({
   providedIn: 'root'
@@ -10,23 +11,10 @@ import { Observable } from 'rxjs';
 export class CardWinnersService {
   private url = `${environment.api}/api/v1/cardwinner`;
   private httpClient: HttpClient = inject(HttpClient);
-  private cardwinnerSignal = signal<ICardWinner[]>([]);
 
-  public readonly cardwinners = this.cardwinnerSignal.asReadonly();
-
-  loadCardWinners(): void {
-    this.GetAll().subscribe({
-      next: (cardwinner) => {
-        this.cardwinnerSignal.set(cardwinner)
-      },
-      error: (error) => console.error('Erro ao carregar cardsWinners:', error),
-    });
+ GetAll(page: number, size: number): Observable<IPaged<ICardWinner>> {
+    return this.httpClient.get<IPaged<ICardWinner>>(this.url + `?page=${page}&size=${size}`)
   }
-
-  GetAll(): Observable<ICardWinner[]> {
-    return this.httpClient.get<ICardWinner[]>(this.url);
-  }
-
   Create(cardwinner: ICardWinner): Observable<ICardWinner> {
     return this.httpClient.post<ICardWinner>(this.url, cardwinner);
   }

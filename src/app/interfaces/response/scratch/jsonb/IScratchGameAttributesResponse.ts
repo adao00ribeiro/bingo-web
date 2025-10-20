@@ -1,6 +1,6 @@
 import { IScratchSymbolDto } from "./IScratchSymbolResponse";
 
 export interface IScratchGameAttributesResponse {
-  payoutTable: { [key: string]: number };
+  payoutTable: { multiplier: number; prize: number }[];
   symbols: IScratchSymbolDto[];
 }

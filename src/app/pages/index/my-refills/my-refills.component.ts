@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { TableComponent } from '../../../components/table/table.component';
-import { RechargesResourceService } from '../../../resource/recharge/recharges-resource.service';
+import { RechargesResource } from '../../../resource/recharge/recharges.resource';
 
 @Component({
   selector: 'app-my-refills',
@@ -9,9 +9,9 @@ import { RechargesResourceService } from '../../../resource/recharge/recharges-r
   templateUrl: './my-refills.component.html',
   styleUrl: './my-refills.component.scss'
 })
-export class MyRefillsComponent {
+export class MyRefillsComponent implements OnInit {
 
-  protected readonly rechargeService: RechargesResourceService = inject(RechargesResourceService);
+  protected readonly rechargeService: RechargesResource = inject(RechargesResource);
 
   recharges = computed(() => this.rechargeService.resource.value() || undefined);
   totalItems = 0;
@@ -21,13 +21,12 @@ export class MyRefillsComponent {
     { key: 'status', displayName: 'Status' },
   ];
   constructor() {
-    effect(() => {
 
-    })
-    this.loadData(1, 5);
   }
-
-  loadData(page: number, size: number) {
-   this.rechargeService.reload(page,size)
+ ngOnInit(): void {
+    this.refresh(1, 10);
+  }
+   refresh(page: number, size: number) {
+    this.rechargeService.reload({ page: page, size: size });
   }
 }

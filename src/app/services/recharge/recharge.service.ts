@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { IRecharge } from '../../interfaces/IRecharge';
 import { Observable } from 'rxjs';
+import { IPaged } from '../../interfaces/IPaged';
 
 @Injectable({
   providedIn: 'root'
@@ -10,18 +11,9 @@ import { Observable } from 'rxjs';
 export class RechargeService {
   private url = `${environment.api}/api/v1/recharge`;
   private httpClient: HttpClient = inject(HttpClient);
-  private rechargesSignal = signal<IRecharge[]>([]);
 
-  public readonly recharges = this.rechargesSignal.asReadonly();
-
-  loadRecharges(): void {
-    this.GetAll().subscribe({
-      next: (recharges) => this.rechargesSignal.set(recharges),
-      error: (error) => console.error('Erro ao carregar rounds:', error),
-    });
-  }
-  GetAll(): Observable<IRecharge[]> {
-    return this.httpClient.get<IRecharge[]>(this.url);
+   GetAll(page: number, size: number): Observable<IPaged<IRecharge>> {
+    return this.httpClient.get<IPaged<IRecharge>>(this.url + `?page=${page}&size=${size}`)
   }
 
   Create(recharge: IRecharge): Observable<IRecharge> {
@@ -35,7 +27,9 @@ export class RechargeService {
   UpdateById(id: number, recharge: IRecharge): Observable<IRecharge> {
     return this.httpClient.put<IRecharge>(`${this.url}/${id}`, recharge);
   }
-
+  PatchById( recharge: IRecharge): Observable<boolean> {
+    return this.httpClient.patch<boolean>(`${this.url}/complete`, recharge);
+  }
   DeleteById(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.url}/${id}`);
   }

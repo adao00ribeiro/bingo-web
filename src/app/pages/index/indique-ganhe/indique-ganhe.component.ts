@@ -5,8 +5,7 @@ import { IIndicateTagResponse } from '../../../interfaces/IIndicateTagResponse';
 @Component({
   selector: 'app-my-account',
   standalone: true,
-  imports: [
-  ],
+  imports: [],
   templateUrl: './indique-ganhe.component.html',
   styleUrl: './indique-ganhe.component.scss'
 })

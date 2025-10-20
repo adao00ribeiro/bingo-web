@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IIndicateTagResponse } from '../../interfaces/IIndicateTagResponse';
 import { IPunterPatchRequestDto } from '../../interfaces/request/IPunterPatchRequestDto';
+import { IPunter } from '../../interfaces/IPunter';
 
 
 @Injectable({
@@ -19,4 +20,7 @@ export class PunterService {
   Update(data: IPunterPatchRequestDto): Observable<void> {
     return this.httpClient.patch<void>(this.url, data);
   }
+   GetMe(): Observable<IPunter> {
+    return this.httpClient.get<IPunter>(this.url + "/me")
+ }
 }

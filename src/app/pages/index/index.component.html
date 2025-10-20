@@ -52,7 +52,7 @@
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav  [opened]="isSidenavOpen" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
-        @if(scratchGameResourceService.resource.value() != null){
+        @if(enabledScratch){
        <app-button-menu descricao="Raspadinha" (onClick)="handleClick('/scratch',snav)">
           <mat-icon>confirmation_number</mat-icon>
         </app-button-menu>

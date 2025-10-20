@@ -1,0 +1,191 @@
+    .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: #a0a0b0;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: left 0.5s;
+        }
+
+        .game-card:hover::before {
+            left: 100%;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .game-name {
+            font-size: 1.8em;
+            color: #ffffff;
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .play-btn {
+            width: 100%;
+            padding: 0;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+
+        .play-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .play-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-content {
+            display: flex;
+            align-items: center;
+            padding: 20px 25px;
+            gap: 20px;
+        }
+
+        .btn-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .btn-text-wrapper {
+            flex: 1;
+            text-align: left;
+        }
+
+        .btn-text {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: white;
+            letter-spacing: -0.5px;
+            display: block;
+        }
+
+        .btn-subtext {
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.7);
+            margin-top: 2px;
+        }
+
+        .btn-arrow {
+            font-size: 1.5em;
+            color: white;
+            opacity: 0.8;
+            transition: transform 0.3s;
+        }
+
+        .play-btn:hover .btn-arrow {
+            transform: translateX(5px);
+        }
+
+        /* Cores específicas para cada card */
+        .game-card:nth-child(1) .play-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+        }
+
+        .game-card:nth-child(2) .play-btn {
+            background: linear-gradient(135deg, #10b981 0%, #14f195 100%);
+        }
+
+        .game-card:nth-child(3) .play-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+        }
+
+        .game-card:nth-child(4) .play-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+        }
+
+        .game-card:nth-child(5) .play-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+        }
+
+        .game-card:nth-child(6) .play-btn {
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 40px 15px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .game-name {
+                font-size: 1.5em;
+            }
+
+            .btn-image {
+                width: 50px;
+                height: 50px;
+            }
+
+            .btn-text {
+                font-size: 1.1em;
+            }
+        }

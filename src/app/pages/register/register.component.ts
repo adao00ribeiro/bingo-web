@@ -152,9 +152,7 @@ export function passwordsMatchValidator(form: FormGroup): ValidationErrors | nul
     MatIconModule,
     MatDividerModule,
     MatButtonModule,
-    RouterLink,
-    NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskDirective
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
