@@ -11,6 +11,7 @@ import { ICashBoxMessage } from '../../interfaces/ICashBoxMessage';
 })
 export class SocketService {
   private socket: WebSocket | null = null;
+  private userId: string = "";
 
   private readonly SOCKET_URL = `${environment.API_WS}`;
   private isConnected = signal<boolean>(false);
@@ -18,7 +19,7 @@ export class SocketService {
   private chatLastMessage = signal<ChatMessage | null>(null);
   private cashBoxLastMessage = signal<ICashBoxMessage | null>(null);
   public socketErrors = signal<string>('');
-
+  private subscribedChannels = new Set<string>();
   public readonly IsConnected = this.isConnected.asReadonly();
   public readonly LastMessage = this.lastMessage.asReadonly();
   public readonly ChatLastMessage = this.chatLastMessage.asReadonly();
@@ -41,7 +42,7 @@ export class SocketService {
 
           if (this.IsJson(message.message)) {
             const parsed = JSON.parse(message.message);
-
+            console.log(parsed)
             if (this.isChatMessage(parsed)) {
               this.chatLastMessage.set(parsed);
             } else if (this.isCashBoxMessage(parsed)) {
@@ -67,17 +68,26 @@ export class SocketService {
       this.socket.onclose = () => {
         this.isConnected.set(false);
         console.log("WebSocket desconectado. Tentando reconectar...");
-        setTimeout(() => this.connect(), 5000); // Tentar reconectar em 5 segundos
+
+        if (this.userId != '' || this.userId != undefined) {
+          setTimeout(() => this.connect(this.userId), 5000); // Tentar reconectar em 5 segundos
+        }
+
       };
     }
   }
 
   // Método para conectar ao WebSocket
-  public connect(): void {
-    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
-      this.socket = new WebSocket(this.SOCKET_URL);
-      this.setupSocketListeners();
-    }
+  public connect(userId: string): void {
+
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) return;
+    this.userId = userId;
+    const url = `${this.SOCKET_URL}/${userId}`;
+    console.log('Conectando a', url);
+
+    this.socket = new WebSocket(url);
+    this.setupSocketListeners();
+
   }
 
   // Método para desconectar do WebSocket
@@ -104,9 +114,14 @@ export class SocketService {
 
   // Método para se inscrever em um canal
   public subscribeToChannel(channel: string): void {
-    console.log(`Voce se increvel no canal ${channel}`)
+
+    if (this.subscribedChannels.has(channel)) return; // já inscrito
+      console.log(`Voce se increvel no canal ${channel}`)
     this.sendMessage("subscribe", channel, "mensagem");
+    this.subscribedChannels.add(channel);
   }
+
+
 
   // Método para obter o status atual da conexão
   public getConnectionStatus(): boolean {

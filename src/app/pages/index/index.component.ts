@@ -41,6 +41,7 @@ export class IndexComponent implements OnInit {
 
   user = signal<IPunter | undefined>(undefined);
   lastBalance: number | null = null;
+  lastPrizeBalance: number | null = null;
 
   total_credit = computed(() => {
     const userData = this.user(); // Supondo que user seja um `ref` ou `computed`
@@ -51,37 +52,50 @@ export class IndexComponent implements OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    this.socketService.connect();
+
     effect(() => {
       var user = this.punterMeResource.resource.value();
-      if(user){
- this.enabledScratch = user.seller.settings.enabledScratch
+      if (user == null) {
+        return;
       }
-
+      this.enabledScratch = user.seller.settings.enabledScratch
       this.user.set(user);
 
-      if (this.socketService.IsConnected() && this.user() != null) {
-        console.log(this.user()?.seller.rooms[0].id)
-        this.socketService.subscribeToChannel(`room_${this.user()?.seller.rooms[0].id}`);
-        this.socketService.subscribeToChannel(`chat_room_${this.user()?.seller.rooms[0].id}`);
-        this.socketService.subscribeToChannel(`cash_box_${this.user()?.id}`);
-      }
+      let id = user.id;
+      this.socketService.connect(id);
+
     })
 
     effect(() => {
       const cashBoxmessage = this.socketService.CashBoxLastMessage();
 
       if (!cashBoxmessage || !this.user() || cashBoxmessage.punterId !== this.user()?.id) return;
-      if (cashBoxmessage.balance !== this.lastBalance) {
-        this.lastBalance = cashBoxmessage.balance;
+
+      const { balance, prizeBalance } = cashBoxmessage;
+
+      const changed =
+        balance !== this.lastBalance || prizeBalance !== this.lastPrizeBalance;
+
+      if (!changed) return;
+      this.lastBalance = balance;
+      this.lastPrizeBalance = prizeBalance;
+      setTimeout(() => {
         this.punterMeResource.reload();
+      }, 500); // 500ms de delay
+    }
+    )
+    effect(() => {
+      if (this.socketService.IsConnected()) {
+        this.socketService.subscribeToChannel(`room_${this.user()?.seller.rooms[0].id}`);
+        this.socketService.subscribeToChannel(`chat_room_${this.user()?.seller.rooms[0].id}`);
+        this.socketService.subscribeToChannel(`cash_box_${this.user()?.id}`);
       }
     })
-
 
   }
   ngOnInit(): void {
     this.punterMeResource.reload();
+
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
@@ -135,6 +149,4 @@ export class IndexComponent implements OnInit {
     this.isSidenavOpen = true;
     this.sidenav.open(); // Abre o sidenav
   }
-
-
 }
