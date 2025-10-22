@@ -10,9 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WithdrawalService } from '../../../services/withdrawal/withdrawal.service';
 import { IWithdrawalRequest } from '../../../interfaces/IWithdrawalRequest';
-import { PunterMeResourceService } from '../../../resource/punter/punter-me-resource.service';
 import { CurrencyPipe } from '../../../pipes/currency.pipe';
 import { NgxCurrencyDirective } from 'ngx-currency';
+import { PunterMeResource } from '../../../resource/punter/punter-me.resource';
 export interface DialogCashout {
 
 }
@@ -39,7 +39,7 @@ export class DialogCashoutComponent {
   readonly dialogRef = inject(MatDialogRef<DialogCashoutComponent>);
   readonly data = inject<DialogCashout>(MAT_DIALOG_DATA);
   readonly withdrawalService = inject(WithdrawalService);
-  protected readonly punterMeResourceService = inject(PunterMeResourceService);
+  protected readonly punterMeResource = inject(PunterMeResource);
   readonly snackBar = inject(MatSnackBar);
 
   constructor(private fb: FormBuilder) {
@@ -49,7 +49,7 @@ export class DialogCashoutComponent {
     });
 
     effect(()=>{
-         const user =  this.punterMeResourceService.resource.value();
+         const user =  this.punterMeResource.resource.value();
 
     })
   }
@@ -57,7 +57,7 @@ export class DialogCashoutComponent {
     this.dialogRef.close();
   }
   handleWithdrawalClick() {
-    const id = this.punterMeResourceService.resource.value()?.id
+    const id = this.punterMeResource.resource.value()?.id
     if(!id){
       return;
     }
