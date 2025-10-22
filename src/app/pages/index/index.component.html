@@ -52,9 +52,11 @@
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav  [opened]="isSidenavOpen" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
-        <app-button-menu descricao="Raspadinha" (onClick)="handleClick('/scratch',snav)">
+        @if(enabledScratch){
+       <app-button-menu descricao="Raspadinha" (onClick)="handleClick('/scratch',snav)">
           <mat-icon>confirmation_number</mat-icon>
         </app-button-menu>
+        }
         <app-button-menu descricao="Rodadas" (onClick)="handleClick('/',snav)">
           <mat-icon>list_alt</mat-icon>
         </app-button-menu>

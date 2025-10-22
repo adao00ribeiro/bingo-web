@@ -8,9 +8,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { SocketService } from '../../services/socket/socket.service';
-import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
 import { IPunter } from '../../interfaces/IPunter';
 import { EMessageType } from '../../enums/EMessageType';
+import { PunterMeResource } from '../../resource/punter/punter-me.resource';
 
 export interface ChatMessage {
   id: string | undefined;
@@ -22,7 +22,6 @@ export interface ChatMessage {
 @Component({
   selector: 'app-chat',
   imports: [
-    MatIcon,
     MatCardModule,
     ReactiveFormsModule,
     FormsModule,
@@ -42,7 +41,7 @@ export class ChatComponent implements AfterViewChecked {
   roomId = input.required<string | undefined>();
   @ViewChild('messagesContainer') messagesContainer!: ElementRef;
   private socketService: SocketService = inject(SocketService)
-  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
+  protected readonly PunterMeResource = inject(PunterMeResource);
   user = signal<IPunter | undefined>(undefined);
   messages = signal<ChatMessage[]>([]);
   messageText: string = '';
@@ -53,7 +52,7 @@ export class ChatComponent implements AfterViewChecked {
 
     effect(() => {
       const message = this.socketService.ChatLastMessage();
-      this.user.set(this.PunterMeResourceService.resource.value());
+      this.user.set(this.PunterMeResource.resource.value());
       if (message && message.id != this.user()?.id) {
 
         const received = { ...message, type: EMessageType.RECEIVED };

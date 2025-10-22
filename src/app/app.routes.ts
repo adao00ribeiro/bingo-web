@@ -12,9 +12,10 @@ import { LoginComponent } from './pages/login/login.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { IndiqueGanheComponent } from './pages/index/indique-ganhe/indique-ganhe.component';
 import { unauthenticateGuard } from './guard/unauthenticate.guard';
-import { ScratchComponent } from './page/index/scratch/scratch.component';
 import { ForgotPasswordComponent } from './pages/account/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/account/reset-password/reset-password.component';
+import { ScratchComponent } from './pages/index/scratch/scratch.component';
+import { ListScratchGamesComponent } from './pages/index/scratch/list-scratch-games/list-scratch-games.component';
 
 export const routes: Routes = [
   {
@@ -33,6 +34,10 @@ export const routes: Routes = [
       },
        {
         path: 'scratch',
+        component: ListScratchGamesComponent,
+      },
+       {
+        path: 'scratch/:scratchSellerGameId',
         component: ScratchComponent,
       },
       {

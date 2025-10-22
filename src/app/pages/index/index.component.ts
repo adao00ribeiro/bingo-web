@@ -13,10 +13,9 @@ import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDepositComponent } from '../../components/dialogs/dialog-deposit/dialog-deposit.component';
 import { SocketService } from '../../services/socket/socket.service';
-import { PunterMeResourceService } from '../../resource/punter/punter-me-resource.service';
 import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '../../constants/storage.service.constants';
 import { ThemeService } from '../../services/theme.service';
-import { DialogQrcodeComponent } from '../../components/dialogs/dialog-qrcode/dialog-qrcode.component';
+import { PunterMeResource } from '../../resource/punter/punter-me.resource';
 @Component({
   selector: 'app-index',
   standalone: true,
@@ -32,16 +31,17 @@ export class IndexComponent implements OnInit {
   mobileQuery: MediaQueryList;
   private router: Router = inject(Router);
   private socketService: SocketService = inject(SocketService)
+  protected readonly punterMeResource = inject(PunterMeResource);
   protected readonly themeService = inject(ThemeService);
 
   readonly dialog = inject(MatDialog);
   private _mobileQueryListener: () => void;
   isVisible: boolean = false;
-
-  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
+  enabledScratch: boolean = false;
 
   user = signal<IPunter | undefined>(undefined);
   lastBalance: number | null = null;
+  lastPrizeBalance: number | null = null;
 
   total_credit = computed(() => {
     const userData = this.user(); // Supondo que user seja um `ref` ou `computed`
@@ -52,32 +52,50 @@ export class IndexComponent implements OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    this.socketService.connect();
+
     effect(() => {
-      this.user.set(this.PunterMeResourceService.resource.value());
-      if (this.socketService.IsConnected() && this.user() != null) {
-        console.log(this.user()?.seller.rooms[0].id)
-        this.socketService.subscribeToChannel(`room_${this.user()?.seller.rooms[0].id}`);
-        this.socketService.subscribeToChannel(`chat_room_${this.user()?.seller.rooms[0].id}`);
-        this.socketService.subscribeToChannel(`cash_box_${this.user()?.id}`);
+      var user = this.punterMeResource.resource.value();
+      if (user == null) {
+        return;
       }
+      this.enabledScratch = user.seller.settings.enabledScratch
+      this.user.set(user);
+
+      let id = user.id;
+      this.socketService.connect(id);
+
     })
 
     effect(() => {
       const cashBoxmessage = this.socketService.CashBoxLastMessage();
 
       if (!cashBoxmessage || !this.user() || cashBoxmessage.punterId !== this.user()?.id) return;
-      // Só recarrega se o saldo mudou
-      if (cashBoxmessage.balance !== this.lastBalance) {
-        this.lastBalance = cashBoxmessage.balance;
-        this.PunterMeResourceService.reload();
+
+      const { balance, prizeBalance } = cashBoxmessage;
+
+      const changed =
+        balance !== this.lastBalance || prizeBalance !== this.lastPrizeBalance;
+
+      if (!changed) return;
+      this.lastBalance = balance;
+      this.lastPrizeBalance = prizeBalance;
+      setTimeout(() => {
+        this.punterMeResource.reload();
+      }, 500); // 500ms de delay
+    }
+    )
+    effect(() => {
+      if (this.socketService.IsConnected()) {
+        this.socketService.subscribeToChannel(`room_${this.user()?.seller.rooms[0].id}`);
+        this.socketService.subscribeToChannel(`chat_room_${this.user()?.seller.rooms[0].id}`);
+        this.socketService.subscribeToChannel(`cash_box_${this.user()?.id}`);
       }
     })
 
-
   }
   ngOnInit(): void {
-    this.PunterMeResourceService.reload();
+    this.punterMeResource.reload();
+
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
@@ -131,6 +149,4 @@ export class IndexComponent implements OnInit {
     this.isSidenavOpen = true;
     this.sidenav.open(); // Abre o sidenav
   }
-
-
 }

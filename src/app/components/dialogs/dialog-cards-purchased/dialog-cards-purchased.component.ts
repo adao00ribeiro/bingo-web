@@ -4,12 +4,11 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angu
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CardComponent } from "../../card/card.component";
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
-import { CardsByPunterResourceService } from '../../../resource/card/cards-by-punter-resource.service';
 import { IRound } from '../../../interfaces/IRound';
 import { GuidPipe } from '../../../pipes/guid.pipe';
-import { DatePipe } from '@angular/common';
 import { DateTimePipe } from '../../../pipes/date-time.pipe';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { CardsByRoundIdResource } from '../../../resource/card/cards-by-round-id.resource';
 export interface DialogCardsPurchasedProps {
   round: IRound;
 }
@@ -24,7 +23,7 @@ export class DialogCardsPurchasedComponent implements OnInit{
   readonly dialogRef = inject(MatDialogRef<DialogCardsPurchasedComponent>);
   readonly data = inject<DialogCardsPurchasedProps>(MAT_DIALOG_DATA);
 
-  private cardsByPunterResourceService: CardsByPunterResourceService = inject(CardsByPunterResourceService);
+  private cardsByRoundIdResource: CardsByRoundIdResource = inject(CardsByRoundIdResource);
   @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
    readonly round = model(this.data.round);
   @Output() ok = new EventEmitter<void>();
@@ -42,11 +41,11 @@ export class DialogCardsPurchasedComponent implements OnInit{
 
   constructor(  ) {
     effect(() => {
-      var paged = this.cardsByPunterResourceService.resource.value()
+      var paged = this.cardsByRoundIdResource.resource.value()
 
       if (paged) {
-        if (paged.items?.length > 0) {
-          var newCards = paged.items as ICard[]
+        if (paged.rows?.length > 0) {
+          var newCards = paged.rows as ICard[]
           this.cards = [...this.cards, ...newCards];
           this.page++;
 
@@ -73,7 +72,7 @@ export class DialogCardsPurchasedComponent implements OnInit{
       return;
     }
     this.isLoading = true;
-    this.cardsByPunterResourceService.reload(round.id, this.page, this.pageSize);
+    this.cardsByRoundIdResource.reload({roundId : round.id, page: this.page, size: this.pageSize});
 
   }
   onScroll() {
@@ -84,7 +83,7 @@ export class DialogCardsPurchasedComponent implements OnInit{
   }
     loadNextPage() {
     this.loading = true;
-    this.cardsByPunterResourceService.reload(this.round().id, this.page, this.pageSize);
+    this.cardsByRoundIdResource.reload({roundId : this.round().id, page: this.page,size: this.pageSize});
     this.page++;
   }
 }

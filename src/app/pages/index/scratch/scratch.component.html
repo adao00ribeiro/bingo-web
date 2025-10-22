@@ -1,0 +1,53 @@
+<div class="game-container">
+  @if(!imagesLoaded){
+  <div  class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <h2 class="loading-title">Carregando...</h2>
+      <p class="loading-subtitle">Preparando seu jogo</p>
+      <div class="loading-progress">
+        <div class="progress-bar" [style.width.%]="loadingProgress"></div>
+      </div>
+    </div>
+  </div>
+    }@else {
+  <div  class="game">
+    <div class="instructions">🎮 Encontre 3 Figuras iguais para ganhar!</div>
+
+    <div class="scratch-area-wrapper">
+      <div class="scratch-area">
+        @for (animal of gameState.scratchedBoxes; track $index) {
+        <div
+          class="scratch-box"
+          [ngClass]="{ 'winning-box': isWinningBox($index) }"
+        >
+          <div class="scratch-content">
+            <span class="animal-emoji">{{ animal.symbol }}</span>
+          </div>
+        </div>
+        }
+      </div>
+
+      <canvas #scratchCanvas
+        class="scratch-canvas"
+        [class.disabled]="true"
+        (mousedown)="startScratching($event)"
+        (mouseup)="stopScratching()"
+        (mousemove)="scratchMove($event)"
+        (touchstart)="startScratching($event)"
+        (touchend)="stopScratching()"
+        (touchmove)="scratchMove($event)"
+      ></canvas>
+    </div>
+
+    <div class="result" [innerHTML]="prizeMessage()"></div>
+
+    <div class="game-controls">
+      <button [disabled]="gameState.isStarted && !gameState.isEnded" (click)="play()">
+        🔄 Jogar {{ getPrice() | currency }}
+      </button>
+      <button (click)="revealAllBoxes()">Revelar</button>
+    </div>
+  </div>
+  }
+</div>

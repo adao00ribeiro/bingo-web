@@ -1,0 +1,371 @@
+.game-container {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  padding: 1rem;
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  margin: 0 auto;
+}
+
+.instructions {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+.scratch-area-wrapper {
+  position: relative;
+  width: 100%; // largura do grid
+  aspect-ratio: 1;
+  margin: auto;
+}
+
+.scratch-area {
+  background-color: rgb(119, 119, 119);
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  padding: 0.5rem;
+  width: 100%;
+  height: 100%;
+  gap: 5px;
+  z-index: 1;
+}
+
+.scratch-box {
+  aspect-ratio: 1;
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateY(0);
+}
+
+.scratch-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 45px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.scratch-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.scratch-box:hover .scratch-content::before {
+  left: 100%;
+}
+
+.scratch-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.result {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.game-controls {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  button {
+    flex: 1;
+  }
+}
+.reset-btn {
+  display: block;
+  margin: 25px auto 0;
+  padding: 15px 35px;
+  background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+}
+
+.reset-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+  background: linear-gradient(45deg, #ee5a52, #ff6b6b);
+}
+
+.prize-display {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #4ecdc4;
+  background: rgba(78, 205, 196, 0.1);
+  padding: 15px;
+  border-radius: 15px;
+  border: 1px solid rgba(78, 205, 196, 0.3);
+  backdrop-filter: blur(10px);
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+  }
+  to {
+    box-shadow: 0 0 30px rgba(78, 205, 196, 0.5);
+  }
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-item {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #4ecdc4;
+  font-family: "Orbitron", monospace;
+}
+
+.win-animation {
+  animation: winBounce 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes winBounce {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+.winning-animal {
+  animation: winnerGlow 2s ease-in-out infinite;
+  position: relative;
+  z-index: 10;
+}
+
+@keyframes winnerGlow {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 10px #4ecdc4) drop-shadow(0 0 20px #4ecdc4) drop-shadow(0 0 30px #4ecdc4);
+  }
+  25% {
+    transform: scale(1.3) rotate(5deg);
+    filter: drop-shadow(0 0 15px #ff6b6b) drop-shadow(0 0 25px #ff6b6b) drop-shadow(0 0 35px #ff6b6b);
+  }
+  50% {
+    transform: scale(1.4) rotate(0deg);
+    filter: drop-shadow(0 0 20px #ffd93d) drop-shadow(0 0 30px #ffd93d) drop-shadow(0 0 40px #ffd93d);
+  }
+  75% {
+    transform: scale(1.3) rotate(-5deg);
+    filter: drop-shadow(0 0 15px #6bcf7f) drop-shadow(0 0 25px #6bcf7f) drop-shadow(0 0 35px #6bcf7f);
+  }
+}
+
+.winning-box {
+  animation: winningPulse 1.5s ease-in-out infinite;
+  position: relative;
+  overflow: visible !important;
+}
+
+@keyframes winningPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(78, 205, 196, 0.6);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow:
+      0 0 40px rgba(78, 205, 196, 0.8),
+      0 0 60px rgba(78, 205, 196, 0.4);
+  }
+}
+
+.winning-box::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: conic-gradient(from 0deg, #4ecdc4, #ff6b6b, #ffd93d, #6bcf7f, #4ecdc4);
+  border-radius: 20px;
+  z-index: -1;
+  animation: rotateBorder 2s linear infinite;
+}
+
+@keyframes rotateBorder {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.confetti-1 {
+  background: #ff6b6b;
+  animation: confetti-fall 3s linear infinite;
+}
+.confetti-2 {
+  background: #4ecdc4;
+  animation: confetti-fall 3s linear infinite 0.5s;
+}
+.confetti-3 {
+  background: #ffd93d;
+  animation: confetti-fall 3s linear infinite 1s;
+}
+.confetti-4 {
+  background: #6bcf7f;
+  animation: confetti-fall 3s linear infinite 1.5s;
+}
+.confetti-5 {
+  background: #a8e6cf;
+  animation: confetti-fall 3s linear infinite 2s;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.firework {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.firework-1 {
+  background: #ff6b6b;
+  animation: firework-explode 2s ease-out infinite;
+}
+.firework-2 {
+  background: #4ecdc4;
+  animation: firework-explode 2s ease-out infinite 0.3s;
+}
+.firework-3 {
+  background: #ffd93d;
+  animation: firework-explode 2s ease-out infinite 0.6s;
+}
+.firework-4 {
+  background: #6bcf7f;
+  animation: firework-explode 2s ease-out infinite 0.9s;
+}
+
+@keyframes firework-explode {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(3) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.rainbow-text {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ffd93d, #6bcf7f, #ff6b6b);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: rainbow-shift 1s ease-in-out infinite;
+}
+
+@keyframes rainbow-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+//fdp
