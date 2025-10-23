@@ -1,3 +1,13 @@
+
+:host{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+   width: 100%;
+   height: 100%;
+}
+
 .game-container {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 25px;
@@ -10,6 +20,12 @@
   position: relative;
   z-index: 2;
   margin: 0 auto;
+
+
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  padding: 20px;
 }
 
 .instructions {
@@ -110,14 +126,57 @@
   justify-content: center;
 }
 .game-controls {
-  margin-top: 25px;
+
+
   display: flex;
-  flex-direction: row;
+  gap: 12px;
+  justify-content: row;
   gap: 1rem;
+  margin-top: 20px;
   button {
     flex: 1;
+    max-width: 250px;
+    padding: 14px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    }
+
+    &:disabled,
+    &.btn-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #ccc;
+      box-shadow: none;
+    }
+
+
+
+    &.btn-reveal {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+
+      &:hover:not(:disabled) {
+        box-shadow: 0 6px 16px rgba(240, 147, 251, 0.4);
+      }
+    }
   }
 }
+
 .reset-btn {
   display: block;
   margin: 25px auto 0;
@@ -142,19 +201,6 @@
   background: linear-gradient(45deg, #ee5a52, #ff6b6b);
 }
 
-.prize-display {
-  text-align: center;
-  margin-top: 15px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #4ecdc4;
-  background: rgba(78, 205, 196, 0.1);
-  padding: 15px;
-  border-radius: 15px;
-  border: 1px solid rgba(78, 205, 196, 0.3);
-  backdrop-filter: blur(10px);
-  animation: glow 2s infinite alternate;
-}
 
 @keyframes glow {
   from {
@@ -163,29 +209,6 @@
   to {
     box-shadow: 0 0 30px rgba(78, 205, 196, 0.5);
   }
-}
-
-.stats {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.stat-item {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 14px;
-}
-
-.stat-value {
-  font-size: 20px;
-  font-weight: 700;
-  color: #4ecdc4;
-  font-family: "Orbitron", monospace;
 }
 
 .win-animation {
@@ -368,4 +391,489 @@
     background-position: 100% 50%;
   }
 }
-//fdp
+
+
+@keyframes processingPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .try-again-overlay {
+    .try-again-image {
+      max-width: 90%;
+      max-height: 50%;
+    }
+
+    .try-again-text {
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .game-controls {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 20px;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+// Estilos para o componente de raspadinha
+
+
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+
+  .loading-content {
+    text-align: center;
+    max-width: 300px;
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 20px;
+      border: 4px solid rgba(102, 126, 234, 0.2);
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .loading-title {
+      font-size: 1.5rem;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    .loading-subtitle {
+      font-size: 1rem;
+      color: #666;
+      margin: 10px 0 20px;
+    }
+
+    .loading-progress {
+      width: 100%;
+      height: 8px;
+      background: #f0f0f0;
+      border-radius: 4px;
+      overflow: hidden;
+
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: width 0.3s ease;
+      }
+    }
+  }
+}
+
+.game {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+
+  .instructions {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    margin-bottom: -5px;
+  }
+}
+
+.scratch-area-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.scratch-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 5px;
+  padding: 10px;
+  z-index: 1;
+}
+
+.scratch-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+
+  &.hidden {
+    opacity: 0;
+  }
+
+  &.winning-box {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    animation: winPulse 1s infinite;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  }
+
+  .scratch-content {
+    .animal-emoji {
+      font-size: 3rem;
+      display: block;
+    }
+  }
+}
+
+.scratch-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+
+// Overlay de resultado (vitória ou derrota)
+.result-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: overlayFadeIn 0.8s ease-out;
+
+  &.result-win {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+  }
+
+  &.result-lose {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.95) 0%, rgba(153, 27, 27, 0.95) 100%);
+  }
+
+  .result-image {
+    max-width: 85%;
+    max-height: 65%;
+    object-fit: contain;
+    margin-bottom: 20px;
+    animation: resultImageBounce 0.8s ease-out;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .result-text {
+    text-align: center;
+    color: white;
+    padding: 0 20px;
+
+    .result-title {
+      font-size: 2rem;
+      margin: 10px 0;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      animation: resultTitlePulse 1.5s infinite;
+    }
+
+    .result-subtitle {
+      font-size: 1.4rem;
+      margin: 5px 0;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+// Mensagem de resultado (antes do overlay)
+.result-message {
+  margin: 20px 0;
+  padding: 15px 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  background: #f0f0f0;
+  color: #333;
+
+  &.message-win {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    animation: messageWinAnimation 0.6s ease-out;
+  }
+
+  &.message-processing {
+    background: #ffd700;
+    color: #333;
+    animation: processingPulse 1s infinite;
+  }
+}
+
+// Controles do jogo
+
+
+// Animações
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes resultImageBounce {
+  0% {
+    transform: scale(0.3) translateY(-50px);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1) translateY(0);
+  }
+  70% {
+    transform: scale(0.95) translateY(0);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes resultTitlePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes winPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+  }
+}
+
+@keyframes messageWinAnimation {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes processingPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .game {
+    .instructions {
+      font-size: 1rem;
+      padding: 12px;
+    }
+  }
+
+  .scratch-box {
+    .scratch-content {
+      .animal-emoji {
+        font-size: 2rem;
+      }
+    }
+  }
+
+  .result-overlay {
+    .result-image {
+      max-width: 90%;
+      max-height: 55%;
+    }
+
+    .result-text {
+      .result-title {
+        font-size: 1.5rem;
+      }
+
+      .result-subtitle {
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  .result-message {
+    font-size: 1rem;
+    padding: 12px 16px;
+    margin: 15px 10px;
+  }
+
+  .game-controls {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+
+    button {
+      width: 100%;
+      max-width: 100%;
+
+      &.btn-play {
+        flex: 1;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .game-container {
+    padding: 10px;
+  }
+
+  .scratch-box {
+    .scratch-content {
+      .animal-emoji {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .result-overlay {
+    .result-text {
+      .result-title {
+        font-size: 1.2rem;
+      }
+
+      .result-subtitle {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+
+
+/* ---------- Responsividade ajustada para celular ---------- */
+@media (max-width: 768px) {
+  .game-container {
+    max-width: 100%;
+    min-height: 100vh;
+    padding: 10px;
+  }
+
+  .scratch-area-wrapper {
+    max-width: 100%;
+    aspect-ratio: 1; /* mantém quadrado */
+  }
+
+  .scratch-area {
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .scratch-content .animal-emoji {
+    font-size: 2.5rem; /* menor para caber na tela */
+  }
+
+  .instructions {
+    font-size: 1rem;
+    padding: 12px;
+  }
+
+  .game-controls {
+    flex-direction: column;
+    gap: 10px;
+    button {
+      max-width: 100%;
+      font-size: 0.95rem;
+      padding: 12px 16px;
+    }
+  }
+
+  .result-overlay .result-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  html, body {
+    overflow: hidden; /* remove scroll vertical/horizontal */
+  }
+
+  .game-container {
+    padding: 5px;
+  }
+
+  .scratch-content .animal-emoji {
+    font-size: 2rem;
+  }
+
+  .result-overlay .result-title {
+    font-size: 1.2rem;
+  }
+
+  .game-controls button {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
