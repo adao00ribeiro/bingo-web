@@ -43,6 +43,7 @@ export class RoundsComponent implements OnInit  {
   }
    ngOnInit(): void {
     this.punterMeResource.reload();
+
   }
   fetchRouds(){
     if(this.punter() == null){
@@ -55,7 +56,7 @@ export class RoundsComponent implements OnInit  {
     this.roundService.GetByRoomId(roomId).subscribe({
       next: (data) => {
        if(data){
-        console.log(data)
+       this.rounds.set(data)
        }
       },
       error: (err) => {
