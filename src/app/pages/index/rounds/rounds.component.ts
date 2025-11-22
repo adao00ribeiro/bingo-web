@@ -3,9 +3,10 @@ import { CardRoundComponent } from "../../../components/card-round/card-round.co
 import { RoundsRealTimeService } from '../../../services/rounds-real-time.service';
 import { CarouselComponent } from "../../../components/carousel/carousel.component";
 import { RoundService } from '../../../services/round/round.service';
-import { RoundsByRoomIdResourceService } from '../../../resource/round/rounds-by-room-id-resource.service';
-import { PunterMeResourceService } from '../../../resource/punter/punter-me-resource.service';
 import { AudioDataBaseService } from '../../../services/audio-data-base.service';
+import { PunterMeResource } from '../../../resource/punter/punter-me.resource';
+import { IPunter } from '../../../interfaces/IPunter';
+import { IRound } from '../../../interfaces/IRound';
 
 
 @Component({
@@ -15,16 +16,15 @@ import { AudioDataBaseService } from '../../../services/audio-data-base.service'
   templateUrl: './rounds.component.html',
   styleUrl: './rounds.component.scss',
 })
-export class RoundsComponent  {
-  public readonly roundService:RoundService = inject(RoundService);
-  public readonly roundsRealTimeService : RoundsRealTimeService = inject(RoundsRealTimeService);
-  protected readonly RoundsByRoomIdResourceService = inject(RoundsByRoomIdResourceService);
-  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
+export class RoundsComponent implements OnInit  {
+  protected readonly roundService:RoundService = inject(RoundService);
+  protected readonly roundsRealTimeService : RoundsRealTimeService = inject(RoundsRealTimeService);
+  protected readonly punterMeResource = inject(PunterMeResource);
    readonly audioDataBaseService = inject(AudioDataBaseService);
 
   selectedBalls = signal<number | null>(null);
-
-  rounds = computed(() => this.RoundsByRoomIdResourceService.resource.value() || []);
+  punter = signal<IPunter | null>(null);
+  rounds = signal<IRound[]>([]);
   filteredRounds = computed(() => {
     const rounds = this.rounds();
     const balls = this.selectedBalls();
@@ -32,13 +32,41 @@ export class RoundsComponent  {
   });
   constructor(){
     effect(()=>{
-      const punter = this.PunterMeResourceService.resource.value();
+      var punter = this.punterMeResource.resource.value();
       if(punter){
-        this.RoundsByRoomIdResourceService.loadRoundsByRoomId(punter.seller.rooms[0].id);
+      this.punter.set(punter);
+       this.fetchRouds();
       }
+
+
     })
   }
+   ngOnInit(): void {
+    this.punterMeResource.reload();
 
+  }
+  fetchRouds(){
+    if(this.punter() == null){
+      return ;
+    }
+    var roomId = this.punter()?.seller.rooms[0].id;
+    if(roomId == undefined ){
+      return;
+    }
+    this.roundService.GetByRoomId(roomId).subscribe({
+      next: (data) => {
+       if(data){
+       this.rounds.set(data)
+       }
+      },
+      error: (err) => {
+
+      },
+      complete: () => {
+
+      }
+    });
+  }
   filterRounds(balls: number) {
     this.selectedBalls.set(balls);
   }

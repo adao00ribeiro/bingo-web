@@ -29,10 +29,16 @@ import { IPaged } from '../../interfaces/IPaged';
 })
 
 export class TableComponent<T extends object> implements OnInit, AfterViewInit {
+
+  @Input() title: string = '';
   @Input() columnMappings: { key: string; displayName: string, pipe?: string }[] = [];
   @Input() data: IPaged | undefined = undefined;
-  @Output() pageChange = new EventEmitter<{ page: number; size: number }>();
-  //@Output() changeRefresh: EventEmitter<void> = new EventEmitter<void>();
+  @Input() enabledBtn: boolean = true
+  @Output() refreshChange = new EventEmitter<{ page: number; size: number }>();
+
+  @Output() onClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() changeEdit: EventEmitter<T> = new EventEmitter<T>();
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ContentChildren(TemplateRef) columnTemplatesList!: QueryList<TemplateRef<any>>;
@@ -96,7 +102,7 @@ export class TableComponent<T extends object> implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.initializeColumnsAndData();
     this.dataSource.sort = this.sort;
-    this.handleEmit();
+    this.handleRefresh();
     if (this.sort) {
       this.dataSource.sortingDataAccessor = (item, property) => {
         return this.getValue(item, property);
@@ -105,10 +111,10 @@ export class TableComponent<T extends object> implements OnInit, AfterViewInit {
     this.cdr.detectChanges();
   }
   private initializeColumnsAndData() {
-    if (this.data?.items?.length) {
+    if (this.data?.rows?.length) {
       this.displayedColumns = this.columnMappings.map(column => column.key);
-      this.dataSource.data = this.data.items;
-      this.totalItems = this.data.totalCount
+      this.dataSource.data = this.data.rows;
+      this.totalItems = this.data.rowsCount;
     }
   }
   getPipe(columnKey: string): string | null {
@@ -119,15 +125,18 @@ export class TableComponent<T extends object> implements OnInit, AfterViewInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  handleEmit() {
-    this.pageChange.emit({ page: this.pageIndex + 1, size: this.pageSize });
+  handleRefresh() {
+  this.refreshChange.emit({ page: this.pageIndex + 1, size: this.pageSize });
   }
   onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.handleEmit();
+    this.handleRefresh();
   }
   handleClick() {
-   this.handleEmit();
+    this.onClick.emit();
+  }
+  handleDetail(row: T) {
+    this.changeEdit.emit(row);
   }
 }

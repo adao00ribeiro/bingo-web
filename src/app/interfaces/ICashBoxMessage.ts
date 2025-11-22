@@ -1,4 +1,5 @@
 export interface ICashBoxMessage {
   punterId: string,
-  balance: number
+  balance: number,
+prizeBalance: number
 }

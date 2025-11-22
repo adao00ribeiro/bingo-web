@@ -21,7 +21,6 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EPrizeType } from '../../../enums/EPrizeType';
 import { DialogAllWinnersComponent } from '../../../components/dialogs/dialog-all-winners/dialog-all-winners.component';
 import { AudioPlayerService } from '../../../services/audio-player.service';
-import { CardsByPunterResourceService } from '../../../resource/card/cards-by-punter-resource.service';
 import { TableAlmostThereComponent } from "../../../components/tables/table-almost-there/table-almost-there.component";
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,6 +30,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { ChatComponent } from "../../../components/chat/chat.component";
 import { CommonModule } from '@angular/common';
+import { CardsByRoundIdResource } from '../../../resource/card/cards-by-round-id.resource';
 @Component({
   selector: 'app-rounds-real-time',
   standalone: true,
@@ -40,7 +40,6 @@ import { CommonModule } from '@angular/common';
     ScrollingModule,
     MatIconModule,
     MatButtonModule,
-    PanelBallsComponent,
     CardComponent,
     SungNumbersComponent,
     PrizeBoardComponent,
@@ -87,7 +86,7 @@ export class RoundsRealTimeComponent implements OnInit {
 
   @Input() id = '';
   public readonly roundService = inject(RoundService);
-  public readonly cardsByPunterResourceService = inject(CardsByPunterResourceService);
+  public readonly cardsByRoundIdResource = inject(CardsByRoundIdResource);
   public readonly snackBar = inject(MatSnackBar);
   public readonly roundsRealTimeService: RoundsRealTimeService = inject(RoundsRealTimeService);
   readonly dialog = inject(MatDialog);
@@ -209,16 +208,16 @@ export class RoundsRealTimeComponent implements OnInit {
 
     // Effect separado para cards (não relacionado aos rounds)
     effect(() => {
-      const paged = this.cardsByPunterResourceService.resource.value();
+      const paged = this.cardsByRoundIdResource.resource.value();
 
       if (paged) {
-        this.cards = [...this.cards, ...paged.items];
-        this.totalItems += paged.totalCount;
+        this.cards = [...this.cards, ...paged.rows];
+        this.totalItems += paged.rowsCount;
         this.rows = this.chunkArray(this.cards, 4);
         this.loading = false;
       }
 
-      if (this.cardsByPunterResourceService.resource.error()) {
+      if (this.cardsByRoundIdResource.resource.error()) {
         this.snackBar.open("Erro de chamadas", 'Ok', {
           duration: 5000,
           horizontalPosition: 'center',
@@ -378,7 +377,7 @@ export class RoundsRealTimeComponent implements OnInit {
 
   loadNextPage() {
     this.loading = true;
-    this.cardsByPunterResourceService.reload(this.id, this.page, this.pageSize);
+    this.cardsByRoundIdResource.reload({roundId:this.id , page: this.page, size: this.pageSize });
     this.page++;
   }
   public onChangeChatState(): void {
