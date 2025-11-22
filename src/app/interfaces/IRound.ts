@@ -9,7 +9,6 @@ export interface IRound {
   cardRows: number;
   cardColumns: number;
   numbers: number[];
-  cardSaleCount: number;
   cardsPurchased: number;
   startedDate: Date;
   finishedDate: Date;

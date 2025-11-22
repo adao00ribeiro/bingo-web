@@ -15,7 +15,7 @@ export class MyAwardsComponent {
     { key: 'card.round.id', displayName: 'Id rodada', pipe: "guid" },
     { key: 'card.round.cardValue', displayName: 'Valor Cartela', pipe: "currency" },
     { key: 'card.code', displayName: 'Code Card'},
-    { key: 'createAt', displayName: 'Data Criação',pipe: "dateTime" },
+    { key: 'createdAt', displayName: 'Data Criação',pipe: "dateTime" },
     { key: 'prize.type', displayName: 'Tipo do Premio' },
     { key: 'prize.value', displayName: 'Valor Premio', pipe: "currency" },
   ];

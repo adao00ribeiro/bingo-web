@@ -20,7 +20,8 @@ export class WalletComponent implements OnInit {
     { key: 'previousBalance', displayName: 'Saldo anterior', pipe: "currency" },
     { key: 'currentBalance', displayName: 'Saldo Posterior', pipe: "currency" },
     { key: 'type', displayName: 'Tipo' },
-    { key: 'createAt', displayName: 'Data Criação', pipe: "dateTime" },
+    { key: 'createdAt', displayName: 'Data Criação', pipe: "dateTime" },
+
   ];
 
   transactionsHistory = computed(() => this.transactionHistorysResource.resource.value() || undefined);
