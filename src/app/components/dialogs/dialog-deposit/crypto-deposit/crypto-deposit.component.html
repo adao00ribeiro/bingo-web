@@ -1,0 +1,102 @@
+<div class="deposit-content">
+  <form [formGroup]="cryptoForm">
+    <div class="wallet-section">
+      <mat-card class="wallet-card">
+        <mat-card-content>
+          <!-- Cabeçalho da Carteira -->
+          <div class="wallet-header">
+            <mat-icon>account_balance_wallet</mat-icon>
+            <h3>Carteira</h3>
+          </div>
+
+          <!-- Carteira desconectada -->
+          <div class="wallet-info" *ngIf="!isConnected">
+            <p>Conecte sua carteira para continuar</p>
+            <button mat-raised-button color="primary" (click)="connectWallet()" type="button">
+              <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+              <mat-icon *ngIf="!isLoading">wallet</mat-icon>
+              {{ isLoading ? 'Conectando...' : 'Conectar MetaMask' }}
+            </button>
+          </div>
+
+          <!-- Carteira conectada -->
+          <div class="wallet-connected" *ngIf="isConnected">
+            <!-- Endereço -->
+            <div class="address-info">
+              <span class="label">Endereço:</span>
+              <span class="address">{{ currentAddress }}</span>
+              <mat-icon class="success-icon">check_circle</mat-icon>
+            </div>
+
+            <!-- Seleção de Rede -->
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Rede</mat-label>
+              <mat-select formControlName="network">
+                <mat-option *ngFor="let network of networks()" [value]="network.id">
+                  {{ network.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Seleção de Token -->
+            <mat-form-field class="full-width" appearance="outline" *ngIf="availableTokens.length">
+              <mat-label>Token</mat-label>
+              <mat-select formControlName="token">
+                <mat-option *ngFor="let token of availableTokens" [value]="token.id">
+                  {{ token.symbol }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Saldo -->
+            <div class="token-balance" *ngIf="balance !== null">
+              <span>Saldo:</span>
+              <strong>{{ balance }}</strong>
+            </div>
+
+            <!-- Quantidade -->
+            <mat-form-field appearance="outline" class="full-width" *ngIf="cryptoForm.get('token')?.value">
+              <mat-label>Quantidade</mat-label>
+              <input matInput type="number" formControlName="amount" step="0.00000001" placeholder="0.00000000">
+              <mat-icon matSuffix>savings</mat-icon>
+              <mat-error *ngIf="cryptoForm.get('amount')?.hasError('required')">
+                Quantidade é obrigatória
+              </mat-error>
+              <mat-error *ngIf="cryptoForm.get('amount')?.hasError('min')">
+                Quantidade deve ser maior que 0
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Resumo do Depósito -->
+            <div class="crypto-info" *ngIf="cryptoForm.get('amount')?.value && cryptoForm.get('token')?.value">
+              <mat-card class="info-card">
+                <mat-card-content>
+                  <div class="info-header">
+                    <mat-icon>currency_exchange</mat-icon>
+                    <h3>Resumo do Depósito</h3>
+                  </div>
+                  <div class="info-row">
+                    <span class="label">Quantidade:</span>
+                    <span class="value">{{ cryptoForm.get('amount')?.value }} </span>
+                  </div>
+                  <div class="info-row">
+                    <span class="label">Rede:</span>
+                    <span class="value">{{ selectedNetworkLabel }}</span>
+                  </div>
+                  <div class="info-row total" *ngIf="realValue > 0">
+                    <span class="label">Valor Total:</span>
+                    <span class="value">{{ realValue }}</span>
+                  </div>
+                  <div class="info-row" *ngIf="realValue === 0">
+                    <span class="label">Status:</span>
+                    <span class="value">Preço não disponível</span>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </form>
+</div>

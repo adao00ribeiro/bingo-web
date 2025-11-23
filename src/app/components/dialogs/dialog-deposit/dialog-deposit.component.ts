@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, ViewChild } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
@@ -12,7 +12,15 @@ import { IDepositRequest } from '../../../interfaces/IDepositRequest';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../../services/auth/user.service';
 import { DialogQrcodeComponent } from '../dialog-qrcode/dialog-qrcode.component';
-import { NgxCurrencyDirective } from "ngx-currency";
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
+import { MatRadioModule } from '@angular/material/radio';
+import { NormalDepositComponent } from "./normal-deposit/normal-deposit.component";
+import { CryptoDepositComponent } from "./crypto-deposit/crypto-deposit.component";
+import { WalletService } from '../../../services/wallet/wallet.service';
+import { PunterMeResourceService } from '../../../resource/punter/punter-me-resource.service';
+
 export interface DialogDeposit {
 
 }
@@ -29,32 +37,66 @@ export interface DialogDeposit {
     MatDialogContent,
     MatCardModule,
     MatButtonModule,
-    NgxCurrencyDirective],
+    MatRadioModule,
+    MatCheckboxModule,
+    MatSlideToggleModule,
+    MatTabsModule,
+    NormalDepositComponent,
+    CryptoDepositComponent
+  ],
   templateUrl: './dialog-deposit.component.html',
   styleUrl: './dialog-deposit.component.scss'
 })
 export class DialogDepositComponent {
-  depositForm: FormGroup;
+  @ViewChild('normalDeposit') normalDepositComponent: any;
+  @ViewChild('criptoDeposit') criptoDepositComponent: any;
   readonly dialogRef = inject(MatDialogRef<DialogDepositComponent>);
   readonly data = inject<DialogDeposit>(MAT_DIALOG_DATA);
   readonly depositService = inject(DepositService);
-  private readonly userService = inject(UserService);
+  private readonly punterMeResourceService = inject(PunterMeResourceService);
+  protected readonly walletService = inject(WalletService);
+
   readonly snackBar = inject(MatSnackBar);
   readonly dialog = inject(MatDialog);
-  constructor(private fb: FormBuilder) {
-    this.depositForm = this.fb.group({
-      value: ['0', [Validators.required]],
-    });
-  }
+  isCryptoEnabled = true;
+  isNormalDeposit = true;
+  isDepositing = false;
+  depositRequest?: IDepositRequest;
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  handleDepositClick() {
-    const depositRequest: IDepositRequest = {
-      value: this.depositForm.value.value,
-    };
-    this.depositService.Deposit(depositRequest).subscribe({
+  async handleDepositClick() {
+     this.isDepositing = true;
+     console.log(this.isNormalDeposit)
+    if (!this.isNormalDeposit) {
+      this.criptoDepositComponent.emitDeposit();
+
+      const amount = Number(this.depositRequest?.amount);
+      const value = Number(this.depositRequest?.value);
+      const destino = "0x621428AFD56F5A2F3AD241FfAc9Fb3Fc4C1A9d22";
+
+
+      const txHash = await this.walletService.sendBNB(destino, amount);
+      console.log("Tx USDT enviada:", txHash);
+
+      this.depositRequest = {
+        ...this.depositRequest,
+        value:value,
+        amount:amount,
+        transactionHash: txHash,
+        destinationAddress: destino
+      };
+
+    } else {
+      this.normalDepositComponent.emitDeposit();
+    }
+
+    if (!this.depositRequest) {
+      return;
+    }
+    console.log(this.depositRequest);
+    this.depositService.Deposit(this.depositRequest).subscribe({
       next: (data) => {
         if (data) {
           this.dialog.open(DialogQrcodeComponent, {
@@ -63,7 +105,8 @@ export class DialogDepositComponent {
               recharge: data
             },
           });
-          this.userService.loadUser();
+          this.punterMeResourceService.reload();
+          this.isDepositing = false;
         }
       },
       error: (err) => {
@@ -73,6 +116,8 @@ export class DialogDepositComponent {
           verticalPosition: 'bottom',
           panelClass: 'error-snackbar',
         });
+
+        this.isDepositing = false;
       },
       complete: () => {
         this.snackBar.open("Depositado com Sucesso", 'Ok', {
@@ -85,4 +130,10 @@ export class DialogDepositComponent {
       }
     });
   }
+
+  onTabChange(event: MatTabChangeEvent) {
+    this.isNormalDeposit = event.index === 0;
+    console.log('Depósito normal?', this.isNormalDeposit);
+  }
+
 }
