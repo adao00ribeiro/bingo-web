@@ -1,0 +1,93 @@
+<div class="game-container">
+  @if(!imagesLoaded){
+  <div class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <h2 class="loading-title">Carregando...</h2>
+      <p class="loading-subtitle">Preparando seu jogo</p>
+      <div class="loading-progress">
+        <div class="progress-bar" [style.width.%]="loadingProgress"></div>
+      </div>
+    </div>
+  </div>
+  } @else {
+  <div class="game">
+    <div class="instructions">🎮 Encontre 3 Figuras iguais para ganhar!</div>
+
+    <div class="scratch-area-wrapper">
+      <!-- Área de símbolos -->
+      <div class="scratch-area">
+        @for (animal of gameState.scratchedBoxes; track $index) {
+        <div
+          class="scratch-box"
+          [ngClass]="{
+            'winning-box': isWinningBox($index),
+            'hidden': !gameState.isStarted || gameState.showResultImage
+          }"
+        >
+          <div class="scratch-content">
+            <span class="animal-emoji">{{ animal.symbol }}</span>
+          </div>
+        </div>
+        }
+      </div>
+
+      <!-- Canvas para raspar -->
+      <canvas
+        #scratchCanvas
+        class="scratch-canvas"
+        [class.disabled]="gameState.isEnded || !gameState.isStarted"
+        [class.hidden]="gameState.showResultImage"
+        (mousedown)="startScratching($event)"
+        (mouseup)="stopScratching()"
+        (mousemove)="scratchMove($event)"
+        (touchstart)="startScratching($event)"
+        (touchend)="stopScratching()"
+        (touchmove)="scratchMove($event)"
+      ></canvas>
+
+      <!-- Overlay de resultado (Vitória ou Derrota) -->
+      @if(shouldShowResultOverlay()){
+      <div class="result-overlay" [ngClass]="{ 'result-win': gameState.isWon, 'result-lose': !gameState.isWon }">
+        <img
+          [src]="getResultOverlayImage()"
+          [alt]="gameState.isWon ? 'Você Ganhou!' : 'Tente Novamente'"
+          class="result-image"
+        />
+        <div class="result-text">
+          <h2 class="result-title">{{ getResultOverlayTitle() }}</h2>
+          <p class="result-subtitle">{{ getResultOverlaySubtitle() }}</p>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Controles do jogo -->
+    <div class="game-controls">
+      <button
+        [disabled]="!canPlay()"
+        (click)="play()"
+        [ngClass]="{ 'btn-disabled': !canPlay() }"
+        class="btn-play"
+      >
+        @if(gameState.isProcessingResult){
+          ⏳ Processando...
+        } @else if(!gameState.canPlayAgain && gameState.isStarted){
+          🎮 Jogo em andamento
+        } @else {
+          🔄 Jogar {{ getPrice() | currency }}
+        }
+      </button>
+
+      <button
+        (click)="revealAllBoxes()"
+        [disabled]="!gameState.isStarted || gameState.isEnded || gameState.isProcessingResult"
+        [ngClass]="{ 'btn-disabled': !gameState.isStarted || gameState.isEnded || gameState.isProcessingResult }"
+        class="btn-reveal"
+      >
+        👁️ Revelar
+      </button>
+    </div>
+  </div>
+  }
+</div>

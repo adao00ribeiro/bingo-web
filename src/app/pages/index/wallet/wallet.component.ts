@@ -1,9 +1,8 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { TableComponent } from '../../../components/table/table.component';
-import { TransactionHistorysResourceService } from '../../../resource/transaction-history/transaction-historys-resource.service';
-
-import { MatDialog } from '@angular/material/dialog';
 import { DialogCashoutComponent } from '../../../components/dialogs/dialog-cashout/dialog-cashout.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TransactionHistorysResource } from '../../../resource/transaction-history/transaction-historys.resource';
 
 @Component({
   selector: 'app-wallet',
@@ -12,30 +11,29 @@ import { DialogCashoutComponent } from '../../../components/dialogs/dialog-casho
   templateUrl: './wallet.component.html',
   styleUrl: './wallet.component.scss'
 })
-export class WalletComponent {
-  protected readonly transactionHistorysResourceService: TransactionHistorysResourceService = inject(TransactionHistorysResourceService);
+export class WalletComponent implements OnInit {
+  protected readonly transactionHistorysResource: TransactionHistorysResource = inject(TransactionHistorysResource);
   readonly dialog = inject(MatDialog);
   columnConfigs = [
     { key: 'id', displayName: 'Id', pipe: "guid" },
     { key: 'amount', displayName: 'Valor', pipe: "currency" },
-    { key: 'previousBalance', displayName: 'Saldo anterior', pipe: "currency"  },
-    { key: 'currentBalance', displayName: 'Saldo Posterior' , pipe: "currency"  },
+    { key: 'previousBalance', displayName: 'Saldo anterior', pipe: "currency" },
+    { key: 'currentBalance', displayName: 'Saldo Posterior', pipe: "currency" },
     { key: 'type', displayName: 'Tipo' },
     { key: 'createdAt', displayName: 'Data Criação', pipe: "dateTime" },
 
   ];
 
-    transactionsHistory = computed(() => this.transactionHistorysResourceService.resource.value()|| undefined);
-    totalItems = computed(() =>
-       this.transactionHistorysResourceService.resource.value()?.totalCount || 0
-    );
-    openDialogCashout() {
-        this.dialog.open(DialogCashoutComponent, {
-          data: {  },
-        });
-      }
-
-    loadData(page: number, size: number) {
-      this.transactionHistorysResourceService.reload(page, size)
-    }
+  transactionsHistory = computed(() => this.transactionHistorysResource.resource.value() || undefined);
+  ngOnInit(): void {
+    this.refresh(1, 10);
+  }
+  refresh(page: number, size: number) {
+    this.transactionHistorysResource.reload({ page: page, size: size });
+  }
+  openDialogCashout() {
+    this.dialog.open(DialogCashoutComponent, {
+      data: {},
+    });
+  }
 }

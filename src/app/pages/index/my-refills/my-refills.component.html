@@ -1,5 +1,9 @@
 <div class="container">
   <h1>Recargas</h1>
-  <app-table [columnMappings]="columnConfigs" [data]="recharges()" (pageChange)="loadData($event.page, $event.size)">
+  <app-table
+  [columnMappings]="columnConfigs"
+  [data]="recharges()"
+  (refreshChange)="refresh($event.page, $event.size)"
+  >
  </app-table>
 </div>

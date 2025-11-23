@@ -1,5 +1,4 @@
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
-import { PunterMeResourceService } from '../../../resource/punter/punter-me-resource.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +11,7 @@ import { IPunterPatchRequestDto } from '../../../interfaces/request/IPunterPatch
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogInactivateAccountComponent } from '../../../components/dialogs/dialog-inactivate-account/dialog-inactivate-account.component';
+import { PunterMeResource } from '../../../resource/punter/punter-me.resource';
 
 
 
@@ -41,10 +41,10 @@ export class MyAccountComponent implements OnInit {
   private router: Router = inject(Router);
   private snackBar: MatSnackBar = inject(MatSnackBar);
   private punterService: PunterService = inject(PunterService);
-  protected readonly PunterMeResourceService = inject(PunterMeResourceService);
+  protected readonly PunterMeResource = inject(PunterMeResource);
 
   punter = computed(() => {
-    return this.PunterMeResourceService.resource.value();
+    return this.PunterMeResource.resource.value();
   });
 
   constructor(private fb: FormBuilder) {
@@ -57,7 +57,7 @@ export class MyAccountComponent implements OnInit {
     });
 
     effect(() => {
-      let me = this.PunterMeResourceService.resource.value();
+      let me = this.PunterMeResource.resource.value();
       this.form.patchValue({
         name: me?.name,
         email: me?.user.email,
@@ -69,7 +69,7 @@ export class MyAccountComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.PunterMeResourceService.reload();
+    this.PunterMeResource.reload();
   }
 
   editarCampo(campo: keyof IPunterPatchRequestDto): void {
@@ -90,7 +90,7 @@ export class MyAccountComponent implements OnInit {
 
     this.punterService.Update(data).subscribe({
       next: () => {
-        this.PunterMeResourceService.resource.reload();
+        this.PunterMeResource.resource.reload();
       },
       error: (err) => {
         const validationErrors = err.error.errors;
@@ -129,7 +129,7 @@ export class MyAccountComponent implements OnInit {
 
   cancelarEdicao(campo: keyof IPunterPatchRequestDto): void {
     this.isEditing[campo] = false;
-    const me = this.PunterMeResourceService.resource.value();
+    const me = this.PunterMeResource.resource.value();
 
     const valoresOriginais: Partial<IPunterPatchRequestDto> = {
       name: me?.name,

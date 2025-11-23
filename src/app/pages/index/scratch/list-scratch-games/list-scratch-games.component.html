@@ -1,0 +1,24 @@
+ <div class="container">
+        <div class="header">
+            <h1>Jogos de Raspadinha</h1>
+            <p class="subtitle">Escolha seu jogo e boa sorte</p>
+        </div>
+
+        <div class="games-grid">
+          @for (item of scratchSellerGames(); track $index) {
+            <div class="game-card">
+                <div class="game-name">{{item.scratchGame.name}}</div>
+                <button class="play-btn" (click)="play(item.id)">
+                    <div class="btn-content">
+                        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=200&h=200&fit=crop" alt="Diamante" class="btn-image">
+                        <div class="btn-text-wrapper">
+                            <span class="btn-text">Jogar Agora</span>
+                            <span class="btn-subtext">Prêmio até {{ getMaxPayout(item.scratchGame.attributes?.payoutTable) |currency}}</span>
+                        </div>
+                        <span class="btn-arrow">→</span>
+                    </div>
+                </button>
+            </div>
+              }
+        </div>
+    </div>

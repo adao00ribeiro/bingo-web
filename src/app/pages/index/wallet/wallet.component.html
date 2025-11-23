@@ -7,6 +7,6 @@
   <app-table
   [columnMappings]="columnConfigs"
   [data]="transactionsHistory()"
-  (pageChange)="loadData($event.page, $event.size)"
+  (refreshChange)="refresh($event.page, $event.size)"
   ></app-table>
 </div>
