@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,16 +10,15 @@ import { MatInputModule } from '@angular/material/input';
 import { DepositService } from '../../../services/deposit/deposit.service';
 import { IDepositRequest } from '../../../interfaces/IDepositRequest';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserService } from '../../../services/auth/user.service';
 import { DialogQrcodeComponent } from '../dialog-qrcode/dialog-qrcode.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatRadioModule } from '@angular/material/radio';
 import { NormalDepositComponent } from "./normal-deposit/normal-deposit.component";
-import { CryptoDepositComponent } from "./crypto-deposit/crypto-deposit.component";
 import { WalletService } from '../../../services/wallet/wallet.service';
-import { PunterMeResourceService } from '../../../resource/punter/punter-me-resource.service';
+import { PunterMeResource } from '../../../resource/punter/punter-me.resource';
+import { CryptoDepositComponent } from './crypto-deposit/crypto-deposit.component';
 
 export interface DialogDeposit {
 
@@ -47,13 +46,14 @@ export interface DialogDeposit {
   templateUrl: './dialog-deposit.component.html',
   styleUrl: './dialog-deposit.component.scss'
 })
-export class DialogDepositComponent {
+export class DialogDepositComponent  {
+
   @ViewChild('normalDeposit') normalDepositComponent: any;
   @ViewChild('criptoDeposit') criptoDepositComponent: any;
   readonly dialogRef = inject(MatDialogRef<DialogDepositComponent>);
   readonly data = inject<DialogDeposit>(MAT_DIALOG_DATA);
   readonly depositService = inject(DepositService);
-  private readonly punterMeResourceService = inject(PunterMeResourceService);
+  private readonly punterMeResource = inject(PunterMeResource);
   protected readonly walletService = inject(WalletService);
 
   readonly snackBar = inject(MatSnackBar);
@@ -105,7 +105,7 @@ export class DialogDepositComponent {
               recharge: data
             },
           });
-          this.punterMeResourceService.reload();
+          this.punterMeResource.reload();
           this.isDepositing = false;
         }
       },

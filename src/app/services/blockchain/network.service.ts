@@ -12,7 +12,7 @@ export class NetworkService {
   private url = `${environment.api}/api/v1/network`
   private httpClient: HttpClient = inject(HttpClient);
 
-  GetAll(): Observable<IPaged> {
-    return this.httpClient.get<IPaged>(this.url);
+  GetAll(page: number, size: number): Observable<IPaged<INetwork>> {
+    return this.httpClient.get<IPaged<INetwork>>(this.url + `?page=${page}&size=${size}`)
   }
 }

@@ -11,10 +11,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IDepositRequest } from '../../../../interfaces/IDepositRequest';
-import { NetworksResourceService } from '../../../../resource/blockchain-network/networks-resource.service';
 import { INetwork } from '../../../../interfaces/blockchain/INetwork';
 import { IToken } from '../../../../interfaces/blockchain/IToken';
 import { WalletService } from '../../../../services/wallet/wallet.service';
+import { NetworksResource } from '../../../../resource/blockchain-network/networks.resource';
 
 @Component({
   selector: 'app-crypto-deposit',
@@ -37,11 +37,11 @@ import { WalletService } from '../../../../services/wallet/wallet.service';
   templateUrl: './crypto-deposit.component.html',
   styleUrl: './crypto-deposit.component.scss'
 })
-export class CryptoDepositComponent {
+export class CryptoDepositComponent implements OnInit {
 
   @Output() depositChange = new EventEmitter<IDepositRequest>();
 
-  private readonly netwrokResourceService = inject(NetworksResourceService);
+  private readonly netwrokResource = inject(NetworksResource);
   protected readonly walletService = inject(WalletService);
   private readonly snackBar = inject(MatSnackBar);
 
@@ -61,7 +61,7 @@ export class CryptoDepositComponent {
     });
 
     effect(() => {
-      const networks1 = this.netwrokResourceService.resource.value()?.items;
+      const networks1 = this.netwrokResource.resource.value()?.rows;
       if (networks1) {
         this.networks.set(networks1);
       }
@@ -91,6 +91,10 @@ export class CryptoDepositComponent {
     const networkValue = this.cryptoForm.get('network')?.value;
     return this.networks().find(n => n.id === networkValue)?.name;
   }
+
+   ngOnInit(): void {
+      this.netwrokResource.reload({page:1,size:50})
+    }
   async connectWallet() {
     this.isLoading = true;
     await this.walletService.connectToWallet()
