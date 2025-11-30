@@ -107,7 +107,7 @@ export function idadeValidator(idadeMinima: number) {
     MatIconModule,
     MatDividerModule,
     MatButtonModule,
-    NgxMaskDirective
+    NgxMaskDirective,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',

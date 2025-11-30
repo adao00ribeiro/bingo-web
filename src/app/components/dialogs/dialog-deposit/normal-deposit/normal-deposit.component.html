@@ -1,0 +1,26 @@
+<div class="deposit-content">
+  <form [formGroup]="depositForm">
+
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>Valor do Depósito</mat-label>
+      <input matInput currencyMask formControlName="value">
+      <mat-icon matSuffix="">attach_money</mat-icon>
+      <mat-error *ngIf="depositForm.get('value')?.hasError('required')">
+        Valor é obrigatório
+      </mat-error>
+      <mat-error *ngIf="depositForm.get('value')?.hasError('min')">
+        Valor mínimo é R$ 0,01
+      </mat-error>
+    </mat-form-field>
+    <div class="deposit-info" *ngIf="depositForm.get('value')?.value">
+      <mat-card class="info-card">
+        <mat-card-content>
+          <div class="info-row total">
+            <span class="label">Total:</span>
+            <span class="value">{{ depositForm.get('value')?.value | currency}} </span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </form>
+</div>
