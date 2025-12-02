@@ -17,8 +17,8 @@ export class WalletComponent implements OnInit {
   columnConfigs = [
     { key: 'id', displayName: 'Id', pipe: "guid" },
     { key: 'amount', displayName: 'Valor', pipe: "currency" },
-    { key: 'previousBalance', displayName: 'Saldo anterior', pipe: "currency" },
-    { key: 'currentBalance', displayName: 'Saldo Posterior', pipe: "currency" },
+    { key: 'previousBalance', displayName: 'Saldo Anterior', pipe: "currency" },
+    { key: 'currentBalance', displayName: 'Saldo Atual', pipe: "currency" },
     { key: 'type', displayName: 'Tipo' },
     { key: 'createdAt', displayName: 'Data Criação', pipe: "dateTime" },
 
