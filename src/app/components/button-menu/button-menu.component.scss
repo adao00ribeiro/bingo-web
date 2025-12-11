@@ -4,14 +4,12 @@
     justify-content: flex-start !important;
    width: 100%;
    gap: 1rem;
+   background-color: var(--background-color-second) !important;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 0 !important;
 
+&:hover {
+           background-color: var(--color-second-hover) !important;
+    }
   }
-
-@media (max-width: 725px) {
- .button-link{
-    span{
-   font-size:1.5rem;
-   }
-  }
-}
 

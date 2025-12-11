@@ -1,5 +1,4 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { CardRoundComponent } from "../../../components/card-round/card-round.component";
 import { RoundsRealTimeService } from '../../../services/rounds-real-time.service';
 import { CarouselComponent } from "../../../components/carousel/carousel.component";
 import { RoundService } from '../../../services/round/round.service';
@@ -7,17 +6,15 @@ import { AudioDataBaseService } from '../../../services/audio-data-base.service'
 import { PunterMeResource } from '../../../resource/punter/punter-me.resource';
 import { IPunter } from '../../../interfaces/IPunter';
 import { IRound } from '../../../interfaces/IRound';
-
-
+import { CardRoomComponent } from '../../../components/card-room/card-room.component';
 @Component({
-  selector: 'app-rounds',
-  standalone: true,
-  imports: [CardRoundComponent, CarouselComponent ],
-  templateUrl: './rounds.component.html',
-  styleUrl: './rounds.component.scss',
+  selector: 'app-index-room',
+   imports: [ CarouselComponent , CardRoomComponent],
+  templateUrl: './index-room.component.html',
+  styleUrl: './index-room.component.scss'
 })
-export class RoundsComponent implements OnInit  {
-  protected readonly roundService:RoundService = inject(RoundService);
+export class IndexRoomComponent  implements OnInit {
+protected readonly roundService:RoundService = inject(RoundService);
 
   protected readonly roundsRealTimeService : RoundsRealTimeService = inject(RoundsRealTimeService);
   protected readonly punterMeResource = inject(PunterMeResource);
@@ -77,3 +74,4 @@ export class RoundsComponent implements OnInit  {
   }
 
 }
+
