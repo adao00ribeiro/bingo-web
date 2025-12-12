@@ -16,6 +16,9 @@ export class RoundService {
   GetAll(page: number, size: number): Observable<IPaged<IRound>> {
     return this.httpClient.get<IPaged<IRound>>(this.url + `?page=${page}&size=${size}`)
   }
+   GetNextRounds(page: number, size: number ): Observable<IPaged<IRound>> {
+    return this.httpClient.get<IPaged<IRound>>(this.url + `/next` + `?page=${page}&size=${size}`)
+  }
   Create(round: IRoundRequest): Observable<IRound> {
     return this.httpClient.post<IRound>(this.url, round);
   }

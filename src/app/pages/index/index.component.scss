@@ -11,7 +11,6 @@
   right: 0;
 }
 
-
 .example-toolbar {
   display: flex;
   justify-content: space-between;
@@ -29,9 +28,9 @@
     height: 40px;
     object-fit: cover;
   }
-  button{
-      background: none;
-  border: none;
+  button {
+    background: none;
+    border: none;
   }
 }
 
@@ -39,13 +38,10 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-.theme-mode {
-
-   border: none;
+  .theme-mode {
+    border: none;
     background-color: transparent;
-
-
-}
+  }
 
   .btn-visibility {
     border: none;
@@ -70,7 +66,7 @@
     align-items: center;
 
     height: 40px;
-    background-color: #FF8638;
+    background-color: #ff8638;
     justify-content: center;
     color: rgb(255, 255, 255);
     border-radius: 5rem;
@@ -107,40 +103,31 @@
 }
 
 .example-is-mobile .example-toolbar {
-
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
 }
-
 
 .example-sidenav-container {
   background-color: transparent;
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
      causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
   flex: 1;
-
-
 }
 
 mat-sidenav {
   border-radius: 0;
   background-color: var(--background-color-second);
-
 }
 
 .mdc-list {
-
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
 }
 
 mat-sidenav {
   width: 270px;
 }
-
 
 .route-outlet {
   flex: 2;
@@ -158,12 +145,8 @@ mat-sidenav {
   }
 
   .toolbar-left {
-
-
     img {
-
       height: 30px;
-
     }
   }
 
@@ -182,6 +165,5 @@ mat-sidenav {
       height: 30px;
       font-size: 0.7rem;
     }
-
   }
 }

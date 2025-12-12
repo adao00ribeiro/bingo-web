@@ -1,0 +1,170 @@
+@if(false){
+<app-carousel [imagens]="[
+'https://picsum.photos/id/17/2500/1667',
+'https://picsum.photos/id/18/2500/1667',
+'https://picsum.photos/id/19/2500/1667'
+]"></app-carousel>
+}
+<div class="container-menu">
+  <button (click)="filterAllRounds()">Todos</button>
+  <button (click)="filterRounds(90)">90 Ball</button>
+  <button (click)="filterRounds(80)">80 Ball</button>
+  <button (click)="filterRounds(75)">75 Ball</button>
+  <button (click)="filterRounds(50)">50 Ball</button>
+  <button (click)="filterRounds(30)">30 Ball</button>
+</div>
+
+@if(filteredRounds().length == 0){
+<div class="no-data">
+  <p>Nenhum rodada disponível</p>
+</div>
+}@else {
+<div class="grid">
+  @for (item of filteredRounds(); track $index) {
+
+  <app-card-room
+   [round]="item"
+  ></app-card-room>
+  }
+</div>
+}
+
+
+<div class="info">
+
+  <h2>O que são Rodadas de Bingo Online?</h2>
+
+  <p>Aki acontecem diversas rodadas com diferentes tipos de jogos e
+    prêmios variados. Cada rodada traz uma experiência única, com temas e dinâmicas próprias, garantindo diversão sem
+    precisar sair de casa.</p>
+
+  <h2>Escolhendo seu tipo de jogo Ideal</h2>
+
+  <p>
+    Escolher a rodada de bingo certa é tudo sobre encontrar o que se adapte ao seu estilo e orçamento. Aqui estão
+    algumas
+    coisas a considerar:
+  </p>
+  <ul>
+    <li>
+      Variação do jogo: Comece decidindo que tipo de bingo você está com disposição. Alguns quartos oferecem bingo de 90
+      bolas, o que lhe dá várias maneiras de ganhar e tende a ser um pouco mais lento. Se você está atrás de algo mais
+      emocionante, você pode desfrutar de 30 bolas, também conhecido como Speed Bingo. Então há 75 bolas e 80 bolas,
+      ambos com grades diferentes e padrões vencedores, por isso é fácil mudar as coisas com base em como você se sente.
+
+    </li>
+    <li>
+      Preço do bilhete: Cada quarto tem uma faixa de preço diferente, para que você possa escolher um que corresponda ao
+      que deseja gastar. Se você está aqui apenas para se divertir e jogar mais, tente rodadas de bingo de centavo, onde
+      os ingressos de bingo custam tão pouco quanto 0,01 centavos. Por outro lado, se você estiver com vontade de ganhar
+      prêmios em
+      potencial maiores, há salas com preços mais altos de ingressos que podem trazer premios maiores.
+    </li>
+
+  </ul>
+  <h2>
+    Diferentes Tipos de Jogos de Bingo ?
+  </h2>
+  <h3>
+    BINGO DE 90 BOLAS
+  </h3>
+  <p>
+    Bingo de 90 bolas é a versão clássica que muitos jogadores adoram. Seu bilhete tem uma grade 3x9 com
+    15 números, e você tem três chances de ganhar: uma linha, duas linhas ou uma casa cheia. Itroits um pouco de um jogo
+    mais lento, o que torna mais fácil acompanhar cada chamada.
+  </p>
+  <p>
+    Este tipo de bingo lhe dá tempo para realmente aproveitar cada momento, e com três maneiras de ganhar, há muita
+    emoção do início ao fim. Itirates uma ótima escolha se você quiser um jogo mais tradicional, onde você pode se
+    instalar e se divertir um pouco.
+  </p>
+  <h3>BINGO DE 75 BOLAS</h3>
+  <p>
+    Bingo de 75 bolas é popular entre os Norte-Americanos e Europeus e tem um pouco de torção. Os bilhetes de bingo têm
+    uma grade 5x5 com números de 1 a 75, e você pode ganhar de diferentes maneiras, como linhas únicas, quatro cantos ou
+    cobrindo todo o cartão (blackout).
+  </p>
+  <p>
+    Se você gosta de um jogo que é um pouco diferente do habitual, 75-ball mantém as coisas interessantes com esses
+    padrões únicos. O ritmo é mais rápido do que 90-ball, por isso itirates perfeito se vocêestre depois de um jogo
+    animado com mais chances de misturar as coisas.
+  </p>
+  <h3>
+    BINGO DE 80 BOLAS
+  </h3>
+  <p>
+    Bingo de 80 bolas é uma boa opção de meio-terreno com uma grade 4x4. Ele traz um pouco dos estilos de 90 bolas e 75
+    bolas, permitindo que você ganhe com linhas simples, cantos ou uma casa cheia.
+  </p>
+  <p>
+    Esta versão do bingo oferece uma boa mistura de velocidade e variedade. It“ é uma ótima opção se você estiver
+    procurando por algo que não seja muito lento, mas ainda permite que você tente algumas combinações vencedoras
+    diferentes.
+  </p>
+  <h3>
+    BINGO DE 30 BOLAS (SPEED BINGO)
+  </h3>
+  <p>
+    Bingo de 30 Bolas também chamado de Speed Bingo, é o jogo mais rápido do mundo. Os bilhetes de bingo têm uma grade
+    simples de 3x3 com números de 1 a 30, e o objetivo é cobrir todos os números do seu bilhete.
+  </p>
+  <p>
+    Este jogo se move rapidamente, então é perfeito se você não tiver muito tempo, mas ainda quiser pular em uma rodada
+    de bingo.
+  </p>
+
+  <h2>
+    Comparação de Variantes de Bingo
+  </h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Tipo Bingo</th>
+        <th>Tamanho da Grade</th>
+        <th>Faixa de Número</th>
+        <th>Duração Típica</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>90-Bola</td>
+        <td>3x9</td>
+        <td>1-90</td>
+        <td>10-15 minutos</td>
+      </tr>
+      <tr>
+        <td>75-Bola</td>
+        <td>5x5</td>
+        <td>1-75</td>
+        <td>5-10 minutos</td>
+
+      </tr>
+      <tr>
+        <td>80-Bola</td>
+        <td>4x4</td>
+        <td>1-80</td>
+        <td>7-12 minutos</td>
+
+      </tr>
+      <tr>
+        <td>30-Bola</td>
+        <td>3x3</td>
+        <td>1-30</td>
+        <td>3-5 minutos</td>
+
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>
+    Jogo Responsável
+  </h2>
+  <p>
+    No ? Bingo, manter o jogo divertido e equilibrado é importante para nós. Isso explica por que fornecemos
+    ferramentas para ajudá-lo a permanecer no controle, como definir limites de depósito, tirar um tempo limite ou até
+    mesmo auto-exclusão, se você sentir que precisa de uma pausa. Nosso equipe de suporte está sempre aqui se você tiver
+    dúvidas ou precisar de um pouco de ajuda jogo responsável opções.
+  </p>
+</div>
+

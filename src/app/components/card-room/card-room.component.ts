@@ -7,30 +7,30 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { DialogCardBuyComponent } from '../dialogs/dialog-card-buy/dialog-card-buy.component';
 import { GuidPipe } from '../../pipes/guid.pipe';
-import { IRoundMessage } from '../../interfaces/IRoundMessage';
 import { interval, Subscription } from 'rxjs';
 import { DialogCardsPurchasedComponent } from '../dialogs/dialog-cards-purchased/dialog-cards-purchased.component';
 import { TimerService } from '../../services/timer.service';
 import { TimePipe } from '../../pipes/time.pipe';
 import { DatePipe } from '../../pipes/date.pipe';
-
+import { BallComponent } from "../ball/ball.component";
+import { MediaService } from '../../services/media/media.service';
+import { ImageDatabaseService } from '../../services/image-data-base.service';
 
 @Component({
-  selector: 'app-card-round',
-  standalone: true,
-  imports: [DatePipe,TimePipe, MatIcon, MatTooltipModule, CurrencyPipe, GuidPipe],
-  templateUrl: './card-round.component.html',
-  styleUrl: './card-round.component.scss'
+  selector: 'app-card-room',
+  imports: [DatePipe, TimePipe, MatIcon, MatTooltipModule, CurrencyPipe, GuidPipe, BallComponent],
+  templateUrl: './card-room.component.html',
+  styleUrl: './card-room.component.scss'
 })
-export class CardRoundComponent implements OnInit, OnDestroy {
-
+export class CardRoomComponent implements OnInit, OnDestroy {
   round = input.required<IRound>();
-  roundSocket = input.required<IRoundMessage | undefined>();
   private router: Router = inject(Router);
+    private imageDB = inject(ImageDatabaseService);
+  private mediaService: MediaService = inject(MediaService);
   readonly dialog = inject(MatDialog);
   readonly timerService = inject(TimerService);
   private intervalId: Subscription = new Subscription();
-
+  imageUrl = signal<string | null>(null);
   days: string = '00';
   hours: string = '00';
   minutes: string = '00';
@@ -44,13 +44,15 @@ export class CardRoundComponent implements OnInit, OnDestroy {
   });
 
   getImage = computed(() => {
-
     const maxBalls = this.round().maxBalls;
     return maxBalls ? `/images/${maxBalls}.png` : '';
   });
+
+
+getImageRoom = computed(() => this.imageUrl());
+
   updateTimeRemaining = computed(()=> {
     if (!this.round) return;
-
     const serverTime = this.timerService.AdjustedTime();
     if (serverTime == null) {
       return;
@@ -68,9 +70,22 @@ export class CardRoundComponent implements OnInit, OnDestroy {
 
     this.checkTimeAlerts();
   })
-  constructor() {
-    effect(() => { });
-  }
+ constructor() {
+  effect(() => {
+    const media = this.round().room?.mediaAttachment;
+    if (!media) {
+      this.imageUrl.set(null);
+      return;
+    }
+
+    const fileName = `${media.entityId}_${media.fileName}`;
+
+    this.mediaService.getPresignedUrl(fileName).subscribe({
+      next: (data) => this.imageUrl.set(data),
+      error: () => this.imageUrl.set(null)
+    });
+  });
+}
 
   ngOnInit(): void {
 
@@ -103,8 +118,8 @@ export class CardRoundComponent implements OnInit, OnDestroy {
     }
   }
 
-  goViewRound() {
-    this.router.navigate(['/sorteio', this.round().id]);
+  goViewRoom() {
+    this.router.navigate(['/room', this.round().roomId]);
   }
 
 

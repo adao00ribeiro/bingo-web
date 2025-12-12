@@ -16,6 +16,8 @@ import { ScratchComponent } from './pages/index/scratch/scratch.component';
 import { ListScratchGamesComponent } from './pages/index/scratch/list-scratch-games/list-scratch-games.component';
 import { ForgotPasswordComponent } from './pages/account/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/account/reset-password/reset-password.component';
+import { RoomsComponent } from './pages/index/rooms/rooms.component';
+import { IndexRoomComponent } from './pages/index/index-room/index-room.component';
 
 export const routes: Routes = [
   {
@@ -32,7 +34,15 @@ export const routes: Routes = [
         path: '',
         component: RoundsComponent,
       },
+      {
+        path: 'rooms',
+        component: IndexRoomComponent,
+      },
        {
+        path: 'room/:roomId',
+        component: RoomsComponent,
+      },
+      {
         path: 'scratch',
         component: ListScratchGamesComponent,
       },

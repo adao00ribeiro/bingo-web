@@ -1,0 +1,70 @@
+<div class="card-room">
+  <header>
+    <div class="container-image">
+     <img  [src]="getImageRoom()" class="room-image" alt="Room Image">
+    </div>
+    <div class="container-ball">
+      <app-ball [number]="round().maxBalls"></app-ball>
+    </div>
+    @if (false) {
+    <div class="container-destaque">
+      <span>
+        Destaque
+      </span>
+    </div>
+    }
+
+    <div class="timer">
+      <mat-icon>timer</mat-icon>
+      <span>
+        @if(days !== '00'){
+        <ng-container>{{ days + "d " }}</ng-container>
+        }
+        @if(hours !== '00'){
+        <ng-container>{{ hours + "h " }}</ng-container>
+        }
+        {{ minutes + "m " + seconds + "s" }}
+      </span>
+    </div>
+  </header>
+  <div class="container-info">
+    <h4>{{ round().room?.name }}</h4>
+    <div class="info-group">
+      <div class="group-col">
+        <span>QUANT. PREMIOS</span>
+        <div class="group-row" matTooltip="Total de prêmios" matTooltipPosition="below">
+          <mat-icon>stacked_bar_chart</mat-icon>
+          <span>{{ round().prizes.length }} </span>
+        </div>
+      </div>
+      <div class="group-col">
+        <span>TOTAL PREMIOS</span>
+        <div class="group-row" matTooltip="Prêmio Total" matTooltipPosition="below">
+          <mat-icon>emoji_events</mat-icon>
+          <span>{{ totalPrize() | currency }}</span>
+        </div>
+      </div>
+      <div class="group-col">
+        <span>VALOR CARTELA</span>
+        <div class="group-row" matTooltip="Valor Cartela" matTooltipPosition="below">
+          <mat-icon>label</mat-icon>
+          <span>{{ round().cardValue | currency }}</span>
+        </div>
+      </div>
+      @if (!round().room?.accumulated?.activated) {
+      <div class="group-col">
+        <span>ACUMULADO</span>
+        <div class="group-row" matTooltip="Total Cartelas Compradas" matTooltipPosition="below" (click)="openDialogCardPurchased()">
+          <mat-icon>rocket_launch</mat-icon>
+          <span class="card-sale-text">{{ round().room?.accumulated?.currentValue | currency}} </span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <footer class="footer">
+    <button class="button" (click)="goViewRoom()">
+      <span>Entrar</span>
+    </button>
+  </footer>
+</div>

@@ -8,9 +8,9 @@
     </div>
     <div class="toolbar-right">
 
-        <button class="theme-mode" (click)="themeService.toggleTheme()">
-          <mat-icon>{{themeService.iconState()}}</mat-icon>
-        </button>
+      <button class="theme-mode" (click)="themeService.toggleTheme()">
+        <mat-icon>{{themeService.iconState()}}</mat-icon>
+      </button>
 
       <button class="btn-visibility" (click)="handleVisibity()">
         <mat-icon>{{ isVisible ? 'visibility' : 'visibility_off' }}</mat-icon>
@@ -51,16 +51,22 @@
     </div>
   </mat-toolbar>
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav [opened]="isSidenavOpen" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+    <mat-sidenav [opened]="isSidenavOpen" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
+          <app-button-menu descricao="Salas" (onClick)="handleClick('/rooms',snav)">
+          <mat-icon>list_alt</mat-icon>
+        </app-button-menu>
+
+           <app-button-menu descricao="Rodadas" (onClick)="handleClick('/',snav)">
+          <mat-icon>list_alt</mat-icon>
+        </app-button-menu>
         @if(enabledScratch){
-       <app-button-menu descricao="Raspadinha" (onClick)="handleClick('/scratch',snav)">
+        <app-button-menu descricao="Raspadinha" (onClick)="handleClick('/scratch',snav)">
           <mat-icon>confirmation_number</mat-icon>
         </app-button-menu>
         }
-        <app-button-menu descricao="Rodadas" (onClick)="handleClick('/',snav)">
-          <mat-icon>list_alt</mat-icon>
-        </app-button-menu>
+
         <app-button-menu descricao="Meus Premios" (onClick)="handleClick('/premios',snav)">
           <mat-icon>military_tech</mat-icon>
         </app-button-menu>
@@ -73,7 +79,7 @@
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="route-outlet">
-    <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
