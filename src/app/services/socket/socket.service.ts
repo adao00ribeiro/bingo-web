@@ -120,7 +120,14 @@ export class SocketService {
     this.sendMessage("subscribe", channel, "mensagem");
     this.subscribedChannels.add(channel);
   }
+public unsubscribeToChannel(channel: string): void {
+  if (!this.subscribedChannels.has(channel)) return; // não está inscrito
 
+  console.log(`Você se desinscreveu do canal ${channel}`);
+
+  this.sendMessage("unsubscribe", channel, "mensagem");
+  this.subscribedChannels.delete(channel);
+}
 
 
   // Método para obter o status atual da conexão

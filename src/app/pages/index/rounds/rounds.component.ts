@@ -12,16 +12,16 @@ import { IRound } from '../../../interfaces/IRound';
 @Component({
   selector: 'app-rounds',
   standalone: true,
-  imports: [CardRoundComponent, CarouselComponent ],
+  imports: [CardRoundComponent, CarouselComponent],
   templateUrl: './rounds.component.html',
   styleUrl: './rounds.component.scss',
 })
-export class RoundsComponent implements OnInit  {
-  protected readonly roundService:RoundService = inject(RoundService);
+export class RoundsComponent implements OnInit {
+  protected readonly roundService: RoundService = inject(RoundService);
 
-  protected readonly roundsRealTimeService : RoundsRealTimeService = inject(RoundsRealTimeService);
+  protected readonly roundsRealTimeService: RoundsRealTimeService = inject(RoundsRealTimeService);
   protected readonly punterMeResource = inject(PunterMeResource);
-   readonly audioDataBaseService = inject(AudioDataBaseService);
+  readonly audioDataBaseService = inject(AudioDataBaseService);
 
   selectedBalls = signal<number | null>(null);
   punter = signal<IPunter | null>(null);
@@ -31,34 +31,35 @@ export class RoundsComponent implements OnInit  {
     const balls = this.selectedBalls();
     return balls ? rounds.filter(round => round.maxBalls === balls) : rounds;
   });
-  constructor(){
-    effect(()=>{
+  constructor() {
+    effect(() => {
       var punter = this.punterMeResource.resource.value();
-      if(punter){
-      this.punter.set(punter);
-       this.fetchRouds();
+      if (punter) {
+        this.punter.set(punter);
+        this.fetchRouds();
       }
 
 
     })
   }
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.punterMeResource.reload();
 
   }
-  fetchRouds(){
-    if(this.punter() == null){
-      return ;
-    }
-    var roomId = this.punter()?.seller.rooms[0].id;
-    if(roomId == undefined ){
+  fetchRouds() {
+    if (this.punter() == null) {
       return;
     }
-    this.roundService.GetNextRounds(1,50).subscribe({
+    const roomIds = this.punter()?.seller?.rooms?.map(room => room.id) ?? [];
+
+    if (roomIds.length === 0) {
+      return;
+    }
+    this.roundService.GetByRoomId(roomIds).subscribe({
       next: (data) => {
-       if(data){
-       this.rounds.set(data.rows)
-       }
+        if (data) {
+          this.rounds.set(data)
+        }
       },
       error: (err) => {
 

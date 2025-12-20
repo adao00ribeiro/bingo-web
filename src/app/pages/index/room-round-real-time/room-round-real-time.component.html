@@ -1,0 +1,81 @@
+<div class="rounds-real-time">
+  <div class="left">
+    <div class="container-header">
+      <div class="info-round">
+        <div class="group-info">
+          <span>
+            Rodada: {{(round().id! | guid )}}
+          </span>
+          <span>
+            Valor Cartela:
+            {{round().cardValue! | currency }}
+          </span>
+          <span>
+            Total Premios:
+            {{totalPrize()| currency }}
+          </span>
+        </div>
+      </div>
+       @if(!isStartedRound()){
+        <app-round-timer [startedRound]="this.round().started"   (isStartedRoundChange)="isStartedRound.set($event)"></app-round-timer>
+       }
+        <app-prize-board [prizeResults]="getPrizes()">
+        </app-prize-board>
+
+    </div>
+
+    @if(isStartedRound()){
+     <mat-accordion>
+      <mat-expansion-panel class="expansion-panel">
+        <mat-expansion-panel-header class="expansion-panel-header">
+          <div class="container-balls">
+            <app-sung-numbers [mainBall]="roundMessage()?.mainBall ?? 0" [secondBall]="roundMessage()?.secondBall ?? 0"
+              [thirdBall]="roundMessage()?.thirdBall ?? 0" [fourthBall]="roundMessage()?.forthBall ?? 0"
+              [MaxNumbers]="roundMessage()?.maxNumbers ?? 0" [maxBalls]="roundMessage()?.round?.maxBalls ?? 0">
+            </app-sung-numbers>
+            <div class="container-balls-right">
+              <div class="size-cards">
+                <span>Size:</span>
+                <button class="button">
+                  P
+                </button>
+                <button class="button">
+                  M
+                </button>
+                <button class="button">
+                  G
+                </button>
+              </div>
+              <button class="button" (click)="audioPlayer.toggleMute();$event.stopPropagation()">
+                @if(!audioPlayer.isMuted){
+                <mat-icon>volume_up</mat-icon>
+                }@else{
+                <mat-icon>volume_mute</mat-icon>
+                }
+              </button>
+            </div>
+          </div>
+        </mat-expansion-panel-header>
+             @if(isStartedRound()){
+               <app-panel-balls [balls]="roundMessage()?.numbers ?? []"></app-panel-balls>
+             }
+      </mat-expansion-panel>
+    </mat-accordion>
+
+  }
+
+    <div class="grid-container" infinite-scroll [infiniteScrollDistance]="scrollDistance"
+      [infiniteScrollThrottle]="scrollUpDistance" (scrolled)="onScroll()" [scrollWindow]="false">
+      @for (item of cards; track $index) {
+      <app-card [card]="item" [balls]="roundMessage()?.numbers ?? [1]"></app-card>
+      }
+    </div>
+     @if(!isStartedRound()){
+    <app-ticket-selector [round]="round()!" (purchaseCompleted)="reloadCards()" [totalCards]="totalCards" ></app-ticket-selector>
+     }
+  </div>
+  <div class="right">
+    <app-table-almost-there [toplist]="top_list()">
+    </app-table-almost-there>
+  </div>
+</div>

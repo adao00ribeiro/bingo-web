@@ -5,17 +5,7 @@
   width: 100%;
   height: 100%;
 }
-.container-timer{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 
-  mat-icon{
-    font-size: 5rem;
-    width: 5rem;
-    height: 5rem;
-  }
-}
 .left {
   flex: 2;
   height: 100%;
@@ -29,20 +19,16 @@
     justify-content: space-between;
     align-items: center;
     background-color: var(--background-color-primary);
-    padding: 0.5rem;
     border-radius: 1rem;
-
-    .info-round {
+    gap: 1rem;
+.info-round {
       flex: 1;
       display: flex;
-
-      gap: 1rem;
 
       .group-info {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-
         span {
           font-size: 1rem;
         }
@@ -51,7 +37,6 @@
       .container-image {
         width: 100px;
         height: 100px;
-
         img {
           width: 100%;
           height: 100%;
@@ -67,15 +52,10 @@
       }
     }
 
-    .container-timer {
-      flex: 1;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
+    app-round-timer {
+       flex: 1;
     }
-
-    .configuration {
+    app-prize-board{
       flex: 1;
     }
   }
@@ -144,9 +124,11 @@
   padding: 0.5rem !important;
 
 }
-::ng-deep .mat-expansion-panel-header{
- padding:5px;
+
+::ng-deep .mat-expansion-panel-header {
+  padding: 5px;
 }
+
 .chat-button {
   display: none;
 }

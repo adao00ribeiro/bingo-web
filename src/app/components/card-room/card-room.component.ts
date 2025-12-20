@@ -6,19 +6,16 @@ import { IRound } from '../../interfaces/IRound';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { DialogCardBuyComponent } from '../dialogs/dialog-card-buy/dialog-card-buy.component';
-import { GuidPipe } from '../../pipes/guid.pipe';
 import { interval, Subscription } from 'rxjs';
 import { DialogCardsPurchasedComponent } from '../dialogs/dialog-cards-purchased/dialog-cards-purchased.component';
 import { TimerService } from '../../services/timer.service';
-import { TimePipe } from '../../pipes/time.pipe';
-import { DatePipe } from '../../pipes/date.pipe';
 import { BallComponent } from "../ball/ball.component";
 import { MediaService } from '../../services/media/media.service';
 import { ImageDatabaseService } from '../../services/image-data-base.service';
 
 @Component({
   selector: 'app-card-room',
-  imports: [DatePipe, TimePipe, MatIcon, MatTooltipModule, CurrencyPipe, GuidPipe, BallComponent],
+  imports: [ MatIcon, MatTooltipModule, CurrencyPipe,  BallComponent],
   templateUrl: './card-room.component.html',
   styleUrl: './card-room.component.scss'
 })
@@ -57,7 +54,7 @@ getImageRoom = computed(() => this.imageUrl());
     if (serverTime == null) {
       return;
     }
-    const currentTimestamp = new Date(this.round().startedDate).getTime() - serverTime.getTime();
+    const currentTimestamp = new Date(this.round().started).getTime() - serverTime.getTime();
     if (currentTimestamp <= 0) {
       this.days = this.hours = this.minutes = this.seconds = '00';
       return;

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, Input, OnInit, signal } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { CardComponent } from "../../../components/card/card.component";
@@ -11,8 +11,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ICard } from '../../../interfaces/ICard';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { IRoundMessage } from '../../../interfaces/IRoundMessage';
-import { GuidPipe } from '../../../pipes/guid.pipe';
-import { CurrencyPipe } from '../../../pipes/currency.pipe';
 import { RoundsRealTimeService } from '../../../services/rounds-real-time.service';
 import { IRound } from '../../../interfaces/IRound';
 import { DialogWinnerComponent } from '../../../components/dialogs/dialog-winner/dialog-winner.component';
@@ -25,14 +23,17 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { ChatComponent } from "../../../components/chat/chat.component";
 import { CommonModule } from '@angular/common';
 import { CardsByRoundIdResource } from '../../../resource/card/cards-by-round-id.resource';
+import { TicketSelectorComponent } from "../../../components/ticket-selector/ticket-selector.component";
+import { RoundTimerComponent } from '../../../components/round-timer/round-timer.component';
+import { GuidPipe } from '../../../pipes/guid.pipe';
+import { CurrencyPipe } from '../../../pipes/currency.pipe';
+import { PanelBallsComponent } from "../../../components/panel-balls/panel-balls.component";
+
 @Component({
-  selector: 'app-rounds-real-time',
-  standalone: true,
+  selector: 'app-room-round-real-time',
   imports: [
     CurrencyPipe,
     GuidPipe,
@@ -50,12 +51,12 @@ import { CardsByRoundIdResource } from '../../../resource/card/cards-by-round-id
     MatInputModule,
     MatDatepickerModule,
     InfiniteScrollDirective,
-    ChatComponent,
-    CommonModule
-  ],
-  providers: [provideNativeDateAdapter()],
-  templateUrl: './rounds-real-time.component.html',
-  styleUrl: './rounds-real-time.component.scss',
+    TicketSelectorComponent,
+    RoundTimerComponent,
+    PanelBallsComponent
+],
+  templateUrl: './room-round-real-time.component.html',
+  styleUrl: './room-round-real-time.component.scss',
   animations: [
     trigger('rotateAnimation', [
       state('rotated', style({ transform: 'rotate(0deg)' })),
@@ -81,29 +82,31 @@ import { CardsByRoundIdResource } from '../../../resource/card/cards-by-round-id
     ]),
   ]
 })
-export class RoundsRealTimeComponent implements OnInit {
-
-  @Input() id = '';
+export class RoomRoundRealTimeComponent {
+  round = input.required<IRound>();
+  roundMessage = input.required<IRoundMessage>();
   public readonly roundService = inject(RoundService);
   public readonly cardsByRoundIdResource = inject(CardsByRoundIdResource);
   public readonly snackBar = inject(MatSnackBar);
+
   public readonly roundsRealTimeService: RoundsRealTimeService = inject(RoundsRealTimeService);
   readonly dialog = inject(MatDialog);
   private dialogRef: MatDialogRef<DialogWinnerComponent> | null = null;
   private dialogAllWinnersRef: MatDialogRef<DialogAllWinnersComponent> | null = null;
   private router: Router = inject(Router);
   readonly audioPlayer = inject(AudioPlayerService);
+  private lastRoundId?: string;
   cards: ICard[] = [];
+   totalCards:number = 0
   page = 1;
   pageSize = 50;
   totalItems = 1000; // Suponha que o total venha do backend
   loading = false;
+  isStartedRound = signal(false);
   throttle = 300;
   scrollDistance = 1;
   scrollUpDistance = 2;
-  rows: ICard[][] = [];
-  round = signal<IRound | null>(null);
-  roundMessage = signal<IRoundMessage | null>(null);
+
   show_dialog = false;
   prize_type = "";
 
@@ -148,8 +151,15 @@ export class RoundsRealTimeComponent implements OnInit {
     return 0;
   });
   top_cards = computed(() => {
+    if (true) {
+      console.log("aki", this.cards);
+      return this.cards;
+    }
 
-    if (!this.roundMessage()) return [];
+    if (!this.roundMessage()) {
+
+      return this.cards;
+    }
 
     const roundNumbersSet = new Set(this.roundMessage()?.numbers);
     const heap = []; // Simulando uma min-heap para os 20 melhores
@@ -169,6 +179,8 @@ export class RoundsRealTimeComponent implements OnInit {
     }
     return heap.sort((a, b) => b.score - a.score); // Ordena do maior para o menor
   })
+
+
   top_list = computed(() => {
     const prize_results = this.roundMessage()?.results;
 
@@ -187,32 +199,35 @@ export class RoundsRealTimeComponent implements OnInit {
   constructor() {
     // Effect específico para mudanças na roundMessage da sala atual
     effect(() => {
+
       const currentRound = this.round();
+
       if (currentRound) {
-        // Obter especificamente o round message da sala atual
-        const currentRoundMessage = this.roundsRealTimeService.getRoundSignal()(currentRound.roomId, currentRound.id);
 
-        // Só processa se realmente mudou
-        if (currentRoundMessage && currentRoundMessage !== this.roundMessage()) {
-          this.roundMessage.set(currentRoundMessage);
-
-          if (this.roundMessage()?.currentPrizeResult == null) {
-            this.audioPlayer.playNumber(this.roundMessage()?.mainBall ?? 0);
-          }
-          this.updateShowDialogWinner();
-          this.playSong();
+        if (this.lastRoundId !== currentRound.id) {
+          this.lastRoundId = currentRound.id;
+          this.isStartedRound.set(false);
         }
+      }
+
+      const currentRoundEventData = this.roundMessage(); // 👈 dependência reativa
+      if (currentRoundEventData) {
+
+        if (currentRoundEventData.currentPrizeResult == null) {
+          this.audioPlayer.playNumber(currentRoundEventData.mainBall ?? 0);
+        }
+        this.updateShowDialogWinner();
+        this.playSong();
       }
     });
 
     // Effect separado para cards (não relacionado aos rounds)
     effect(() => {
       const paged = this.cardsByRoundIdResource.resource.value();
-
       if (paged) {
         this.cards = [...this.cards, ...paged.rows];
+        this.totalCards = this.cards.length;
         this.totalItems += paged.rowsCount;
-        this.rows = this.chunkArray(this.cards, 4);
         this.loading = false;
       }
 
@@ -226,7 +241,10 @@ export class RoundsRealTimeComponent implements OnInit {
       }
     });
   }
-
+   reloadCards(){
+      this.cards = []
+      this.cardsByRoundIdResource.resource.reload();
+    }
   playSong() {
     var currentPrizeResult = this.roundMessage()?.currentPrizeResult;
     if (currentPrizeResult == null) {
@@ -262,9 +280,8 @@ export class RoundsRealTimeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getRound();
-    this.loadNextPage();
 
+    this.loadNextPage();
     if (window.innerWidth < 768) {
       this.isOpen = false;
     }
@@ -276,30 +293,6 @@ export class RoundsRealTimeComponent implements OnInit {
       result.push(arr.slice(i, i + size));
     }
     return result;
-  }
-
-  getRound(): void {
-    this.roundService.GetById(this.id).subscribe({
-      next: (data) => {
-        if (data.finished) {
-          // Logic for finished round if needed
-        }
-
-        this.round.set(data);
-        console.log("opa", data)
-      },
-      error: (err) => {
-        this.snackBar.open(err.error.detail, 'Ok', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          panelClass: 'error-snackbar',
-        });
-      },
-      complete: () => {
-        // Complete logic if needed
-      }
-    });
   }
 
   openDialogWinner() {
@@ -375,8 +368,13 @@ export class RoundsRealTimeComponent implements OnInit {
   }
 
   loadNextPage() {
+    const roundId = this.round()?.id
+
+    if (!roundId) {
+      return;
+    }
     this.loading = true;
-    this.cardsByRoundIdResource.reload({roundId:this.id , page: this.page, size: this.pageSize });
+    this.cardsByRoundIdResource.reload({ roundId: roundId, page: this.page, size: this.pageSize });
     this.page++;
   }
   public onChangeChatState(): void {

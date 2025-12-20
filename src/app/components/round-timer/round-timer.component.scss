@@ -1,0 +1,25 @@
+:host {
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  mat-icon{
+    font-size: 5rem;
+    width: 5rem;
+    height: 5rem;
+  }
+
+    span {
+      padding: 0.3rem;
+      display: inline-block; // Garante que fique em linha
+      align-items: center;
+      justify-content: center;
+      width: auto; // Permite ajuste automático ao conteúdo
+      min-width: 80px; // Mantém um tamanho mínimo
+      background-color: var(--background-color-primary);
+      color: var(--text-color);
+      border-radius: 0.5rem;
+      white-space: nowrap; // Impede a quebra de linha
+      text-align: center;
+    }
+
+}
