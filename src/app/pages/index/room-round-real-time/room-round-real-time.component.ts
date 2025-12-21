@@ -31,6 +31,7 @@ import { RoundTimerComponent } from '../../../components/round-timer/round-timer
 import { GuidPipe } from '../../../pipes/guid.pipe';
 import { CurrencyPipe } from '../../../pipes/currency.pipe';
 import { PanelBallsComponent } from "../../../components/panel-balls/panel-balls.component";
+import { MatTab, MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-room-round-real-time',
@@ -53,7 +54,8 @@ import { PanelBallsComponent } from "../../../components/panel-balls/panel-balls
     InfiniteScrollDirective,
     TicketSelectorComponent,
     RoundTimerComponent,
-    PanelBallsComponent
+    PanelBallsComponent,
+    MatTabsModule
 ],
   templateUrl: './room-round-real-time.component.html',
   styleUrl: './room-round-real-time.component.scss',
