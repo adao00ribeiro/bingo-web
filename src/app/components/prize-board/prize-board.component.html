@@ -1,16 +1,10 @@
-<table class="custom-prize-table">
-  <thead class="scrollable-thead">
-    <tr>
-      <th>Premios</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody class="scrollable-tbody">
-    @for (prize of prizeResults(); track $index) {
-    <tr [class.line-through]="prize.winningCards.length > 0">
-      <td>{{ prize.prizeType }}</td>
-      <td>{{ prize.value | currency }} </td>
-    </tr>
-    }
-  </tbody>
-</table>
+  <div class="premios-carousel">
+    <div class="carousel-container">
+       @for (prize of prizeResults(); track $index) {
+      <div class="premio-card" [class.disabled]="prize.winningCards.length > 0">
+        <h4>{{ prize.prizeType }}</h4>
+        <p>{{ prize.value | currency}}</p>
+      </div>
+        }
+    </div>
+  </div>

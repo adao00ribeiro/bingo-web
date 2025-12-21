@@ -4,12 +4,13 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { IPrizeResult } from '../../interfaces/IPrizeResult';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
+import { CarouselComponent } from "../carousel/carousel.component";
 
 
 @Component({
   selector: 'app-prize-board',
   standalone: true,
-  imports: [ CurrencyPipe,MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule],
+  imports: [CurrencyPipe, MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, CarouselComponent],
   templateUrl: './prize-board.component.html',
   styleUrl: './prize-board.component.scss'
 })
