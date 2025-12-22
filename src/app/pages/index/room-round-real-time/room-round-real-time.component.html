@@ -54,7 +54,10 @@
         }
       </div>
     </div>
-
+    @if(!isStartedRound()){
+    <app-ticket-selector [round]="round()!" (purchaseCompleted)="reloadCards()" [totalCards]="totalCards">
+    </app-ticket-selector>
+    }
 
   </div>
   @if(false){
@@ -65,7 +68,3 @@
   }
 
 </div>
-@if(!isStartedRound()){
-<app-ticket-selector [round]="round()!" (purchaseCompleted)="reloadCards()"
-  [totalCards]="totalCards"></app-ticket-selector>
-}

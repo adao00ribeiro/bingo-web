@@ -24,7 +24,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { CardsByRoundIdResource } from '../../../resource/card/cards-by-round-id.resource';
 import { TicketSelectorComponent } from "../../../components/ticket-selector/ticket-selector.component";
 import { RoundTimerComponent } from '../../../components/round-timer/round-timer.component';
@@ -55,7 +55,8 @@ import { MatTab, MatTabGroup, MatTabsModule } from '@angular/material/tabs';
     TicketSelectorComponent,
     RoundTimerComponent,
     PanelBallsComponent,
-    MatTabsModule
+    MatTabsModule,
+    NgIf
 ],
   templateUrl: './room-round-real-time.component.html',
   styleUrl: './room-round-real-time.component.scss',
@@ -99,7 +100,7 @@ export class RoomRoundRealTimeComponent {
   readonly audioPlayer = inject(AudioPlayerService);
   private lastRoundId?: string;
   cards: ICard[] = [];
-   totalCards:number = 0
+  totalCards: number = 0
   page = 1;
   pageSize = 50;
   totalItems = 1000; // Suponha que o total venha do backend
@@ -243,10 +244,10 @@ export class RoomRoundRealTimeComponent {
       }
     });
   }
-   reloadCards(){
-      this.cards = []
-      this.cardsByRoundIdResource.resource.reload();
-    }
+  reloadCards() {
+    this.cards = []
+    this.cardsByRoundIdResource.resource.reload();
+  }
   playSong() {
     var currentPrizeResult = this.roundMessage()?.currentPrizeResult;
     if (currentPrizeResult == null) {

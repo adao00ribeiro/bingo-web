@@ -25,15 +25,16 @@
   </div>
   <div class="footer">
     <div class="buying-info">
+      <div>
       <span class="icon">🎫</span>
-      COMPRANDO: <span class="buying-count">{{ ticketCount }}</span>
-    </div>
-
-
-    <div class="footer-right">
-      <div class="total-price">
+      <span class="buying-count"> COMPRANDO: {{ ticketCount }}</span>
+      </div>
+       <div class="total-price">
         TOTAL PRICE: <span>{{ totalPrice | currency}}</span>
       </div>
+    </div>
+    <div class="footer-right">
+
       <div class="action-buttons">
         <button class="buy-btn" id="buyBtn" (click)="changeBuy()">Comprar</button>
       </div>

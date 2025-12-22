@@ -1,6 +1,5 @@
 import { Component, EventEmitter, inject, Input, input, model, output, Output } from '@angular/core';
 import { IRound } from '../../interfaces/IRound';
-import { GuidPipe } from '../../pipes/guid.pipe';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
 import { FormsModule } from '@angular/forms';
 import { PunterMeResource } from '../../resource/punter/punter-me.resource';
@@ -11,7 +10,7 @@ import { ICardBuyRequest } from '../../interfaces/ICardBuyRequest';
 
 @Component({
   selector: 'app-ticket-selector',
-  imports: [FormsModule, CurrencyPipe, GuidPipe],
+  imports: [FormsModule, CurrencyPipe],
   templateUrl: './ticket-selector.component.html',
   styleUrl: './ticket-selector.component.scss'
 })

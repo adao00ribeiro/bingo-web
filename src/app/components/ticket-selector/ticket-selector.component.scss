@@ -1,13 +1,14 @@
 
     .ticket-container {
-      position: absolute;
-      left: 0;
-      bottom: 0;
+
       width: 100%;
       background-color: var(--background-color-second);
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      padding: 1rem;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
 
     /* Header */
@@ -15,8 +16,7 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 1rem;
       font-size: 0.8rem;
     }
 
@@ -55,26 +55,24 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      margin-bottom: 20px;
     }
 
     .quick-select {
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+      gap: 0.2rem;
     }
 
     .quick-btn {
-      padding: 1rem;
+      padding: 0.5rem;
       border: none;
       background-color: #f0f0f0;
       color: #666;
-      font-size: 14px;
+      font-size: 0.8rem;
       cursor: pointer;
       border-radius: 4px;
       transition: all 0.3s;
       flex: 1;
-      min-width: 50px;
+
     }
 
     .quick-btn:active {
@@ -100,7 +98,7 @@
 
     .slider {
       width: 100%;
-      height: 6px;
+      height: 5px;
       border-radius: 3px;
       background: #e0e0e0;
       outline: none;
@@ -110,8 +108,8 @@
     .slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 24px;
-      height: 24px;
+      width: 15px;
+      height: 15px;
       border-radius: 50%;
       background: #ff8040;
       cursor: pointer;
@@ -140,8 +138,8 @@
       justify-content: space-between;
     }
     .control-btn {
-      width: 44px;
-      height: 44px;
+      width: 25px;
+      height: 25px;
       border-radius: 50%;
       border: none;
       background-color: #ff8040;
@@ -167,16 +165,17 @@
     .footer {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 1rem;
     }
 
     .buying-info {
+        flex: 1;
       display: flex;
-      align-items: center;
-      gap: 6px;
       color: #ffffff;
       font-size: 12px;
       flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .buying-info .icon {
@@ -251,6 +250,198 @@
     .buy-btn:disabled {
       background-color: #ccc;
       cursor: not-allowed;
+    }
+
+    /* Tablet - 768px */
+    @media (min-width: 768px) {
+
+
+      .ticket-container {
+
+      }
+
+      .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+      }
+
+      .header h2 {
+        font-size: 22px;
+      }
+
+      .selected-info {
+        font-size: 13px;
+      }
+
+      .selector-area {
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+
+      }
+
+      .quick-select {
+        flex-wrap: nowrap;
+        gap: 10px;
+      }
+
+      .quick-btn {
+        font-size: 15px;
+        padding: 8px 16px;
+        flex: initial;
+      }
+
+      .slider-container {
+        flex-direction: row;
+        flex: 1;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .quantity-display {
+        font-size: 30px;
+        min-width: 50px;
+      }
+
+      .footer {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .buying-info {
+        font-size: 13px;
+      }
+
+      .footer-right {
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .total-price {
+        font-size: 14px;
+      }
+
+      .action-buttons {
+        gap: 12px;
+      }
+
+      .clear-btn,
+      .buy-btn {
+        font-size: 13px;
+        flex: initial;
+      }
+
+      .clear-btn {
+        padding: 12px 25px;
+      }
+
+      .buy-btn {
+        padding: 12px 28px;
+      }
+    }
+
+    /* Desktop - 1024px */
+    @media (min-width: 1024px) {
+      .ticket-container {
+
+      }
+
+      .header {
+
+      }
+
+      .header h2 {
+        font-size: 24px;
+      }
+
+      .selected-info {
+        font-size: 14px;
+        gap: 10px;
+      }
+
+      .selector-area {
+        gap: 20px;
+
+      }
+
+      .quick-select {
+        gap: 15px;
+      }
+
+      .quick-btn {
+        font-size: 16px;
+        padding: 8px 16px;
+      }
+
+      .quick-btn:hover {
+        background-color: #e0e0e0;
+      }
+
+      .quick-btn.active:hover {
+        background-color: #ff6020;
+      }
+
+      .slider-container {
+        gap: 20px;
+      }
+
+      .quantity-display {
+        font-size: 32px;
+        min-width: 60px;
+      }
+
+      .buying-info {
+        font-size: 14px;
+        gap: 10px;
+      }
+
+      .buying-info .icon {
+        font-size: 18px;
+      }
+
+      .footer-right {
+        gap: 20px;
+      }
+
+      .action-buttons {
+        gap: 15px;
+      }
+
+      .clear-btn {
+        padding: 12px 30px;
+      }
+
+      .buy-btn {
+        padding: 12px 30px;
+      }
+
+      .clear-btn:hover {
+        border-color: #bbb;
+        color: #333;
+      }
+
+      .buy-btn:hover {
+        background-color: #ff6020;
+      }
+
+      .control-btn:hover:not(:disabled) {
+        background-color: #ff6020;
+      }
+
+      /* Remove active effects on desktop */
+      .quick-btn:active,
+      .clear-btn:active,
+      .buy-btn:active {
+        transform: none;
+      }
+
+      .control-btn:active:not(:disabled) {
+        transform: none;
+      }
     }
 
     /* Tablet - 768px */
