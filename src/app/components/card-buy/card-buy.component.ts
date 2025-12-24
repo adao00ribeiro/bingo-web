@@ -22,7 +22,6 @@ export class CardBuyComponent  {
   protected readonly PunterMeResource = inject(PunterMeResource);
   private readonly roundResource = inject(RoundsResource);
 
-
   @Input() hiddenTittle: boolean = false;
   @Output() closeModal = new EventEmitter<void>();
   readonly cardBuyService = inject(CardBuyService);

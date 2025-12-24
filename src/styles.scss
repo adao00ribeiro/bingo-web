@@ -1,4 +1,3 @@
-
 @use "theme.scss";
 
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
@@ -10,11 +9,11 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100vh; /* Ajuste a altura conforme necessário */
-  width: 100vw; /* Ajuste a largura conforme necessário */
+  height: 100%;
+  width: 100%;
   --mat-sys-corner-extra-large: 0.5rem;
   background-color: var(--background-color-primary);
-   color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 * {
@@ -27,49 +26,64 @@ body {
   --mdc-snackbar-supporting-text-color: white;
 
   border-radius: 1rem;
-  --mdc-snackbar-supporting-text-font: Cambria, Cochin,Georgia,Times;
-  --mdc-snackbar-supporting-text-line-height: 2rem
-  --mdc-snackbar-supporting-text-size: 2rem !important;
+  --mdc-snackbar-supporting-text-font: Cambria, Cochin, Georgia, Times;
+  --mdc-snackbar-supporting-text-line-height: 2rem --mdc-snackbar-supporting-text-size: 2rem !important;
   --mdc-snackbar-supporting-text-weight: bold;
 
 }
+
 .warning-snackbar {
   --mdc-snackbar-container-color: rgb(251, 255, 0);
   --mdc-snackbar-supporting-text-color: rgb(2, 2, 2);
 
   border-radius: 1rem;
-  --mdc-snackbar-supporting-text-font: Cambria, Cochin,Georgia,Times;
-  --mdc-snackbar-supporting-text-line-height: 2rem
-  --mdc-snackbar-supporting-text-size: 2rem !important;
+  --mdc-snackbar-supporting-text-font: Cambria, Cochin, Georgia, Times;
+  --mdc-snackbar-supporting-text-line-height: 2rem --mdc-snackbar-supporting-text-size: 2rem !important;
   --mdc-snackbar-supporting-text-weight: bold;
 
 }
+
 .error-snackbar {
   --mdc-snackbar-container-color: rgb(243, 7, 7);
   --mdc-snackbar-supporting-text-color: white;
 
   border-radius: 1rem;
-  --mdc-snackbar-supporting-text-font: Cambria, Cochin,Georgia,Times;
-  --mdc-snackbar-supporting-text-line-height: 2rem
-  --mdc-snackbar-supporting-text-size: 2rem !important;
+  --mdc-snackbar-supporting-text-font: Cambria, Cochin, Georgia, Times;
+  --mdc-snackbar-supporting-text-line-height: 2rem --mdc-snackbar-supporting-text-size: 2rem !important;
   --mdc-snackbar-supporting-text-weight: bold;
 
 
 
 }
+
 .mat-mdc-menu-panel {
   background-color: var(--background-color-second) !important;
-  .mat-mdc-menu-item-text{
-    color: var(--text-color) !important ; // Texto do menu
+
+  .mat-mdc-menu-item-text {
+    color: var(--text-color) !important; // Texto do menu
   }
 }
- .mat-mdc-select{
-    color: var(--text-color) !important;
-  }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.mat-mdc-select {
+  color: var(--text-color) !important;
+}
 
+html,
+body {
+  height: 100%;
+}
 
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

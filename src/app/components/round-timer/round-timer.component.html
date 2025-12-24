@@ -1,0 +1,10 @@
+<mat-icon>timer</mat-icon>
+<span>
+  @if(days !== '00'){
+  <ng-container>{{ days + "d " }}</ng-container>
+  }
+  @if(hours !== '00'){
+  <ng-container>{{ hours + "h " }}</ng-container>
+  }
+  {{ minutes + "m " + seconds + "s" }}
+</span>

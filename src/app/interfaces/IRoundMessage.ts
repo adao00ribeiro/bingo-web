@@ -6,6 +6,7 @@ import { IRound } from "./IRound";
 export interface IRoundMessage {
   id: string;
   finished: boolean;
+  startedWeb:string;
   started: boolean;
   mainBall: number;
   secondBall: number;

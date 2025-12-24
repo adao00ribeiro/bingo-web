@@ -16,7 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes,withComponentInputBinding()),
     provideAnimationsAsync(),
     provideEnvironmentNgxMask(),
-    provideAnimationsAsync(),
     provideEnvironmentNgxCurrency({
       align: "right",
       allowNegative: true,

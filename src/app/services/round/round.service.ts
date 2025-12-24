@@ -16,6 +16,11 @@ export class RoundService {
   GetAll(page: number, size: number): Observable<IPaged<IRound>> {
     return this.httpClient.get<IPaged<IRound>>(this.url + `?page=${page}&size=${size}`)
   }
+
+    GetRoundsWithTimelineAsync(roomId: string): Observable<IRound> {
+    return this.httpClient.get<IRound>(`${this.url}/room/${roomId}`);
+  }
+
    GetNextRounds(page: number, size: number ): Observable<IPaged<IRound>> {
     return this.httpClient.get<IPaged<IRound>>(this.url + `/next` + `?page=${page}&size=${size}`)
   }
@@ -25,8 +30,15 @@ export class RoundService {
   GetById(id: string): Observable<IRound> {
     return this.httpClient.get<IRound>(`${this.url}/id/${id}`);
   }
-  GetByRoomId(roomId: string){
-    return this.httpClient.get<IRound[]>(`${this.url}/filter/room/${roomId}`);;
+  GetByRoomId(roomIds: string[]){
+ return this.httpClient.get<IRound[]>(
+    `${this.url}/filter/room`,
+    {
+      params: {
+        roomIds: roomIds
+      }
+    }
+  );
   }
   UpdateById(id: number, round: IRound): Observable<IRound> {
     return this.httpClient.put<IRound>(`${this.url}/${id}`, round);

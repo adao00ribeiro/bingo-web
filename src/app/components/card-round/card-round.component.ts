@@ -55,7 +55,7 @@ export class CardRoundComponent implements OnInit, OnDestroy {
     if (serverTime == null) {
       return;
     }
-    const currentTimestamp = new Date(this.round().startedDate).getTime() - serverTime.getTime();
+    const currentTimestamp = new Date(this.round().started).getTime() - serverTime.getTime();
     if (currentTimestamp <= 0) {
       this.days = this.hours = this.minutes = this.seconds = '00';
       return;

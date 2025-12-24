@@ -86,8 +86,6 @@ export class IndexComponent implements OnInit {
     )
     effect(() => {
       if (this.socketService.IsConnected()) {
-        this.socketService.subscribeToChannel(`room_${this.user()?.seller.rooms[0].id}`);
-        this.socketService.subscribeToChannel(`chat_room_${this.user()?.seller.rooms[0].id}`);
         this.socketService.subscribeToChannel(`cash_box_${this.user()?.id}`);
       }
     })

@@ -1,0 +1,122 @@
+.rounds-real-time {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+}
+
+.left {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+  min-width: 0;
+  .container-config {
+    display: flex;
+    justify-content: right;
+    padding: 0.2rem;
+
+    button{
+    padding: 0.4rem;
+    }
+  }
+  .container-header {
+    flex-shrink: 0;
+    background-color: var(--background-color-primary);
+    border-radius: 1rem;
+
+    .info-round {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background-color: var(--background-color-second);
+        font-size: 0.7rem;
+        border-radius: 250px;
+      }
+    }
+  }
+
+  .container-balls {
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 1rem;
+    gap: 1rem;
+
+    .container-balls-right {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+    }
+
+    .size-cards {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+
+  .container-prizes {
+    background-color: blue;
+  }
+
+  .container-info-ball {
+    background-color: rgb(14, 179, 30);
+  }
+}
+
+.container-grid {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+
+  .grid {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    scrollbar-width: none;
+  }
+}
+
+.right {
+  width: 350px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.expansion-panel {
+  background-color: var(--background-color-primary);
+}
+
+.expansion-panel-header {
+  height: auto !important;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 0.5rem !important;
+}
+
+::ng-deep .mat-expansion-panel-header {
+  padding: 5px;
+}
+
+.chat-button {
+  display: none;
+}

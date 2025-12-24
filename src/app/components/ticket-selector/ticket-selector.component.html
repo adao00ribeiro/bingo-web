@@ -1,0 +1,43 @@
+<div class="ticket-container">
+  <header class="header">
+    <span>Valor da Cartela: {{ round().cardValue | currency }}</span>
+    <div>Comprados: {{ totalCards() }}</div>
+  </header>
+  <div class="selector-area">
+    <div class="quick-select">
+      <button class="quick-btn" [class.active]="ticketCount === 1" (click)="setTicketCount(1)">1</button>
+      <button class="quick-btn" [class.active]="ticketCount === 10" (click)="setTicketCount(10)">10</button>
+      <button class="quick-btn" [class.active]="ticketCount === 19" (click)="setTicketCount(19)">19</button>
+      <button class="quick-btn" [class.active]="ticketCount === 28" (click)="setTicketCount(28)">28</button>
+      <button class="quick-btn" [class.active]="ticketCount === 36" (click)="setTicketCount(36)">MAX</button>
+    </div>
+
+     <div class="slider-container">
+      <div class="slider-wrapper">
+        <input type="range" min="1" max="36" [(ngModel)]="ticketCount" class="slider">
+      </div>
+      <div class="quantity-controls">
+        <button class="control-btn" [disabled]="ticketCount <= 1" (click)="decreaseTickets()">−</button>
+        <div class="quantity-display">{{ ticketCount }}</div>
+        <button class="control-btn" [disabled]="ticketCount >= 36" (click)="increaseTickets()">+</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="buying-info">
+      <div>
+      <span class="icon">🎫</span>
+      <span class="buying-count"> COMPRANDO: {{ ticketCount }}</span>
+      </div>
+       <div class="total-price">
+        TOTAL PRICE: <span>{{ totalPrice | currency}}</span>
+      </div>
+    </div>
+    <div class="footer-right">
+
+      <div class="action-buttons">
+        <button class="buy-btn" id="buyBtn" (click)="changeBuy()">Comprar</button>
+      </div>
+    </div>
+  </div>
+</div>
