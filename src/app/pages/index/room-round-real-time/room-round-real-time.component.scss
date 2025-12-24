@@ -13,9 +13,16 @@
   gap: 0.5rem;
   overflow: hidden;
   min-width: 0;
+  .container-config {
+    display: flex;
+    justify-content: right;
+    padding: 0.2rem;
 
+    button{
+    padding: 0.4rem;
+    }
+  }
   .container-header {
-
     flex-shrink: 0;
     background-color: var(--background-color-primary);
     border-radius: 1rem;
@@ -24,15 +31,15 @@
       flex: 1;
       display: flex;
       justify-content: space-between;
-
-      .group-info {
+      div {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-
-        span {
-          font-size: 1rem;
-        }
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background-color: var(--background-color-second);
+        font-size: 0.7rem;
+        border-radius: 250px;
       }
     }
   }
