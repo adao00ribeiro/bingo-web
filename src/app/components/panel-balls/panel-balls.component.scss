@@ -1,12 +1,10 @@
+/* Mobile First - Base styles (mobile) */
 .container-balls {
   width: 100%;
-  height: 100%; // importante: o pai deve ter altura definida
+  height: 100%;
   display: grid;
-  grid-template-columns: repeat(30, 1fr);
-  /* 5 colunas fixas */
-  grid-auto-rows: minmax(50px, auto);
-  /* altura das linhas se adapta */
-
+  grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+  grid-auto-rows: minmax(20px, auto);
   padding: 0.3rem;
   box-sizing: border-box;
   border-radius: 0.2rem;
@@ -21,12 +19,12 @@
   justify-content: center;
   text-align: center;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.5rem;
   color: #fff;
   background-color: #000;
   border-radius: 20%;
-  width: 40px;
-  height: 40px;
+  width: 15px;
+  height: 15px;
   box-sizing: border-box;
 }
 
@@ -42,12 +40,41 @@
   background-color: #f70000;
 }
 
-@media screen and (max-width: 1440px) {
+/* Tablet small - 768px */
+@media screen and (min-width: 768px) {
+  .container-balls {
+    grid-template-columns: repeat(15, 1fr);
+  }
+
+  .ball,
+  .ball-marked,
+  .ball-current {
+    width: 25px;
+    height: 25px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Tablet large - 1024px */
+@media screen and (min-width: 1024px) {
   .container-balls {
     grid-template-columns: repeat(30, 1fr);
-    /* 5 colunas fixas */
+  }
+
+  .ball,
+  .ball-marked,
+  .ball-current {
+    width: 25px;
+    height: 25px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Desktop - 1440px */
+@media screen and (min-width: 1440px) {
+  .container-balls {
+    grid-template-columns: repeat(30, 1fr);
     grid-auto-rows: minmax(33px, auto);
-    /* altura das linhas se adapta */
   }
 
   .ball,
@@ -55,53 +82,20 @@
   .ball-current {
     width: 30px;
     height: 30px;
+    font-size: 1rem;
   }
 }
 
-@media screen and (max-width: 1024px) {
+/* Large Desktop - 1920px+ */
+@media screen and (min-width: 1920px) {
   .container-balls {
-    grid-template-columns: repeat(30, 1fr);
-    /* 5 colunas fixas */
-    grid-auto-rows: minmax(33px, auto);
-    /* altura das linhas se adapta */
+    grid-auto-rows: minmax(50px, auto);
   }
 
   .ball,
   .ball-marked,
   .ball-current {
-    width: 25px;
-    height: 25px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .container-balls {
-    grid-template-columns: repeat(15, 1fr);
-    /* 5 colunas fixas */
-    grid-auto-rows: minmax(33px, auto);
-    /* altura das linhas se adapta */
-  }
-
-  .ball,
-  .ball-marked,
-  .ball-current {
-    width: 25px;
-    height: 25px;
-  }
-}
-
-
-// Media queries
-@media screen and (max-width: 425px) {
-  .container-balls {
-    grid-template-columns: repeat(auto-fill, minmax(25px, 1fr));
-  }
-
-  .ball,
-  .ball-marked,
-  .ball-current {
-    width: 25px;
-    height: 25px;
-
+    width: 35px;
+    height: 35px;
   }
 }
