@@ -1,14 +1,13 @@
-
-    .ticket-container {
+.ticket-container {
 
       width: 100%;
       background-color: var(--background-color-second);
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      padding: 0.5rem;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 0.75rem;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.75rem;
     }
 
     /* Header */
@@ -16,12 +15,12 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      gap: 1rem;
-      font-size: 0.8rem;
+      gap: 0.5rem;
+      font-size: 0.7rem;
     }
 
     .header h2 {
-      font-size: 18px;
+      font-size: 14px;
       font-weight: bold;
       color: #333;
       text-transform: uppercase;
@@ -54,20 +53,20 @@
     .selector-area {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.6rem;
     }
 
     .quick-select {
       display: flex;
-      gap: 0.2rem;
+      gap: 0.15rem;
     }
 
     .quick-btn {
-      padding: 0.5rem;
+      padding: 0.4rem;
       border: none;
       background-color: #f0f0f0;
       color: #666;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       cursor: pointer;
       border-radius: 4px;
       transition: all 0.3s;
@@ -87,18 +86,19 @@
     .slider-container {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 10px;
 
     }
 
     .slider-wrapper {
+      display: none;
       width: 100%;
       position: relative;
     }
 
     .slider {
       width: 100%;
-      height: 5px;
+      height: 4px;
       border-radius: 3px;
       background: #e0e0e0;
       outline: none;
@@ -108,8 +108,8 @@
     .slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 15px;
-      height: 15px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       background: #ff8040;
       cursor: pointer;
@@ -117,8 +117,8 @@
     }
 
     .slider::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: #ff8040;
       cursor: pointer;
@@ -127,7 +127,7 @@
     }
 
     .quantity-display {
-      font-size: 28px;
+      font-size: 22px;
       font-weight: bold;
       color: #ffffff;
       text-align: center;
@@ -138,13 +138,13 @@
       justify-content: space-between;
     }
     .control-btn {
-      width: 25px;
-      height: 25px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       border: none;
       background-color: #ff8040;
       color: white;
-      font-size: 24px;
+      font-size: 20px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -165,21 +165,21 @@
     .footer {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.6rem;
     }
 
     .buying-info {
         flex: 1;
       display: flex;
       color: #ffffff;
-      font-size: 12px;
+      font-size: 11px;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
     }
 
     .buying-info .icon {
-      font-size: 16px;
+      font-size: 14px;
     }
 
     .buying-count {
@@ -190,17 +190,17 @@
     .footer-right {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .total-price {
-      font-size: 13px;
+      font-size: 12px;
        color: #ffffff;
       text-align: center;
     }
 
     .total-price span {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
            color: #ffffff;
       margin-left: 5px;
@@ -208,17 +208,17 @@
 
     .action-buttons {
       display: flex;
-      gap: 10px;
+      gap: 8px;
     }
 
     .clear-btn {
-      padding: 12px 20px;
+      padding: 10px 16px;
       border: 2px solid #ddd;
       background-color: white;
       color: #666;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
-      border-radius: 25px;
+      border-radius: 20px;
       cursor: pointer;
       text-transform: uppercase;
       transition: all 0.3s;
@@ -230,13 +230,13 @@
     }
 
     .buy-btn {
-      padding: 12px 20px;
+      padding: 10px 16px;
       border: none;
       background-color: #ff8040;
       color: white;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
-      border-radius: 25px;
+      border-radius: 20px;
       cursor: pointer;
       text-transform: uppercase;
       transition: all 0.3s;
@@ -257,6 +257,10 @@
 
 
       .ticket-container {
+
+    .slider-wrapper {
+      display: block;
+    }
 
       }
 
