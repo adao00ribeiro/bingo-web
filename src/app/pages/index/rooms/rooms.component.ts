@@ -177,7 +177,13 @@ export class RoomsComponent implements OnInit {
 
     runStep();
   }
-
+    goBack(){
+      this.eventData = null;
+      this.stepInterval = null;
+      this.round.set(null);
+       this.fetchRound();
+      this.startRoundPoller();
+    }
     ngOnDestroy(): void {
     this.socketService.unsubscribeToChannel(`room_${this.roomId()}`);
     this.socketService.unsubscribeToChannel(`chat_room_${this.roomId()}`);

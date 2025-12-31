@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, Input, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, Input, OnInit, output, signal } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { CardComponent } from "../../../components/card/card.component";
@@ -88,6 +88,7 @@ import { MatTab, MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 export class RoomRoundRealTimeComponent {
   round = input.required<IRound>();
   roundMessage = input.required<IRoundMessage>();
+  handleBack = output<void>();
   public readonly roundService = inject(RoundService);
   public readonly cardsByRoundIdResource = inject(CardsByRoundIdResource);
   public readonly snackBar = inject(MatSnackBar);
@@ -155,7 +156,6 @@ export class RoomRoundRealTimeComponent {
   });
   top_cards = computed(() => {
     if (true) {
-      console.log("aki", this.cards);
       return this.cards;
     }
 
@@ -355,7 +355,8 @@ export class RoomRoundRealTimeComponent {
           }, 10000);
           setTimeout(() => {
             this.closeDialogAllWinner();
-            this.router.navigate(["/"]);
+            //this.router.navigate(["/"]);
+            this.handleBack.emit();
           }, roundMessageValue.isAccumulated ? 15000 : 20000);
         }
       }
