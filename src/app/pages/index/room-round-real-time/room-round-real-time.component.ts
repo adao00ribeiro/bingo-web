@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, Input, OnInit, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { CardComponent } from "../../../components/card/card.component";
@@ -24,14 +24,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { CommonModule, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { CardsByRoundIdResource } from '../../../resource/card/cards-by-round-id.resource';
 import { TicketSelectorComponent } from "../../../components/ticket-selector/ticket-selector.component";
 import { RoundTimerComponent } from '../../../components/round-timer/round-timer.component';
 import { GuidPipe } from '../../../pipes/guid.pipe';
 import { CurrencyPipe } from '../../../pipes/currency.pipe';
 import { PanelBallsComponent } from "../../../components/panel-balls/panel-balls.component";
-import { MatTab, MatTabGroup, MatTabsModule } from '@angular/material/tabs';
+import {MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-room-round-real-time',

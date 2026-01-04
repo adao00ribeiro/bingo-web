@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection, isDevMode } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { provideEnvironmentNgxCurrency, NgxCurrencyInputMode } from 'ngx-currency';
+import { provideServiceWorker } from '@angular/service-worker';
 
 
 export const appConfig: ApplicationConfig = {
@@ -29,6 +30,9 @@ export const appConfig: ApplicationConfig = {
       min: null,
       max: null,
       inputMode: NgxCurrencyInputMode.Financial,
-    }),
+    }), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          }),
   ],
 };
