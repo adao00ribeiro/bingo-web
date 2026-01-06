@@ -55,8 +55,7 @@ import {MatTabsModule } from '@angular/material/tabs';
     TicketSelectorComponent,
     RoundTimerComponent,
     PanelBallsComponent,
-    MatTabsModule,
-    NgIf
+    MatTabsModule
 ],
   templateUrl: './room-round-real-time.component.html',
   styleUrl: './room-round-real-time.component.scss',
