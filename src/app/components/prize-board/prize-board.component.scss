@@ -9,6 +9,7 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding: 10px;
+   background-color: var(--background-color-second);
 }
 
 .carousel-container::-webkit-scrollbar {

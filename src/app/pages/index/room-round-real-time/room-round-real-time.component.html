@@ -1,7 +1,13 @@
 <div class="rounds-real-time">
   <div class="left">
     <div class="container-header">
-      <div class="container-config">
+
+      <div class="info-round">
+        <div>
+          Rodada: {{(round().id! | guid )}}
+        </div>
+
+         <div class="container-config">
         <button class="button" (click)="audioPlayer.toggleMute();$event.stopPropagation()">
           @if(!audioPlayer.isMuted){
           <mat-icon>volume_up</mat-icon>
@@ -10,17 +16,11 @@
           }
         </button>
       </div>
-      <div class="info-round">
-        <div>
-          Rodada: {{(round().id! | guid )}}
-        </div>
-        @if(!isStartedRound()){
-        <app-round-timer [startedRound]="this.round().started" (isStartedRoundChange)="isStartedRound.set($event)"></app-round-timer>
-        }
         <div>
           Total Premios:
           {{totalPrize()| currency }}
         </div>
+
       </div>
 
       <app-prize-board [prizeResults]="getPrizes()">
@@ -28,22 +28,26 @@
     </div>
 
     @if(isStartedRound()){
-    <app-sung-numbers [mainBall]="roundMessage().mainBall " [secondBall]="roundMessage().secondBall " [thirdBall]="roundMessage().thirdBall " [fourthBall]="roundMessage().forthBall " [MaxNumbers]="roundMessage().maxNumbers" [maxBalls]="roundMessage().round.maxBalls ">
+    <app-sung-numbers [mainBall]="roundMessage()?.mainBall ?? 0 " [secondBall]="roundMessage()?.secondBall ?? 0 " [thirdBall]="roundMessage()?.thirdBall ?? 0" [fourthBall]="roundMessage()?.forthBall ?? 0 " [MaxNumbers]="roundMessage()?.maxNumbers ?? 0" [maxBalls]="roundMessage()?.round?.maxBalls ?? 0 ">
     </app-sung-numbers>
     <mat-tab-group class="custom-tabs" animationDuration="300ms" dynamicHeight="false">
       <mat-tab label="Painel">
-        <app-panel-balls [balls]="roundMessage().numbers "></app-panel-balls>
+        <app-panel-balls [balls]="roundMessage()?.numbers ?? [] "></app-panel-balls>
       </mat-tab>
       <mat-tab label="Lista">
         <app-table-almost-there [toplist]="top_list()">
         </app-table-almost-there>
       </mat-tab>
     </mat-tab-group>
+  }@else{
+         @if(!isStartedRound()){
+        <app-round-timer [startedRound]="this.round().started" (isStartedRoundChange)="isStartedRound.set($event)"></app-round-timer>
+        }
   }
     <div class="container-grid">
       <div class="grid" infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="scrollUpDistance" (scrolled)="onScroll()" [scrollWindow]="false">
         @for (item of cards; track $index) {
-        <app-card [card]="item" [balls]="roundMessage().numbers"></app-card>
+        <app-card [card]="item" [balls]="roundMessage()?.numbers ?? []"></app-card>
         }
       </div>
     </div>

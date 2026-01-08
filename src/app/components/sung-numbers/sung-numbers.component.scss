@@ -6,6 +6,8 @@
   gap: 0.3rem;
   color: white;
   border-radius: 0.4rem;
+ background-color: var(--background-color-second);
+
 }
 
 .container-balls {
@@ -34,14 +36,14 @@
   }
 
   .third-ball {
-    width: calc(var(--main-size) * var(--third-scale));
-    height: calc(var(--main-size) * var(--third-scale));
+    width: calc(var(--main-size) * var( --second-scale));
+    height: calc(var(--main-size) * var( --second-scale));
     font-size: 0.65rem;
   }
 
   .forth-ball {
-    width: calc(var(--main-size) * var(--forth-scale));
-    height: calc(var(--main-size) * var(--forth-scale));
+    width: calc(var(--main-size) * var( --second-scale));
+    height: calc(var(--main-size) * var( --second-scale));
     font-size: 0.55rem;
   }
 }
@@ -57,7 +59,6 @@ span {
   }
 
   .container-balls {
-    --main-size: 70px;
     gap: 0.2rem;
 
     .main-ball {
