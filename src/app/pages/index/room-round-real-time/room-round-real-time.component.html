@@ -28,11 +28,11 @@
     </div>
 
     @if(isStartedRound()){
-    <app-sung-numbers [mainBall]="roundMessage().mainBall " [secondBall]="roundMessage().secondBall " [thirdBall]="roundMessage().thirdBall " [fourthBall]="roundMessage().forthBall " [MaxNumbers]="roundMessage().maxNumbers" [maxBalls]="roundMessage().round.maxBalls ">
+    <app-sung-numbers [mainBall]="roundMessage()?.mainBall ?? 0 " [secondBall]="roundMessage()?.secondBall ?? 0 " [thirdBall]="roundMessage()?.thirdBall ?? 0" [fourthBall]="roundMessage()?.forthBall ?? 0 " [MaxNumbers]="roundMessage()?.maxNumbers ?? 0" [maxBalls]="roundMessage()?.round?.maxBalls ?? 0 ">
     </app-sung-numbers>
     <mat-tab-group class="custom-tabs" animationDuration="300ms" dynamicHeight="false">
       <mat-tab label="Painel">
-        <app-panel-balls [balls]="roundMessage().numbers "></app-panel-balls>
+        <app-panel-balls [balls]="roundMessage()?.numbers ?? [] "></app-panel-balls>
       </mat-tab>
       <mat-tab label="Lista">
         <app-table-almost-there [toplist]="top_list()">
@@ -43,7 +43,7 @@
     <div class="container-grid">
       <div class="grid" infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="scrollUpDistance" (scrolled)="onScroll()" [scrollWindow]="false">
         @for (item of cards; track $index) {
-        <app-card [card]="item" [balls]="roundMessage().numbers"></app-card>
+        <app-card [card]="item" [balls]="roundMessage()?.numbers ?? []"></app-card>
         }
       </div>
     </div>
