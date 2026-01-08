@@ -1,7 +1,13 @@
 <div class="rounds-real-time">
   <div class="left">
     <div class="container-header">
-      <div class="container-config">
+
+      <div class="info-round">
+        <div>
+          Rodada: {{(round().id! | guid )}}
+        </div>
+
+         <div class="container-config">
         <button class="button" (click)="audioPlayer.toggleMute();$event.stopPropagation()">
           @if(!audioPlayer.isMuted){
           <mat-icon>volume_up</mat-icon>
@@ -10,17 +16,11 @@
           }
         </button>
       </div>
-      <div class="info-round">
-        <div>
-          Rodada: {{(round().id! | guid )}}
-        </div>
-        @if(!isStartedRound()){
-        <app-round-timer [startedRound]="this.round().started" (isStartedRoundChange)="isStartedRound.set($event)"></app-round-timer>
-        }
         <div>
           Total Premios:
           {{totalPrize()| currency }}
         </div>
+
       </div>
 
       <app-prize-board [prizeResults]="getPrizes()">
@@ -39,6 +39,10 @@
         </app-table-almost-there>
       </mat-tab>
     </mat-tab-group>
+  }@else{
+         @if(!isStartedRound()){
+        <app-round-timer [startedRound]="this.round().started" (isStartedRoundChange)="isStartedRound.set($event)"></app-round-timer>
+        }
   }
     <div class="container-grid">
       <div class="grid" infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="scrollUpDistance" (scrolled)="onScroll()" [scrollWindow]="false">
