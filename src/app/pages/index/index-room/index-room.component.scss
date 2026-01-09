@@ -1,27 +1,30 @@
 :host {
   width: 100%;
-  height: auto;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
+/* =========================
+   FILTROS
+========================= */
 .filters {
   height: 3rem;
+  flex-shrink: 0;
 }
 
+/* =========================
+   GRID
+========================= */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 0.3rem;
-  overflow-y: scroll;
-  scrollbar-width: none;
-  /* Firefox */
-  -ms-overflow-style: none;
-  /* IE e Edge */
+  overflow-y: auto;
 
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge */
 }
-
 .grid>*:only-child {
   justify-self: start;
   /* Alinha o item à esquerda */
@@ -29,13 +32,22 @@
   /* Define a largura como 400px */
 }
 
+.grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================
+   MENU
+========================= */
 .container-menu {
   display: flex;
-  justify-content: flex-start; // Alinha os botões à esquerda
-  gap: 10px; // Espaçamento entre os botões
-  padding: 10px;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0.5rem;
   background-color: var(--background-color-second);
-button {
+}
+
+.container-menu button {
   background: none;
   border: none;
   color: var(--text-color);
@@ -43,18 +55,19 @@ button {
   font-weight: bold;
   cursor: pointer;
   padding: 5px;
-
-  &:hover {
-    color: var(--color-primary); // Muda a cor ao passar o mouse
-  }
-
-  &:focus {
-    outline: none;
-  }
 }
 
+.container-menu button:hover {
+  color: var(--color-primary);
 }
 
+.container-menu button:focus {
+  outline: none;
+}
+
+/* =========================
+   NO DATA
+========================= */
 .no-data {
   text-align: center;
   padding: 20px;
@@ -63,19 +76,22 @@ button {
   color: #777;
 }
 
-
-
+/* =========================
+   TITULOS
+========================= */
 h3 {
   color: #ffb400;
   margin: 1.875rem 0 var(--site-spacer-l) 0;
-  --vn-menu-item-text-transform: none;
-  text-transform: var(--vn-menu-item-text-transform);
+  text-transform: none;
   font-family: Knockout, Verdana, Arial, Helvetica, sans-serif;
   font-size: 24px;
   font-weight: 400;
   line-height: 36px;
 }
 
+/* =========================
+   TABELA
+========================= */
 .table {
   width: 50%;
   border-collapse: collapse;
@@ -88,38 +104,38 @@ h3 {
   text-align: center;
 }
 
-.table th {}
-
+/* =========================
+   INFO
+========================= */
 .info {
-  margin-top: 2rem;
-  margin: 0 auto;
+  margin: 2rem auto 0;
   max-width: 1024px;
-
-  p,
-  li,
-  th,
-  tr {
-    color: rgb(167, 166, 166);
-  }
-
 }
 
-@media (max-width: 375px) {
-  .container-menu {
-    display: flex;
-    justify-content: flex-start; // Alinha os botões à esquerda
-    gap: 10px; // Espaçamento entre os botões
-    padding: 10px;
-    background-color: var(--background-color-second);
+.info p,
+.info li,
+.info th,
+.info tr {
+  color: rgb(167, 166, 166);
+}
 
-    button {
-      font-size: 0.7rem;
-    }
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 375px) {
+  .container-menu button {
+    font-size: 0.7rem;
   }
 
   .grid {
+    grid-template-columns: 1fr;
+  }
 
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-
+  /* 🔥 MOBILE + APENAS 1 ITEM */
+  .grid > *:only-child {
+    width: 100%;
+    height: 100%;
+    justify-self: stretch;
+    align-self: stretch;
   }
 }
