@@ -86,7 +86,7 @@ import {MatTabsModule } from '@angular/material/tabs';
 })
 export class RoomRoundRealTimeComponent {
   round = input.required<IRound>();
-  roundMessage = input.required<IRoundMessage>();
+  roundMessage = input<IRoundMessage>();
   handleBack = output<void>();
   public readonly roundService = inject(RoundService);
   public readonly cardsByRoundIdResource = inject(CardsByRoundIdResource);
