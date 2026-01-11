@@ -1,5 +1,5 @@
 # Etapa 1: Build do web
-FROM node:23-alpine AS build-bingo-web
+FROM node:24-alpine AS build-bingo-web
 ARG api=${api}
 ENV api=${api}
 ARG API_WS=${API_WS}
