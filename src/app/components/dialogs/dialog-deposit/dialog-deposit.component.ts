@@ -68,7 +68,7 @@ export class DialogDepositComponent  {
 
   async handleDepositClick() {
      this.isDepositing = true;
-     console.log(this.isNormalDeposit)
+
     if (!this.isNormalDeposit) {
       this.criptoDepositComponent.emitDeposit();
 

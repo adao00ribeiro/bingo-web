@@ -4,23 +4,29 @@
       <table class="my-table">
         <thead class="my-header-table">
           <tr>
-            <th *ngFor="let col of columns" [class]="'text-' + col.align">
-              {{ col.label }}
-            </th>
+            @for (col of columns; track col) {
+              <th [class]="'text-' + col.align">
+                {{ col.label }}
+              </th>
+            }
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of datatable; let i = index" [attr.data-index]="i">
-            <td class="text-left">{{ row.cupom }}</td>
-            <td class="text-left">{{ row.doador }}</td>
-            <td>
-              <div class="almostballs">
-                <div *ngFor="let num of row.faltam; let j = index" [attr.key]="j">
-                  {{ formatNumber(num) }}
+          @for (row of datatable; track row; let i = $index) {
+            <tr [attr.data-index]="i">
+              <td class="text-left">{{ row.cupom }}</td>
+              <td class="text-left">{{ row.doador }}</td>
+              <td>
+                <div class="almostballs">
+                  @for (num of row.faltam; track num; let j = $index) {
+                    <div [attr.key]="j">
+                      {{ formatNumber(num) }}
+                    </div>
+                  }
                 </div>
-              </div>
-            </td>
-          </tr>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

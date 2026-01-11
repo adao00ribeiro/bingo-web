@@ -9,8 +9,8 @@ export abstract class BaseResource<TRequest = any, TResponse = any> {
   private requestSignal = signal<TRequest>({} as TRequest);
 
   resource = rxResource({
-    request: this.requestSignal,
-    loader: ({ request }) => this.loader(request),
+    params: this.requestSignal,
+    stream: ({ params }) => this.loader(params),
   });
 
   /** Atualiza o request e recarrega os dados */

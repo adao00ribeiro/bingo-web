@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ButtonMenuComponent } from '../../components/button-menu/button-menu.component';
 import { IPunter } from '../../interfaces/IPunter';
 import { CurrencyPipe } from '../../pipes/currency.pipe';
@@ -16,6 +16,8 @@ import { SocketService } from '../../services/socket/socket.service';
 import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '../../constants/storage.service.constants';
 import { ThemeService } from '../../services/theme.service';
 import { PunterMeResource } from '../../resource/punter/punter-me.resource';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { IOnlineHouseResponse } from '../../interfaces/response/bingo/IOnlineHouseResponse';
 @Component({
   selector: 'app-index',
   standalone: true,
@@ -33,11 +35,16 @@ export class IndexComponent implements OnInit {
   private socketService: SocketService = inject(SocketService)
   protected readonly punterMeResource = inject(PunterMeResource);
   protected readonly themeService = inject(ThemeService);
-
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private data = toSignal(this.route.data);
+  onlineHouse = computed(() => this.data()?.['onlineHouse'] as IOnlineHouseResponse);
+  enabledScratch = computed(() => {
+      return this.onlineHouse()?.settings?.enabledScratch ?? false;
+  });
   readonly dialog = inject(MatDialog);
   private _mobileQueryListener: () => void;
   isVisible: boolean = false;
-  enabledScratch: boolean = false;
+
 
   user = signal<IPunter | undefined>(undefined);
   lastBalance: number | null = null;
@@ -58,7 +65,7 @@ export class IndexComponent implements OnInit {
       if (user == null) {
         return;
       }
-      this.enabledScratch = user.seller.settings.enabledScratch
+
       this.user.set(user);
 
       let id = user.id;

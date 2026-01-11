@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,10 +10,11 @@ import { IRegister } from '../../interfaces/IRegister';
 import { RegisterService } from '../../services/auth/register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+import {NgxBrazil, NgxBrazilMASKS, NgxBrazilValidators,  NgxBrazilMASKSIE, MaskedInputDirective } from 'ngx-brazil';
 import { Location } from '@angular/common';
 import { confirmPasswordValidator, passwordValidator } from '../../utils/password';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { IOnlineHouseResponse } from '../../interfaces/response/bingo/IOnlineHouseResponse';
 
 // --- Validador Customizado para CPF ---
 export function cpfValidator(control: AbstractControl): ValidationErrors | null {
@@ -99,7 +100,6 @@ export function idadeValidator(idadeMinima: number) {
   selector: 'app-register',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule,
@@ -107,18 +107,22 @@ export function idadeValidator(idadeMinima: number) {
     MatIconModule,
     MatDividerModule,
     MatButtonModule,
-    NgxMaskDirective,
-  ],
+    MaskedInputDirective,
+    NgxBrazil
+],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 
 })
 export class RegisterComponent implements OnInit {
+ public MASKS = NgxBrazilMASKS;
+  public MASKSIE= NgxBrazilMASKSIE;
+
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.pattern(/\s/), Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [Validators.required]),
-    cpf: new FormControl('', [Validators.required]),
+    phoneNumber: new FormControl('', [Validators.required,NgxBrazilValidators.phoneNumber]),
+    cpf: new FormControl('', [Validators.required, NgxBrazilValidators.cpf]),
     dateBirth: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required, Validators.minLength(8), passwordValidator]),
     confirmPassword: new FormControl('', [Validators.required, confirmPasswordValidator])
@@ -128,11 +132,16 @@ export class RegisterComponent implements OnInit {
   private snackBar: MatSnackBar = inject(MatSnackBar);
   private router: Router = inject(Router);
   private fb: FormBuilder = inject(FormBuilder);
+
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private data = toSignal(this.route.data);
+  onlineHouse = computed(() => this.data()?.['onlineHouse'] as IOnlineHouseResponse);
+
 
   hide1 = true;
   hide2 = true;
   constructor(private location: Location) {
+
   }
   ngOnInit(): void {
     this.registerForm.get('password')?.valueChanges.subscribe(() => {
@@ -161,12 +170,12 @@ export class RegisterComponent implements OnInit {
       name: this.registerForm.value.name ?? '',
       userName: this.registerForm.value.email ?? '',
       email: this.registerForm.value.email ?? '',
-      phone: this.registerForm.value.phone ?? '',
+      phone: this.registerForm.value.phoneNumber ?? '',
       cpf: this.registerForm.value.cpf ?? '',
       password: this.registerForm.value.password ?? "",
       passwordConfirmed: this.registerForm.value.confirmPassword ?? '',
       dateBirth: this.registerForm.value.dateBirth ? this.convertToIso8601(this.registerForm.value.dateBirth) : '',
-      sellerId: 'b9c2d2b5-eeae-486c-85ea-06dd5cfe0c06',
+      onlineHouseId: this.onlineHouse().id,
       registeredWithTag: tag,
     };
 

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { ITopCardInfo } from '../../../interfaces/ITopCardInfo';
@@ -10,7 +10,7 @@ interface TableData {
 }
 @Component({
   selector: 'app-table-almost-there',
-  imports: [MatTableModule,CommonModule],
+  imports: [MatTableModule],
   templateUrl: './table-almost-there.component.html',
   styleUrl: './table-almost-there.component.scss'
 })

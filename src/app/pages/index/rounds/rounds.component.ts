@@ -50,7 +50,8 @@ export class RoundsComponent implements OnInit {
     if (this.punter() == null) {
       return;
     }
-    const roomIds = this.punter()?.seller?.rooms?.map(room => room.id) ?? [];
+
+    const roomIds = this.punter()?.onlineHouse?.ownerRooms?.map(room => room.id) ?? [];
 
     if (roomIds.length === 0) {
       return;

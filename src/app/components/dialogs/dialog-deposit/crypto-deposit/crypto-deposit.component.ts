@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, effect, EventEmitter, inject, Output, signal, OnInit, computed, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,7 +20,6 @@ import { NetworksResource } from '../../../../resource/blockchain-network/networ
   selector: 'app-crypto-deposit',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule,
@@ -33,7 +32,7 @@ import { NetworksResource } from '../../../../resource/blockchain-network/networ
     MatButtonModule,
     MatSnackBarModule,
     MatProgressSpinnerModule
-  ],
+],
   templateUrl: './crypto-deposit.component.html',
   styleUrl: './crypto-deposit.component.scss'
 })

@@ -1,5 +1,5 @@
-const newLocal = '${api}';
-const newLocal_1 = '${API_WS}';
+const newLocal = 'http://localhost';
+const newLocal_1 = 'ws://localhost/ws';
 export const environment = {
   production: false,
     api: newLocal || 'http://localhost',
