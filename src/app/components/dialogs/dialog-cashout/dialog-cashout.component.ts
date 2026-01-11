@@ -11,7 +11,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { WithdrawalService } from '../../../services/withdrawal/withdrawal.service';
 import { IWithdrawalRequest } from '../../../interfaces/IWithdrawalRequest';
 import { CurrencyPipe } from '../../../pipes/currency.pipe';
-import { NgxCurrencyDirective } from 'ngx-currency';
 import { PunterMeResource } from '../../../resource/punter/punter-me.resource';
 export interface DialogCashout {
 
@@ -29,8 +28,7 @@ export interface DialogCashout {
     MatDividerModule,
     MatDialogContent,
     MatCardModule,
-    MatButtonModule,
-  NgxCurrencyDirective],
+    MatButtonModule],
   templateUrl: './dialog-cashout.component.html',
   styleUrl: './dialog-cashout.component.scss'
 })

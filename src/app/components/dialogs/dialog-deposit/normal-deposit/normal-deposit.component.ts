@@ -9,7 +9,6 @@ import { MatOptionModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { IDepositRequest } from '../../../../interfaces/IDepositRequest';
-import { NgxCurrencyDirective } from 'ngx-currency';
 import { CurrencyPipe } from '../../../../pipes/currency.pipe';
 
 @Component({
@@ -25,7 +24,6 @@ import { CurrencyPipe } from '../../../../pipes/currency.pipe';
     MatOptionModule,
     MatCardModule,
     MatButtonModule,
-    NgxCurrencyDirective,
     CurrencyPipe
   ],
   templateUrl: './normal-deposit.component.html',
