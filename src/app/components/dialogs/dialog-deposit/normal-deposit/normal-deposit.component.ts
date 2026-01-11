@@ -23,8 +23,7 @@ import { CurrencyPipe } from '../../../../pipes/currency.pipe';
     MatSelectModule,
     MatOptionModule,
     MatCardModule,
-    MatButtonModule,
-    CurrencyPipe
+    MatButtonModule
   ],
   templateUrl: './normal-deposit.component.html',
   styleUrl: './normal-deposit.component.scss'
