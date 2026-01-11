@@ -1,6 +1,6 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { DialogAllWinnersComponent } from './components/dialogs/dialog-all-winners/dialog-all-winners.component';
 import { EPrizeType } from './enums/EPrizeType';
 import { AudioDataBaseService } from './services/audio-data-base.service';
@@ -22,6 +22,13 @@ export class AppComponent implements OnInit {
   readonly audioDataBaseService = inject(AudioDataBaseService);
   readonly themeService = inject(ThemeService);
   readonly timerService = inject(TimerService);
+
+    private router = inject(Router);
+  isNavigating = computed(() => {
+    console.log(this.router.getCurrentNavigation())
+    return !!this.router.getCurrentNavigation()
+  }
+      );
 
   constructor() {
 

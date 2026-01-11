@@ -19,6 +19,7 @@ import { ILoginRequest } from '../../interfaces/ILoginRequest';
 import { timer } from 'rxjs';
 import { STORAGE_REFRESH_TOKEN, STORAGE_TOKEN } from '../../constants/storage.service.constants';
 import { StorageService } from '../../services/storage.service';
+import { OnlineHouseService } from '../../services/online-house/online-house.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -39,6 +40,7 @@ import { StorageService } from '../../services/storage.service';
 export class LoginComponent {
   loginForm: FormGroup;
   private loginService: LoginService = inject(LoginService);
+  private onlineHouseService: OnlineHouseService = inject(OnlineHouseService);
   private snackBar: MatSnackBar = inject(MatSnackBar);
   private router: Router = inject(Router);
   private storageService = inject(StorageService);

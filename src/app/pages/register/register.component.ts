@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -14,6 +14,8 @@ import { CommonModule } from '@angular/common';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { Location } from '@angular/common';
 import { confirmPasswordValidator, passwordValidator } from '../../utils/password';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { IOnlineHouseResponse } from '../../interfaces/response/bingo/IOnlineHouseResponse';
 
 // --- Validador Customizado para CPF ---
 export function cpfValidator(control: AbstractControl): ValidationErrors | null {
@@ -129,10 +131,12 @@ export class RegisterComponent implements OnInit {
   private router: Router = inject(Router);
   private fb: FormBuilder = inject(FormBuilder);
   private route: ActivatedRoute = inject(ActivatedRoute);
-
+   private data = toSignal(this.route.data);
+  onlineHouse = computed(() => this.data()?.['onlineHouse'] as IOnlineHouseResponse);
   hide1 = true;
   hide2 = true;
   constructor(private location: Location) {
+
   }
   ngOnInit(): void {
     this.registerForm.get('password')?.valueChanges.subscribe(() => {
@@ -166,7 +170,7 @@ export class RegisterComponent implements OnInit {
       password: this.registerForm.value.password ?? "",
       passwordConfirmed: this.registerForm.value.confirmPassword ?? '',
       dateBirth: this.registerForm.value.dateBirth ? this.convertToIso8601(this.registerForm.value.dateBirth) : '',
-      sellerId: 'b9c2d2b5-eeae-486c-85ea-06dd5cfe0c06',
+      onlineHouseId: this.onlineHouse().id,
       registeredWithTag: tag,
     };
 
