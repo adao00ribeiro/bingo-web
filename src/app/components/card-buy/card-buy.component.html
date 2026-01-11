@@ -1,18 +1,22 @@
 <section class="buycardsection">
-  <header class="buycardheader" *ngIf="!hiddenTittle">
-    <h3>Rodada: {{  round().id | guid}}</h3>
-  </header>
+  @if (!hiddenTittle) {
+    <header class="buycardheader">
+      <h3>Rodada: {{  round().id | guid}}</h3>
+    </header>
+  }
   <article class="buycardarticle">
-    <div class="articleTitle" *ngIf="!hiddenTittle">
-      <div style="display: flex; justify-content: space-between;">
-        <span>Valor da Cartela:</span>
-        <span>{{ round().cardValue | currency }}</span>
+    @if (!hiddenTittle) {
+      <div class="articleTitle">
+        <div style="display: flex; justify-content: space-between;">
+          <span>Valor da Cartela:</span>
+          <span>{{ round().cardValue | currency }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+          <span>Cartelas Compradas:</span>
+          <span>{{ round().cardsPurchased }}</span>
+        </div>
       </div>
-      <div style="display: flex; justify-content: space-between">
-        <span>Cartelas Compradas:</span>
-        <span>{{ round().cardsPurchased }}</span>
-      </div>
-    </div>
+    }
 
     <div class="buycardcontainerBuy bg-second">
       <input class="text-right" [disabled]="true" matInput [(ngModel)]="valueModel">
@@ -44,14 +48,16 @@
     <div style="display: flex; justify-content: space-between">
       <span class title="Total stake"> Total </span>
       <span title="2.5 mBTC">{{this.moneytotal | currency}}</span>
-  </div>
-  <div class="container-button">
-    <button  *ngIf="!hiddenTittle" (click)="closeModal.emit()">
-    Fechar
-  </button>
-  <button [disabled]="loading" (click)="changeBuy()">
-    Comprar
-  </button>
-  </div>
+    </div>
+    <div class="container-button">
+      @if (!hiddenTittle) {
+        <button  (click)="closeModal.emit()">
+          Fechar
+        </button>
+      }
+      <button [disabled]="loading" (click)="changeBuy()">
+        Comprar
+      </button>
+    </div>
   </footer>
 </section>

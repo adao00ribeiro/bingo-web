@@ -10,7 +10,7 @@ import { IRegister } from '../../interfaces/IRegister';
 import { RegisterService } from '../../services/auth/register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { Location } from '@angular/common';
 import { confirmPasswordValidator, passwordValidator } from '../../utils/password';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -100,15 +100,14 @@ export function idadeValidator(idadeMinima: number) {
   selector: 'app-register',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
     MatDividerModule,
-    MatButtonModule,
-  ],
+    MatButtonModule
+],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 

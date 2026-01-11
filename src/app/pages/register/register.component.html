@@ -10,58 +10,78 @@
       <mat-form-field class="example-full-width">
         <mat-label>Nome</mat-label>
         <input type="text" matInput formControlName="name">
-        <mat-error *ngIf="f['name'].hasError('required')">
-          O nome é obrigatório.
-        </mat-error>
-        <mat-error *ngIf="f['name'].hasError('minlength')">
-          O nome deve ter no mínimo 3 caracteres.
-        </mat-error>
+        @if (f['name'].hasError('required')) {
+          <mat-error>
+            O nome é obrigatório.
+          </mat-error>
+        }
+        @if (f['name'].hasError('minlength')) {
+          <mat-error>
+            O nome deve ter no mínimo 3 caracteres.
+          </mat-error>
+        }
       </mat-form-field>
 
 
       <mat-form-field class="example-full-width">
         <mat-label>Email</mat-label>
         <input type="email" matInput formControlName="email">
-        <mat-error *ngIf="f['email'].hasError('required')">
-          O E-mail é obrigatório.
-        </mat-error>
-        <mat-error *ngIf="f['email'].hasError('email')">
-          E-mail inválido.
-        </mat-error>
+        @if (f['email'].hasError('required')) {
+          <mat-error>
+            O E-mail é obrigatório.
+          </mat-error>
+        }
+        @if (f['email'].hasError('email')) {
+          <mat-error>
+            E-mail inválido.
+          </mat-error>
+        }
       </mat-form-field>
 
 
       <mat-form-field class="example-full-width">
         <mat-label>Telefone</mat-label>
         <input matInput type="tel" formControlName="phone" placeholder="44 9 9900-9900" mask="(00) 0000-0000 || (00) 0 0000-0000" />
-        <mat-error *ngIf="f['phone'].hasError('required')">
-          O Telefone é obrigatório.
-        </mat-error>
-        <mat-error *ngIf="f['phone'].hasError('pattern')">
-          Telefone inválido.
-        </mat-error>
+        @if (f['phone'].hasError('required')) {
+          <mat-error>
+            O Telefone é obrigatório.
+          </mat-error>
+        }
+        @if (f['phone'].hasError('pattern')) {
+          <mat-error>
+            Telefone inválido.
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
         <mat-label>Cpf</mat-label>
         <input matInput formControlName="cpf" mask="000.000.000-00"/>
-        <mat-error *ngIf="f['cpf'].hasError('required')">
-          O CPF é obrigatório.
-        </mat-error>
-        <mat-error *ngIf="f['cpf'].hasError('cpfInvalido')">
-          CPF inválido.
-        </mat-error>
+        @if (f['cpf'].hasError('required')) {
+          <mat-error>
+            O CPF é obrigatório.
+          </mat-error>
+        }
+        @if (f['cpf'].hasError('cpfInvalido')) {
+          <mat-error>
+            CPF inválido.
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
         <mat-label>Data de Nascimento</mat-label>
         <input type="text" matInput formControlName="dateBirth" placeholder="dd/mm/aaaa" mask="00/00/0000">
-        <mat-error *ngIf="f['dateBirth'].hasError('required')">
-          Data de nascimento é obrigatório.
-        </mat-error>
-        <mat-error *ngIf="f['dateBirth'].hasError('dataErro')">
-          Data de nascimento inválida
-        </mat-error>
+        @if (f['dateBirth'].hasError('required')) {
+          <mat-error>
+            Data de nascimento é obrigatório.
+          </mat-error>
+        }
+        @if (f['dateBirth'].hasError('dataErro')) {
+          <mat-error>
+            Data de nascimento inválida
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
@@ -94,18 +114,18 @@
         <mat-label>Repita sua senha</mat-label>
         <input name="confirmPassword" matInput [type]="hide2 ? 'password' : 'text'" formControlName="confirmPassword"
           required>
-        <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
-         @if (registerForm.get('confirmPassword')?.hasError('passwordsDoNotMatch')) {
-        <mat-error >
-          As senhas não são iguais.
-        </mat-error>
-      }
-      </mat-form-field>
+          <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+          @if (registerForm.get('confirmPassword')?.hasError('passwordsDoNotMatch')) {
+            <mat-error >
+              As senhas não são iguais.
+            </mat-error>
+          }
+        </mat-form-field>
 
-    </div>
-    <div class="containerRegistrarRecuperar">
-      <button  type="submit">Registrar</button>
-    </div>
-  </form>
+      </div>
+      <div class="containerRegistrarRecuperar">
+        <button  type="submit">Registrar</button>
+      </div>
+    </form>
 
-</div>
+  </div>

@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
-import { CommonModule } from '@angular/common';
+
 import { MatSelectModule } from '@angular/material/select';
 import { IDepositRequest } from '../../../../interfaces/IDepositRequest';
 import { CurrencyPipe } from '../../../../pipes/currency.pipe';
@@ -14,7 +14,6 @@ import { CurrencyPipe } from '../../../../pipes/currency.pipe';
 @Component({
   selector: 'app-normal-deposit',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule,
@@ -24,7 +23,7 @@ import { CurrencyPipe } from '../../../../pipes/currency.pipe';
     MatOptionModule,
     MatCardModule,
     MatButtonModule
-  ],
+],
   templateUrl: './normal-deposit.component.html',
   styleUrl: './normal-deposit.component.scss'
 })
