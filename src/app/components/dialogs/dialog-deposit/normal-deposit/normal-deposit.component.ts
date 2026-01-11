@@ -10,6 +10,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { IDepositRequest } from '../../../../interfaces/IDepositRequest';
 import { CurrencyPipe } from '../../../../pipes/currency.pipe';
+import { currency, MaskedInputDirective, NgxBrazil, NgxBrazilMASKS, NgxBrazilValidators } from 'ngx-brazil';
 
 @Component({
   selector: 'app-normal-deposit',
@@ -22,7 +23,9 @@ import { CurrencyPipe } from '../../../../pipes/currency.pipe';
     MatSelectModule,
     MatOptionModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MaskedInputDirective,
+    NgxBrazil
 ],
   templateUrl: './normal-deposit.component.html',
   styleUrl: './normal-deposit.component.scss'
@@ -30,17 +33,27 @@ import { CurrencyPipe } from '../../../../pipes/currency.pipe';
 export class NormalDepositComponent {
   @Output() depositChange = new EventEmitter<IDepositRequest>();
   depositForm: FormGroup;
-
+ public MASKS = NgxBrazilMASKS;
   constructor(private fb: FormBuilder) {
     this.depositForm = this.fb.group({
-      value: ['', [Validators.required, Validators.min(0.01)]],
+      currency: ['', [Validators.required, Validators.min(1),NgxBrazilValidators.currency ] ],
     });
   }
 
   emitDeposit() {
+
     if (this.depositForm.valid) {
+      const rawValue = this.depositForm.value.currency;
+
+      const value = Number(
+      rawValue
+        .replace('R$ ', '')
+        .replace(/\./g, '')
+        .replace(',', '.')
+    );
+
       this.depositChange.emit({
-        value: Number(this.depositForm.value.value),
+        value: value,
         amount:0
       });
     }

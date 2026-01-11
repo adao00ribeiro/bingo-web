@@ -16,10 +16,6 @@ export class OnlineHouseService {
     return this.httpClient.get<IPaged<IOnlineHouseResponse>>(this.url + `?page=${page}&size=${size}`)
   }
   GetByHostname(hostname: string): Observable<IOnlineHouseResponse> {
-    return this.httpClient
-    .get<IOnlineHouseResponse>(`${this.url}/hostname/${hostname}`)
-    .pipe(
-      delay(10_000) // 1 minuto
-    );
+    return this.httpClient.get<IOnlineHouseResponse>(`${this.url}/hostname/${hostname}`)
   }
 }

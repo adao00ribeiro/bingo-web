@@ -10,7 +10,7 @@ import { IRegister } from '../../interfaces/IRegister';
 import { RegisterService } from '../../services/auth/register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-
+import {NgxBrazil, NgxBrazilMASKS, NgxBrazilValidators,  NgxBrazilMASKSIE, MaskedInputDirective } from 'ngx-brazil';
 import { Location } from '@angular/common';
 import { confirmPasswordValidator, passwordValidator } from '../../utils/password';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -106,18 +106,23 @@ export function idadeValidator(idadeMinima: number) {
     MatInputModule,
     MatIconModule,
     MatDividerModule,
-    MatButtonModule
+    MatButtonModule,
+    MaskedInputDirective,
+    NgxBrazil
 ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 
 })
 export class RegisterComponent implements OnInit {
+ public MASKS = NgxBrazilMASKS;
+  public MASKSIE= NgxBrazilMASKSIE;
+
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.pattern(/\s/), Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [Validators.required]),
-    cpf: new FormControl('', [Validators.required]),
+    phoneNumber: new FormControl('', [Validators.required,NgxBrazilValidators.phoneNumber]),
+    cpf: new FormControl('', [Validators.required, NgxBrazilValidators.cpf]),
     dateBirth: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required, Validators.minLength(8), passwordValidator]),
     confirmPassword: new FormControl('', [Validators.required, confirmPasswordValidator])
@@ -127,9 +132,12 @@ export class RegisterComponent implements OnInit {
   private snackBar: MatSnackBar = inject(MatSnackBar);
   private router: Router = inject(Router);
   private fb: FormBuilder = inject(FormBuilder);
+
   private route: ActivatedRoute = inject(ActivatedRoute);
-   private data = toSignal(this.route.data);
+  private data = toSignal(this.route.data);
   onlineHouse = computed(() => this.data()?.['onlineHouse'] as IOnlineHouseResponse);
+
+
   hide1 = true;
   hide2 = true;
   constructor(private location: Location) {
@@ -162,7 +170,7 @@ export class RegisterComponent implements OnInit {
       name: this.registerForm.value.name ?? '',
       userName: this.registerForm.value.email ?? '',
       email: this.registerForm.value.email ?? '',
-      phone: this.registerForm.value.phone ?? '',
+      phone: this.registerForm.value.phoneNumber ?? '',
       cpf: this.registerForm.value.cpf ?? '',
       password: this.registerForm.value.password ?? "",
       passwordConfirmed: this.registerForm.value.confirmPassword ?? '',

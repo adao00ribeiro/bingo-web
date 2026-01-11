@@ -41,13 +41,13 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Telefone</mat-label>
-        <input matInput type="tel" formControlName="phone" placeholder="44 9 9900-9900" mask="(00) 0000-0000 || (00) 0 0000-0000" />
-        @if (f['phone'].hasError('required')) {
+        <input matInput type="text" formControlName="phoneNumber" phoneNumber [textMask]="{mask: MASKS['phoneNumber'].textMask}">
+        @if (f['phoneNumber'].hasError('required')) {
           <mat-error>
             O Telefone é obrigatório.
           </mat-error>
         }
-        @if (f['phone'].hasError('pattern')) {
+        @if (f['phoneNumber'].hasError('pattern')) {
           <mat-error>
             Telefone inválido.
           </mat-error>
@@ -56,7 +56,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Cpf</mat-label>
-        <input matInput formControlName="cpf" mask="000.000.000-00"/>
+        <input matInput formControlName="cpf" cpf [textMask]="{mask: MASKS['cpf'].textMask}" placeholder="CPF" />
         @if (f['cpf'].hasError('required')) {
           <mat-error>
             O CPF é obrigatório.

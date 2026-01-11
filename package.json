@@ -24,6 +24,7 @@
     "@angular/service-worker": "^21.0.8",
     "ethers": "^6.15.0",
     "jwt-decode": "^4.0.0",
+    "ngx-brazil": "21.0.0",
     "ngx-infinite-scroll": "^21.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

@@ -7,11 +7,11 @@ import { AudioDataBaseService } from './services/audio-data-base.service';
 import { DialogNumberSelectionComponent } from './components/dialogs/dialog-number-selection/dialog-number-selection.component';
 import { DialogRouletteComponent } from './components/dialogs/dialog-roulette/dialog-roulette.component';
 import { TimerService } from './services/timer.service';
-import { MatIcon } from '@angular/material/icon';
 import { ThemeService } from './services/theme.service';
+import { LoadingSpinnerComponent } from "./components/loading-spinner/loading-spinner.component";
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, LoadingSpinnerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -25,8 +25,8 @@ export class AppComponent implements OnInit {
 
     private router = inject(Router);
   isNavigating = computed(() => {
-    console.log(this.router.getCurrentNavigation())
-    return !!this.router.getCurrentNavigation()
+    console.log(this.router.currentNavigation())
+    return !!this.router.currentNavigation()
   }
       );
 

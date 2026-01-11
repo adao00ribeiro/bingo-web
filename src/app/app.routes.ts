@@ -30,6 +30,9 @@ export const routes: Routes = [
     path: '',
     component: IndexComponent,
     canActivate: [authGuard],
+      resolve:{
+        onlineHouse: onlineHouseResolver,
+    },
     children: [
       {
         path: '',

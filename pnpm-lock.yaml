@@ -47,6 +47,9 @@ importers:
       jwt-decode:
         specifier: ^4.0.0
         version: 4.0.0
+      ngx-brazil:
+        specifier: 21.0.0
+        version: 21.0.0(9c00264c519abf51148d73bcdd2a84a3)
       ngx-infinite-scroll:
         specifier: ^21.0.0
         version: 21.0.0(@angular/common@21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0))
@@ -2612,6 +2615,16 @@ packages:
   negotiator@1.0.0:
     resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
     engines: {node: '>= 0.6'}
+
+  ngx-brazil@21.0.0:
+    resolution: {integrity: sha512-ybtHrbi7Zts6UBbt9nXB4OCKiYUpE8aHZQZ6AnsCVbna8hn6S7jtBq50pEbCeIv3m72Sds7bHbSS+JcFGSIHeQ==}
+    peerDependencies:
+      '@angular/common': ^21.0.0
+      '@angular/core': ^21.0.0
+      '@angular/forms': ^21.0.0
+      '@angular/platform-browser': ^21.0.0
+      rxjs: '>=6.5.3'
+      zone.js: '>=0.13.3'
 
   ngx-infinite-scroll@21.0.0:
     resolution: {integrity: sha512-bm1hCB7aoO9zyiNZBBOLHx9t+cwk/tLiFG5eQB8pWiNup6I2eQiHoT5B2gqlJjj4GfuER5phy5AIWl/B7YiwSQ==}
@@ -5878,6 +5891,16 @@ snapshots:
   negotiator@0.6.3: {}
 
   negotiator@1.0.0: {}
+
+  ngx-brazil@21.0.0(9c00264c519abf51148d73bcdd2a84a3):
+    dependencies:
+      '@angular/common': 21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
+      '@angular/core': 21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0)
+      '@angular/forms': 21.0.8(@angular/common@21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@21.0.8(@angular/animations@21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
+      '@angular/platform-browser': 21.0.8(@angular/animations@21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0))
+      rxjs: 7.8.1
+      tslib: 2.8.1
+      zone.js: 0.15.0
 
   ngx-infinite-scroll@21.0.0(@angular/common@21.0.8(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.0.8(@angular/compiler@21.0.8)(rxjs@7.8.1)(zone.js@0.15.0)):
     dependencies:

@@ -40,7 +40,6 @@ import { OnlineHouseService } from '../../services/online-house/online-house.ser
 export class LoginComponent {
   loginForm: FormGroup;
   private loginService: LoginService = inject(LoginService);
-  private onlineHouseService: OnlineHouseService = inject(OnlineHouseService);
   private snackBar: MatSnackBar = inject(MatSnackBar);
   private router: Router = inject(Router);
   private storageService = inject(StorageService);

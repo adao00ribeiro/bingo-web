@@ -3,26 +3,25 @@
 
     <mat-form-field class="full-width" appearance="outline">
       <mat-label>Valor do Depósito</mat-label>
-      <input matInput currencyMask formControlName="value">
-      <mat-icon matSuffix="">attach_money</mat-icon>
-      @if (depositForm.get('value')?.hasError('required')) {
+      <input matInput formControlName="currency" currency [textMask]="{mask: MASKS['currency'].textMask}">
+      @if (depositForm.get('currency')?.hasError('required')) {
         <mat-error>
           Valor é obrigatório
         </mat-error>
       }
-      @if (depositForm.get('value')?.hasError('min')) {
+      @if (depositForm.get('currency')?.hasError('min')) {
         <mat-error>
           Valor mínimo é R$ 0,01
         </mat-error>
       }
     </mat-form-field>
-    @if (depositForm.get('value')?.value) {
+    @if (depositForm.get('currency')?.value) {
       <div class="deposit-info">
         <mat-card class="info-card">
           <mat-card-content>
             <div class="info-row total">
               <span class="label">Total:</span>
-              <span class="value">{{ depositForm.get('value')?.value }} </span>
+              <span class="value">{{ depositForm.get('currency')?.value | currencyBrazil }} </span>
             </div>
           </mat-card-content>
         </mat-card>
