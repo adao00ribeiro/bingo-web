@@ -48,11 +48,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       ngx-infinite-scroll:
-        specifier: ^19.0.0
-        version: 19.0.0(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))
-      ngx-mask:
-        specifier: ^19.0.7
-        version: 19.0.7(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/forms@20.3.16(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.3.16(@angular/animations@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))
+        specifier: ^21.0.0
+        version: 21.0.0(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
@@ -2359,18 +2356,11 @@ packages:
     resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
     engines: {node: '>= 0.6'}
 
-  ngx-infinite-scroll@19.0.0:
-    resolution: {integrity: sha512-Ft4xNNDLXoDGi2hF6ylehjxbG8JIgfoL6qDWWcebGMcbh1CEfEsh0HGkDuFlX/cBBMenRh2HFbXlYq8BAtbvLw==}
+  ngx-infinite-scroll@21.0.0:
+    resolution: {integrity: sha512-bm1hCB7aoO9zyiNZBBOLHx9t+cwk/tLiFG5eQB8pWiNup6I2eQiHoT5B2gqlJjj4GfuER5phy5AIWl/B7YiwSQ==}
     peerDependencies:
-      '@angular/common': '>=19.0.0 <20.0.0'
-      '@angular/core': '>=19.0.0 <20.0.0'
-
-  ngx-mask@19.0.7:
-    resolution: {integrity: sha512-Zkv/bVuXMTAPsm5yL9BVnj1AKQSc/FQ4jmN1f8ZAa0wL4/rzm8EgTcXahP+eqG+GGUDP4e6RcipfKqzFeBdsKQ==}
-    peerDependencies:
-      '@angular/common': '>=14.0.0'
-      '@angular/core': '>=14.0.0'
-      '@angular/forms': '>=14.0.0'
+      '@angular/common': '>=21.0.0 <22.0.0'
+      '@angular/core': '>=21.0.0 <22.0.0'
 
   node-addon-api@6.1.0:
     resolution: {integrity: sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA==}
@@ -5434,17 +5424,10 @@ snapshots:
 
   negotiator@1.0.0: {}
 
-  ngx-infinite-scroll@19.0.0(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)):
+  ngx-infinite-scroll@21.0.0(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)):
     dependencies:
       '@angular/common': 20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@angular/core': 20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)
-      tslib: 2.8.1
-
-  ngx-mask@19.0.7(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/forms@20.3.16(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.3.16(@angular/animations@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)):
-    dependencies:
-      '@angular/common': 20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
-      '@angular/core': 20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)
-      '@angular/forms': 20.3.16(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.3.16(@angular/animations@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@20.3.16(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.3.16(@angular/compiler@20.3.16)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       tslib: 2.8.1
 
   node-addon-api@6.1.0:

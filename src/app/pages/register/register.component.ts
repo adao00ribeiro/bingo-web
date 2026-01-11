@@ -11,7 +11,6 @@ import { RegisterService } from '../../services/auth/register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { Location } from '@angular/common';
 import { confirmPasswordValidator, passwordValidator } from '../../utils/password';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -109,7 +108,6 @@ export function idadeValidator(idadeMinima: number) {
     MatIconModule,
     MatDividerModule,
     MatButtonModule,
-    NgxMaskDirective,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
