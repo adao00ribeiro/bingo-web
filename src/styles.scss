@@ -22,35 +22,35 @@ body {
 }
 
 .sucess-snackbar {
-  --mdc-snackbar-container-color: rgb(0, 190, 0);
-  --mdc-snackbar-supporting-text-color: white;
+  --mat-snackbar-container-color: rgb(0, 190, 0);
+  --mat-snackbar-supporting-text-color: white;
 
   border-radius: 1rem;
-  --mdc-snackbar-supporting-text-font: Cambria, Cochin, Georgia, Times;
-  --mdc-snackbar-supporting-text-line-height: 2rem --mdc-snackbar-supporting-text-size: 2rem !important;
-  --mdc-snackbar-supporting-text-weight: bold;
+  --mat-snackbar-supporting-text-font: Cambria, Cochin, Georgia, Times;
+  --mat-snackbar-supporting-text-line-height: 2rem --mat-snackbar-supporting-text-size: 2rem !important;
+  --mat-snackbar-supporting-text-weight: bold;
 
 }
 
 .warning-snackbar {
-  --mdc-snackbar-container-color: rgb(251, 255, 0);
-  --mdc-snackbar-supporting-text-color: rgb(2, 2, 2);
+  --mat-snackbar-container-color: rgb(251, 255, 0);
+  --mat-snackbar-supporting-text-color: rgb(2, 2, 2);
 
   border-radius: 1rem;
-  --mdc-snackbar-supporting-text-font: Cambria, Cochin, Georgia, Times;
-  --mdc-snackbar-supporting-text-line-height: 2rem --mdc-snackbar-supporting-text-size: 2rem !important;
-  --mdc-snackbar-supporting-text-weight: bold;
+  --mat-snackbar-supporting-text-font: Cambria, Cochin, Georgia, Times;
+  --mat-snackbar-supporting-text-line-height: 2rem --mat-snackbar-supporting-text-size: 2rem !important;
+  --mat-snackbar-supporting-text-weight: bold;
 
 }
 
 .error-snackbar {
-  --mdc-snackbar-container-color: rgb(243, 7, 7);
-  --mdc-snackbar-supporting-text-color: white;
+  --mat-snackbar-container-color: rgb(243, 7, 7);
+  --mat-snackbar-supporting-text-color: white;
 
   border-radius: 1rem;
-  --mdc-snackbar-supporting-text-font: Cambria, Cochin, Georgia, Times;
-  --mdc-snackbar-supporting-text-line-height: 2rem --mdc-snackbar-supporting-text-size: 2rem !important;
-  --mdc-snackbar-supporting-text-weight: bold;
+  --mat-snackbar-supporting-text-font: Cambria, Cochin, Georgia, Times;
+  --mat-snackbar-supporting-text-line-height: 2rem --mat-snackbar-supporting-text-size: 2rem !important;
+  --mat-snackbar-supporting-text-weight: bold;
 
 
 
