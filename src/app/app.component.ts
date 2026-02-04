@@ -1,17 +1,17 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { DialogAllWinnersComponent } from './components/dialogs/dialog-all-winners/dialog-all-winners.component';
 import { EPrizeType } from './enums/EPrizeType';
 import { AudioDataBaseService } from './services/audio-data-base.service';
 import { DialogNumberSelectionComponent } from './components/dialogs/dialog-number-selection/dialog-number-selection.component';
 import { DialogRouletteComponent } from './components/dialogs/dialog-roulette/dialog-roulette.component';
 import { TimerService } from './services/timer.service';
-import { MatIcon } from '@angular/material/icon';
 import { ThemeService } from './services/theme.service';
+import { LoadingSpinnerComponent } from "./components/loading-spinner/loading-spinner.component";
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, LoadingSpinnerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -22,6 +22,13 @@ export class AppComponent implements OnInit {
   readonly audioDataBaseService = inject(AudioDataBaseService);
   readonly themeService = inject(ThemeService);
   readonly timerService = inject(TimerService);
+
+    private router = inject(Router);
+  isNavigating = computed(() => {
+    console.log(this.router.currentNavigation())
+    return !!this.router.currentNavigation()
+  }
+      );
 
   constructor() {
 

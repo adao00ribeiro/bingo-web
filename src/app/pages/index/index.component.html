@@ -61,7 +61,7 @@
            <app-button-menu descricao="Rodadas" (onClick)="handleClick('/',snav)">
           <mat-icon>list_alt</mat-icon>
         </app-button-menu>
-        @if(enabledScratch){
+        @if(enabledScratch()){
         <app-button-menu descricao="Raspadinha" (onClick)="handleClick('/scratch',snav)">
           <mat-icon>confirmation_number</mat-icon>
         </app-button-menu>

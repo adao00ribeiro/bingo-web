@@ -18,6 +18,7 @@ import { ForgotPasswordComponent } from './pages/account/forgot-password/forgot-
 import { ResetPasswordComponent } from './pages/account/reset-password/reset-password.component';
 import { RoomsComponent } from './pages/index/rooms/rooms.component';
 import { IndexRoomComponent } from './pages/index/index-room/index-room.component';
+import { onlineHouseResolver } from './core/resolvers/online-house.resolver';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,9 @@ export const routes: Routes = [
     path: '',
     component: IndexComponent,
     canActivate: [authGuard],
+      resolve:{
+        onlineHouse: onlineHouseResolver,
+    },
     children: [
       {
         path: '',
@@ -84,11 +88,17 @@ export const routes: Routes = [
     path: 'cadastro',
     component: RegisterComponent,
     canActivate: [unauthenticateGuard],
+     resolve:{
+        onlineHouse: onlineHouseResolver,
+    }
   },
   {
     path: 'login',
     component: LoginComponent,
     canActivate: [unauthenticateGuard],
+    resolve:{
+        onlineHouse: onlineHouseResolver,
+    }
   },
     {
     path: 'forgot-password',

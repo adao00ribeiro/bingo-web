@@ -3,24 +3,29 @@
 
     <mat-form-field class="full-width" appearance="outline">
       <mat-label>Valor do Depósito</mat-label>
-      <input matInput currencyMask formControlName="value">
-      <mat-icon matSuffix="">attach_money</mat-icon>
-      <mat-error *ngIf="depositForm.get('value')?.hasError('required')">
-        Valor é obrigatório
-      </mat-error>
-      <mat-error *ngIf="depositForm.get('value')?.hasError('min')">
-        Valor mínimo é R$ 0,01
-      </mat-error>
+      <input matInput formControlName="currency" currency [textMask]="{mask: MASKS['currency'].textMask}">
+      @if (depositForm.get('currency')?.hasError('required')) {
+        <mat-error>
+          Valor é obrigatório
+        </mat-error>
+      }
+      @if (depositForm.get('currency')?.hasError('min')) {
+        <mat-error>
+          Valor mínimo é R$ 0,01
+        </mat-error>
+      }
     </mat-form-field>
-    <div class="deposit-info" *ngIf="depositForm.get('value')?.value">
-      <mat-card class="info-card">
-        <mat-card-content>
-          <div class="info-row total">
-            <span class="label">Total:</span>
-            <span class="value">{{ depositForm.get('value')?.value | currency}} </span>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    @if (depositForm.get('currency')?.value) {
+      <div class="deposit-info">
+        <mat-card class="info-card">
+          <mat-card-content>
+            <div class="info-row total">
+              <span class="label">Total:</span>
+              <span class="value">{{ depositForm.get('currency')?.value | currencyBrazil }} </span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    }
   </form>
 </div>

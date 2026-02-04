@@ -24,7 +24,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { NgIf } from '@angular/common';
+
 import { CardsByRoundIdResource } from '../../../resource/card/cards-by-round-id.resource';
 import { TicketSelectorComponent } from "../../../components/ticket-selector/ticket-selector.component";
 import { RoundTimerComponent } from '../../../components/round-timer/round-timer.component';

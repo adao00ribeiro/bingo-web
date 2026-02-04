@@ -7,6 +7,6 @@ export interface IRegister {
   password: string;
   passwordConfirmed: string;
   dateBirth: string; // ou Date, dependendo do uso
-  sellerId: string; // UUID format
+  onlineHouseId: string; // UUID format
   registeredWithTag:string;
 }

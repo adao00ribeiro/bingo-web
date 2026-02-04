@@ -1,5 +1,6 @@
 import { ISeller } from "./ISeller"
 import { IUser } from "./IUser"
+import { IOnlineHouseResponse } from "./response/bingo/IOnlineHouseResponse"
 
 export interface IPunter {
   id: string,
@@ -9,6 +10,6 @@ export interface IPunter {
   email:string,
   cpf:string,
   dateBirth : string,
-  seller : ISeller,
+  onlineHouse : IOnlineHouseResponse,
   user: IUser
 }

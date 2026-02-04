@@ -47,10 +47,6 @@ protected readonly roundService:RoundService = inject(RoundService);
     if(this.punter() == null){
       return ;
     }
-    var roomId = this.punter()?.seller.rooms[0].id;
-    if(roomId == undefined ){
-      return;
-    }
     this.roundService.GetNextRounds(1,50).subscribe({
       next: (data) => {
        if(data){
