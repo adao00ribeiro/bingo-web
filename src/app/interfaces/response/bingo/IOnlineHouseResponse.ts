@@ -3,6 +3,7 @@ import { IPunter } from "../../IPunter";
 import { IRoom } from "../../IRoom";
 import { IRoomSeller } from "../../IRoomSeller";
 import { ISeller } from "../../ISeller";
+import { IPaymentMethodResponse } from "./IPaymentMethodResponse";
 
 export interface IOnlineHouseResponse
 {
@@ -15,4 +16,5 @@ export interface IOnlineHouseResponse
   punters?: IPunter[];
   ownerRooms?: IRoom[];
   participantRooms?: IRoomSeller[];
+  paymentMethods?: IPaymentMethodResponse[]
 }
