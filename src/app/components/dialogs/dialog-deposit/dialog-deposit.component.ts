@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -19,6 +19,8 @@ import { NormalDepositComponent } from "./normal-deposit/normal-deposit.componen
 import { WalletService } from '../../../services/wallet/wallet.service';
 import { PunterMeResource } from '../../../resource/punter/punter-me.resource';
 import { CryptoDepositComponent } from './crypto-deposit/crypto-deposit.component';
+import { IPunter } from '../../../interfaces/IPunter';
+import { EPaymentMethodType } from '../../../enums/EPaymentMethodType';
 
 export interface DialogDeposit {
 
@@ -46,7 +48,8 @@ export interface DialogDeposit {
   templateUrl: './dialog-deposit.component.html',
   styleUrl: './dialog-deposit.component.scss'
 })
-export class DialogDepositComponent  {
+export class DialogDepositComponent {
+
 
   @ViewChild('normalDeposit') normalDepositComponent: any;
   @ViewChild('criptoDeposit') criptoDepositComponent: any;
@@ -58,16 +61,25 @@ export class DialogDepositComponent  {
 
   readonly snackBar = inject(MatSnackBar);
   readonly dialog = inject(MatDialog);
-  isCryptoEnabled = true;
+  isCryptoEnabled = signal(false);
   isNormalDeposit = true;
   isDepositing = false;
   depositRequest?: IDepositRequest;
+
+  constructor() {
+    effect(() => {
+      const punter = this.punterMeResource.resource.value() as IPunter;
+      this.isCryptoEnabled.set( punter?.onlineHouse.paymentMethods ?.find(m => m.type === EPaymentMethodType.CRYPTO)?.active ?? false);
+    })
+  }
+
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   async handleDepositClick() {
-     this.isDepositing = true;
+    this.isDepositing = true;
 
     if (!this.isNormalDeposit) {
       this.criptoDepositComponent.emitDeposit();
@@ -82,8 +94,8 @@ export class DialogDepositComponent  {
 
       this.depositRequest = {
         ...this.depositRequest,
-        value:value,
-        amount:amount,
+        value: value,
+        amount: amount,
         transactionHash: txHash,
         destinationAddress: destino
       };
