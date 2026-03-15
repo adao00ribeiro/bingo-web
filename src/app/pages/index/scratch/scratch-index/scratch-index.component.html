@@ -1,0 +1,52 @@
+    <div class="scratchcard-page">
+      <div class="scratchcard-home">
+        <div class="scratchcard-home__top">
+          <app-header
+            [search]="search"
+            (searchChange)="onSearchChange($event)"
+            [filtersDrawer]="filtersDrawer"
+            (filtersDrawerChange)="filtersDrawer = $event"
+            [isSearching]="isSearching"
+            [canClear]="canClear"
+            (clean)="cleanFilters()"
+          />
+        </div>
+
+        <div class="scratchcard-content">
+          <app-search-results
+            *ngIf="isSearching"
+            [loading]="loadingSearch"
+            [games]="filteredGames"
+            (clean)="cleanFilters()"
+            (play)="redirect($event)"
+          />
+          <app-home-sections
+            *ngIf="!isSearching"
+            [loading]="loading"
+            [games]="allGames"
+            [recentGames]="recentGames"
+            [lastPlayedGames]="lastPlayedGames"
+            (play)="redirect($event)"
+          />
+        </div>
+
+        <div class="scratchcard-page__refreshWrap">
+          <button
+            class="scratchcard-page__refreshBtn"
+            [disabled]="refreshing"
+            (click)="hardRefresh()"
+          >
+            <span class="material-icons" style="font-size:18px">refresh</span>
+            {{ refreshing ? 'Atualizando...' : 'Atualizar raspinhas' }}
+          </button>
+        </div>
+      </div>
+
+      <app-filter-drawer
+        [value]="filtersDrawer"
+        (valueChange)="filtersDrawer = $event"
+        [canClear]="canClear"
+        (clean)="cleanFilters()"
+      />
+    </div>
+

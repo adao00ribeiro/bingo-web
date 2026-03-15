@@ -1,0 +1,119 @@
+ .scratch-card {
+      cursor: pointer;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+    .scratch-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,140,0,0.2);
+      border-color: rgba(255,140,0,0.22);
+    }
+    .scratch-card:hover .scratch-card__overlay { opacity: 1; }
+    .scratch-card:hover .scratch-card__shine {
+      opacity: 1;
+      transform: translateX(120%);
+    }
+    .scratch-card:active { transform: translateY(-1px) scale(0.99); }
+
+    .scratch-card__media {
+      position: relative;
+      width: 100%;
+      padding-top: 100%;
+      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+    }
+    .scratch-card__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .scratch-card__placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: rgba(255,255,255,0.3);
+      background: linear-gradient(135deg, rgba(255,140,0,0.08) 0%, rgba(0,0,0,0) 100%);
+    }
+    .scratch-card__shine {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.14) 50%, transparent 60%);
+      transform: translateX(-120%);
+      opacity: 0;
+      transition: transform 0.55s ease, opacity 0.1s ease;
+      pointer-events: none;
+    }
+    .scratch-card__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.62);
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      transition: opacity 160ms ease;
+    }
+    .scratch-card__overlayContent {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .scratch-card__playBtn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff8c00 0%, #e65c00 100%);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(255,140,0,0.45);
+    }
+    .scratch-card__playLabel {
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+    }
+    .scratch-card__badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+      color: #fff;
+      font-size: 9.5px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      box-shadow: 0 3px 10px rgba(255,0,0,0.35);
+    }
+    .scratch-card__footer {
+      padding: 8px 10px 10px;
+    }
+    .scratch-card__title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.1px;
+      color: rgba(255,255,255,0.9);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    @media (max-width: 599px) {
+      .scratch-card { border-radius: 14px; }
+      .scratch-card__playBtn { width: 38px; height: 38px; }
+      .scratch-card__footer { padding: 6px 8px 8px; }
+      .scratch-card__title { font-size: 12px; }
+    }

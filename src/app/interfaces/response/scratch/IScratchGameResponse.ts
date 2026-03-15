@@ -3,6 +3,7 @@ import { IScratchGameAttributesResponse } from "./jsonb/IScratchGameAttributesRe
 
 export interface IScratchGameResponse{
   name?: string;
+  thumbinail?: string;
   layoutType?: EScratchLayoutType;
   price?: number;
   maxPrize?: number;

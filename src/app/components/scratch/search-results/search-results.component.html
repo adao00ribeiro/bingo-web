@@ -1,0 +1,52 @@
+ <div>
+      <!-- Loading -->
+      <div *ngIf="loading" class="scratch-section">
+        <div class="scratchcard-sectionHead">
+          <div class="scratchcard-sectionHead__titleRow">
+            <div class="scratchcard-sectionHead__title">Buscando...</div>
+          </div>
+        </div>
+        <div class="scratch-grid">
+          <app-card-skeleton *ngFor="let n of skeletons" />
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div *ngIf="!loading && games && games.length">
+        <div class="scratchcard-sectionHead">
+          <div class="scratchcard-sectionHead__titleRow">
+            <div class="scratchcard-sectionHead__title">Resultados</div>
+            <div class="scratchcard-sectionHead__meta">{{ games.length }} jogos</div>
+          </div>
+        </div>
+        <div class="scratch-grid">
+          <app-game-card
+            *ngFor="let item of visibleGames; trackBy: trackById"
+            [game]="item"
+            (play)="play.emit(item.id)"
+          />
+        </div>
+        <div #sentinel class="scratchcard-sentinel"></div>
+        <div *ngIf="hasMore" class="scratchcard-more">
+          <ng-container *ngIf="isPaging; else moreLabel">
+            <div class="scratchcard-spinner"></div>
+          </ng-container>
+          <ng-template #moreLabel>
+            <div class="scratchcard-more__meta">Carregando mais…</div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Empty -->
+      <div *ngIf="!loading && (!games || !games.length)" class="scratchcard-empty">
+        <div class="scratchcard-empty__icon">
+          <span class="material-icons" style="font-size:44px">sentiment_dissatisfied</span>
+        </div>
+        <div class="scratchcard-empty__title">Nenhum resultado encontrado</div>
+        <div class="scratchcard-empty__sub">Tente outro termo de busca.</div>
+        <button class="scratchcard-clearBtn" (click)="clean.emit()">
+          <span class="material-icons" style="font-size:18px">clear</span>
+          Limpar filtros
+        </button>
+      </div>
+    </div>

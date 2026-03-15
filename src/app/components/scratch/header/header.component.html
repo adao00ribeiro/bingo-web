@@ -1,0 +1,67 @@
+ <div>
+      <!-- Hero Banner -->
+      <div class="scratch-hero">
+        <div class="scratch-hero__inner">
+          <div class="scratch-hero__glow"></div>
+          <div class="scratch-hero__content">
+            <div class="scratch-hero__icon">
+              <span class="material-icons" style="font-size:36px">style</span>
+            </div>
+            <div class="scratch-hero__text">
+              <div class="scratch-hero__title">Raspadinhas</div>
+              <div class="scratch-hero__sub">Tente sua sorte agora!</div>
+            </div>
+          </div>
+          <div class="scratch-hero__coins">
+            <span class="scratch-hero__coin scratch-hero__coin--1">💰</span>
+            <span class="scratch-hero__coin scratch-hero__coin--2">⭐</span>
+            <span class="scratch-hero__coin scratch-hero__coin--3">🎰</span>
+            <span class="scratch-hero__coin scratch-hero__coin--4">🍀</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search + Filter bar -->
+      <div class="scratchcard-home__panel">
+        <div class="scratchcard-home__quickSearch">
+          <div class="scratchcard-searchBar">
+            <span class="material-icons scratchcard-searchBar__icon" style="font-size:20px">search</span>
+            <input
+              [ngModel]="search"
+              (ngModelChange)="searchChange.emit($event)"
+              type="text"
+              class="scratchcard-searchBar__input"
+              placeholder="Pesquisar raspadinha"
+            />
+            <button
+              *ngIf="search"
+              class="scratchcard-searchBar__action"
+              type="button"
+              (click)="searchChange.emit('')"
+              aria-label="Limpar busca"
+            >
+              <span class="material-icons" style="font-size:18px">close</span>
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="isSearching" class="scratchcard-home__activeFilters">
+          <div class="scratchcard-home__activeRow">
+            <span *ngIf="search && search.trim()" class="scratchcard-activeChip">
+              {{ search }}
+              <button class="scratchcard-activeChip__remove" (click)="searchChange.emit('')">
+                <span class="material-icons" style="font-size:14px">close</span>
+              </button>
+            </span>
+          </div>
+          <button
+            class="scratchcard-home__activeClear"
+            [disabled]="!canClear"
+            (click)="clean.emit()"
+          >
+            <span class="material-icons" style="font-size:16px">clear</span>
+            Limpar filtros
+          </button>
+        </div>
+      </div>
+    </div>

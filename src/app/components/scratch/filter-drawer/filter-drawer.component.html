@@ -1,0 +1,37 @@
+    <div
+      *ngIf="value"
+      class="scratchcard-filtersBackdrop"
+      (click)="close()"
+    >
+      <div
+        class="scratchcard-sheet"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="scratchcard-sheet__grab"></div>
+        <div class="scratchcard-sheet__head">
+          <div class="scratchcard-sheet__title">Filtros</div>
+          <button class="scratchcard-sheet__close" (click)="close()">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+        <div class="scratchcard-sheet__body">
+          <div class="scratchcard-sheet__actions">
+            <button
+              class="scratchcard-btn scratchcard-btn--ghost"
+              [disabled]="!canClear"
+              (click)="onClean()"
+            >
+              <span class="material-icons" style="font-size:18px">clear</span>
+              Limpar
+            </button>
+            <button
+              class="scratchcard-btn scratchcard-btn--primary"
+              (click)="close()"
+            >
+              <span class="material-icons" style="font-size:18px">check</span>
+              Aplicar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>

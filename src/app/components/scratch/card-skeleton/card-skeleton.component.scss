@@ -1,0 +1,46 @@
+    .scratch-card {
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      position: relative;
+    }
+    .scratch-card__media {
+      position: relative;
+      width: 100%;
+      padding-top: 100%;
+      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+    }
+    .scratch-card__footer { padding: 8px 10px 10px; }
+    .scratch-card__badge {
+      position: absolute;
+      top: 8px; left: 8px;
+      background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+      color: #fff;
+      font-size: 9.5px; font-weight: 900;
+      padding: 3px 7px;
+      border-radius: 999px;
+      display: flex; align-items: center; gap: 3px;
+    }
+    .scratch-cardSkel {
+      pointer-events: none;
+      animation: scratchSkelPulse 1.5s ease-in-out infinite;
+    }
+    .scratch-cardSkel__skel {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      background: rgba(255,255,255,0.08);
+    }
+    .scratch-cardSkel__badge { opacity: 0.35; }
+    .scratch-cardSkel__line {
+      height: 12px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.12);
+      opacity: 0.5;
+    }
+    @keyframes scratchSkelPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }

@@ -1,0 +1,40 @@
+  .scratch-section { padding: 12px 0; }
+    .scratch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+      padding: 8px 0;
+    }
+    @media (max-width: 599px) {
+      .scratch-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    }
+    @media (min-width: 900px) {
+      .scratch-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+    }
+    .scratchcard-sectionHead { padding: 4px 0 8px; }
+    .scratchcard-sectionHead__titleRow {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .scratchcard-sectionHead__title {
+      display: flex; align-items: center;
+      font-size: 15px; font-weight: 900; letter-spacing: 0.1px;
+      color: rgba(255,255,255,0.92);
+    }
+    .scratchcard-sectionHead__meta {
+      font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.35);
+    }
+    .scratchcard-empty {
+      padding: 48px 16px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 10px;
+      text-align: center;
+    }
+    .scratchcard-empty__icon { color: rgba(255,255,255,0.2); }
+    .scratchcard-empty__title {
+      font-size: 16px; font-weight: 900;
+      color: rgba(255,255,255,0.6);
+    }
+    .scratchcard-empty__sub {
+      font-size: 13px; color: rgba(255,255,255,0.35);
+    }

@@ -18,10 +18,10 @@ import { CanvasService } from '../../../services/canvas.service';
 import { Subscription } from 'rxjs';
 import { IScratchBuyRequest } from '../../../interfaces/request/scratch/IScratchBuyRequest';
 import { PunterMeResource } from '../../../resource/punter/punter-me.resource';
-import { ScratchSellerGameService } from '../../../services/scratch/scratch-seller-game/scratch-seller-game.service';
-import { IScratchSellerGameResponse } from '../../../interfaces/response/scratch/IScratchSellerGameResponse';
 import { IScratchTicketResponse } from '../../../interfaces/response/scratch/IScratchTicketResponse';
 import { CurrencyPipe } from '../../../pipes/currency.pipe';
+import { ScratchGameOverrideService } from '../../../services/scratch/scratch-game-override/scratch-game-override.service';
+import { IScratchGameOverrideResponse } from '../../../interfaces/response/scratch/IScratchGameOverrideResponse';
 
 @Component({
   selector: 'app-scratch',
@@ -35,7 +35,7 @@ export class ScratchComponent implements OnInit, AfterViewInit, OnDestroy {
   scratchSellerGameId = input('');
   private readonly punterMeResource = inject(PunterMeResource);
   private readonly scratchTicketService = inject(ScratchTicketService);
-  private readonly scratchSellerGameService = inject(ScratchSellerGameService);
+  private readonly scratchGameOverrideService = inject(ScratchGameOverrideService);
   private readonly canvasService = inject(CanvasService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -45,7 +45,7 @@ export class ScratchComponent implements OnInit, AfterViewInit, OnDestroy {
   imagesLoaded = false;
   loadingProgress = 0;
   audio = new Audio('/audios/cash-register.mp3');
-  gamesOnlineSeller: IScratchSellerGameResponse | undefined = undefined;
+  gamesOnlineSeller: IScratchGameOverrideResponse | undefined = undefined;
 
   // Estados do jogo
   gameState = {
@@ -102,7 +102,7 @@ export class ScratchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async loadGameData() {
-    this.scratchSellerGameService.GetById(this.scratchSellerGameId()).subscribe({
+    this.scratchGameOverrideService.GetById(this.scratchSellerGameId()).subscribe({
       next: (data) => {
         if (data) {
           this.gamesOnlineSeller = data;

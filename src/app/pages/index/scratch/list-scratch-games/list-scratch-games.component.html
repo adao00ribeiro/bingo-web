@@ -5,7 +5,7 @@
         </div>
 
         <div class="games-grid">
-          @for (item of scratchSellerGames(); track $index) {
+          @for (item of scratchGameOverrides(); track $index) {
             <div class="game-card">
                 <div class="game-name">{{item.scratchGame.name}}</div>
                 <button class="play-btn" (click)="play(item.id)">

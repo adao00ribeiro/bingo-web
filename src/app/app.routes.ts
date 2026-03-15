@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { IndexComponent } from './pages/index/index.component';
 import { authGuard } from './guard/auth.guard';
 import { RoundsComponent } from './pages/index/rounds/rounds.component';
 import { MyAwardsComponent } from './pages/index/my-awards/my-awards.component';
@@ -19,6 +18,8 @@ import { ResetPasswordComponent } from './pages/account/reset-password/reset-pas
 import { RoomsComponent } from './pages/index/rooms/rooms.component';
 import { IndexRoomComponent } from './pages/index/index-room/index-room.component';
 import { onlineHouseResolver } from './core/resolvers/online-house.resolver';
+import { IndexComponent } from './pages/index/index.component';
+import { ScratchIndexComponent } from './pages/index/scratch/scratch-index/scratch-index.component';
 
 export const routes: Routes = [
   {
@@ -48,7 +49,7 @@ export const routes: Routes = [
       },
       {
         path: 'scratch',
-        component: ListScratchGamesComponent,
+        component: ScratchIndexComponent,
       },
        {
         path: 'scratch/:scratchSellerGameId',

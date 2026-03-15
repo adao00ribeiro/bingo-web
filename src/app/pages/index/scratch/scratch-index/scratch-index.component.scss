@@ -1,0 +1,25 @@
+ .scratchcard-page {
+      min-height: 100vh;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .scratchcard-content { padding: 0 16px; }
+    .scratchcard-page__refreshWrap {
+      padding: 10px 16px 24px;
+      display: flex; justify-content: center;
+    }
+    .scratchcard-page__refreshBtn {
+      width: min(520px, 100%);
+      border-radius: 14px;
+      height: 46px;
+      background: #c05200;
+      color: #fff;
+      border: none;
+      font-size: 14px; font-weight: 900;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background 160ms ease;
+    }
+    .scratchcard-page__refreshBtn:hover:not(:disabled) { background: #d96000; }
+    .scratchcard-page__refreshBtn:disabled { opacity: 0.6; cursor: default; }

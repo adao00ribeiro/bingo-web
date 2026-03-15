@@ -1,0 +1,62 @@
+.scratchcard-filtersBackdrop {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(7px);
+      display: flex; align-items: flex-end;
+      animation: fadeIn 0.15s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .scratchcard-sheet {
+      width: 100%;
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
+      background: #0f1116;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.65);
+      overflow: hidden;
+      animation: slideUp 0.2s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .scratchcard-sheet__grab {
+      width: 44px; height: 5px; border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      margin: 10px auto 6px;
+    }
+    .scratchcard-sheet__head {
+      padding: 10px 14px 6px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .scratchcard-sheet__title {
+      font-size: 15px; font-weight: 900; letter-spacing: 0.2px;
+      color: rgba(255,255,255,0.92);
+    }
+    .scratchcard-sheet__close {
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,0.88);
+      display: flex; align-items: center;
+    }
+    .scratchcard-sheet__body {
+      padding: 10px 14px 14px; display: grid; gap: 14px;
+    }
+    .scratchcard-sheet__actions {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 2px;
+    }
+    .scratchcard-btn {
+      border-radius: 14px; height: 46px;
+      font-weight: 900; letter-spacing: 0.2px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      cursor: pointer; font-size: 14px; border: none;
+    }
+    .scratchcard-btn--ghost {
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.06);
+    }
+    .scratchcard-btn--primary {
+      background: #ff8c00; color: #fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .scratchcard-btn:disabled { opacity: 0.45; cursor: default; }

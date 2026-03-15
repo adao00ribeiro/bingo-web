@@ -1,0 +1,44 @@
+ <div
+      class="scratch-card"
+      (click)="play.emit()"
+      (keyup.enter)="play.emit()"
+      role="button"
+      tabindex="0"
+    >
+      <div class="scratch-card__media">
+        <img
+          *ngIf="thumbnailUrl; else placeholder"
+          [src]="thumbnailUrl"
+          [alt]="title"
+          class="scratch-card__img"
+          loading="lazy"
+          decoding="async"
+          draggable="false"
+        />
+        <ng-template #placeholder>
+          <div class="scratch-card__placeholder">
+            <span class="material-icons" style="font-size:36px">style</span>
+          </div>
+        </ng-template>
+
+        <div class="scratch-card__shine"></div>
+
+        <div class="scratch-card__overlay">
+          <div class="scratch-card__overlayContent">
+            <div class="scratch-card__playBtn">
+              <span class="material-icons" style="font-size:22px">play_arrow</span>
+            </div>
+            <div class="scratch-card__playLabel">Jogar</div>
+          </div>
+        </div>
+
+        <div *ngIf="showBadge" class="scratch-card__badge">
+          <span class="material-icons" style="font-size:11px">bolt</span>
+          NOVO
+        </div>
+      </div>
+
+      <div class="scratch-card__footer">
+        <div class="scratch-card__title">{{ title }}</div>
+      </div>
+    </div>

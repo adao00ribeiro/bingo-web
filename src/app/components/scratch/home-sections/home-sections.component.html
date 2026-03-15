@@ -1,0 +1,90 @@
+ <div>
+      <!-- Loading skeletons -->
+      <div *ngIf="loading" class="scratch-section">
+        <div class="scratchcard-sectionHead">
+          <div class="scratchcard-sectionHead__titleRow">
+            <div class="scratchcard-sectionHead__title">
+              <span class="material-icons" style="font-size:20px;color:#ef4444;margin-right:8px">style</span>
+              Raspadinhas
+            </div>
+          </div>
+        </div>
+        <div class="scratch-grid">
+          <app-card-skeleton *ngFor="let n of skeletons" />
+        </div>
+      </div>
+
+      <!-- Sections -->
+      <ng-container *ngIf="!loading && games && games.length">
+
+        <!-- Novidades -->
+        <div *ngIf="recentGames.length" class="scratch-section">
+          <div class="scratchcard-sectionHead">
+            <div class="scratchcard-sectionHead__titleRow">
+              <div class="scratchcard-sectionHead__title">
+                <span class="material-icons" style="font-size:20px;color:#ef4444;margin-right:4px">bolt</span>
+                Novidades
+              </div>
+              <div class="scratchcard-sectionHead__meta">{{ recentGames.length }} jogos</div>
+            </div>
+          </div>
+          <div class="scratch-grid">
+            <app-game-card
+              *ngFor="let item of recentGames; trackBy: trackById"
+              [game]="item"
+              [showBadge]="true"
+              (play)="play.emit(item.id)"
+            />
+          </div>
+        </div>
+
+        <!-- Recém Jogados -->
+        <div *ngIf="lastPlayedGames.length" class="scratch-section">
+          <div class="scratchcard-sectionHead">
+            <div class="scratchcard-sectionHead__titleRow">
+              <div class="scratchcard-sectionHead__title">
+                <span class="material-icons" style="font-size:20px;color:#ef4444;margin-right:4px">history</span>
+                Recém Jogados
+              </div>
+              <div class="scratchcard-sectionHead__meta">{{ lastPlayedGames.length }} jogos</div>
+            </div>
+          </div>
+          <div class="scratch-grid">
+            <app-game-card
+              *ngFor="let item of lastPlayedGames; trackBy: trackById"
+              [game]="item"
+              (play)="play.emit(item.id)"
+            />
+          </div>
+        </div>
+
+        <!-- Todas as Raspadinhas -->
+        <div class="scratch-section">
+          <div class="scratchcard-sectionHead">
+            <div class="scratchcard-sectionHead__titleRow">
+              <div class="scratchcard-sectionHead__title">
+                <span class="material-icons" style="font-size:20px;color:#ef4444;margin-right:4px">style</span>
+                Todas as Raspadinhas
+              </div>
+              <div class="scratchcard-sectionHead__meta">{{ games.length }} jogos</div>
+            </div>
+          </div>
+          <div class="scratch-grid">
+            <app-game-card
+              *ngFor="let item of games; trackBy: trackById"
+              [game]="item"
+              (play)="play.emit(item.id)"
+            />
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- No games -->
+      <div *ngIf="!loading && (!games || !games.length)" class="scratchcard-empty">
+        <div class="scratchcard-empty__icon">
+          <span class="material-icons" style="font-size:44px">sentiment_dissatisfied</span>
+        </div>
+        <div class="scratchcard-empty__title">Nenhuma raspadinha disponível</div>
+        <div class="scratchcard-empty__sub">Tente novamente mais tarde.</div>
+      </div>
+    </div>
